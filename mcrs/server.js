@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const PORT = 4000;
 
 // create express app
 const app = express();
+app.use(cors());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -35,6 +38,6 @@ app.get('/', (req, res) => {
 require('./app/routes/methodChunk.routes.js')(app);
 
 // listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(PORT, () => {
+    console.log("Server is listening on port: " + PORT);
 });
