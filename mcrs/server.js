@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const PORT = 4000;
+const methodChunkRouter = require('./app/routes/methodChunk.routes.js');
 
 // create express app
 const app = express();
@@ -35,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 // Require routes
-require('./app/routes/methodChunk.routes.js')(app);
+app.use('/method-chunks', methodChunkRouter);
 
 // listen for requests
 app.listen(PORT, () => {
