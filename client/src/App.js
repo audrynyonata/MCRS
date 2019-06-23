@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import MethodChunkList from "./components/MethodChunkList"
+import AddMethodChunk from "./components/AddMethodChunk"
 
 class App extends Component {
   state = {
-    data: [],
+    methodChunks: [],
     intervalIsSet: false
   }
 
@@ -23,28 +25,22 @@ class App extends Component {
   getDataFromDb = () => {
     fetch('http://localhost:4000/method-chunks')
       .then(res => res.json())
-      .then(data => this.setState({ data: data }));
+      .then(data => this.setState({ methodChunks: data }));
   };
 
   // here is our UI
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
-    const { data } = this.state;
+    const { methodChunks } = this.state;
     return (
       <div>
-        <ul>
-          {data.length <= 0
-            ? 'NO DB ENTRIES YET'
-            : data.map((dat) => (
-                <li style={{ padding: '10px' }} key={data.title}>
-                  <span style={{ color: 'gray' }}> title: </span> {dat.title} <br />
-                  <span style={{ color: 'gray' }}> content: </span>
-                  {dat.content}
-                </li>
-              ))}
-        </ul>
-        </div>
+        <AddMethodChunk/>
+        {methodChunks.length <= 0
+          ? 'NO DB ENTRIES YET'
+          : <MethodChunkList methodChunks={methodChunks}/>
+        }
+      </div>
     );
   }
 }
