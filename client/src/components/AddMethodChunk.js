@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { addMethodChunk } from '../actions/methodChunk'
+import axios from 'axios';
 
-const AddMethodChunk = ({ dispatch }) => {
+const AddMethodChunk = (props) => {
   let methodChunk = {
     title: "MethodChunk Test",
     content: "This is a test method chunk"
@@ -13,7 +14,12 @@ const AddMethodChunk = ({ dispatch }) => {
       <form
         onSubmit={e => {
           e.preventDefault()
-          dispatch(addMethodChunk(methodChunk))
+          axios.post('/method-chunks', { ...methodChunk })
+            .then(({data : {content}}) => {
+              console.log(`Item - ${content} added successfully`)
+            })
+            .catch(e => console.log("Addition failed , Error ", e))
+          props.dispatch(addMethodChunk(methodChunk))
         }}
       >
         <button type="submit">Add methodChunk</button>
@@ -21,5 +27,6 @@ const AddMethodChunk = ({ dispatch }) => {
     </div>
   )
 }
+
 
 export default connect()(AddMethodChunk)

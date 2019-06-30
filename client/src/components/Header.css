@@ -1,0 +1,15 @@
+.header a {
+  color: unset;
+}
+.header a:hover {
+  text-decoration: unset;
+}
+.header .navbar-text a {
+  color: unset;
+}
+.header .navbar-text a.user {
+  color: white;
+}
+.header .user:hover {
+  text-decoration: underline;
+}
