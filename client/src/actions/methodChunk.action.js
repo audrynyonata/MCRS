@@ -1,19 +1,11 @@
 import axios from 'axios'
 
-/*
- * action types
- */
-
 export const ADD_METHOD_CHUNK = 'ADD_METHOD_CHUNK'
 export const READ_METHOD_CHUNK = 'READ_METHOD_CHUNK'
 
 export const FETCH_METHOD_CHUNK_BEGIN = 'FETCH_METHOD_CHUNK_BEGIN';
 export const FETCH_METHOD_CHUNK_SUCCESS = 'FETCH_METHOD_CHUNK_SUCCESS';
 export const FETCH_METHOD_CHUNK_FAILURE = 'FETCH_METHOD_CHUNK_FAILURE';
-
-/*
- * action creators
- */
 
 export const fetchMethodChunkBegin = () => ({
   type: FETCH_METHOD_CHUNK_BEGIN

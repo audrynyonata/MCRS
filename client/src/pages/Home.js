@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { Container, Card, Jumbotron, Button, CardDeck } from 'react-bootstrap'
 import MethodChunkList from '../components/MethodChunkList'
 import AddMethodChunk from '../components/AddMethodChunk'
-import { readMethodChunks } from '../actions/methodChunk'
+import { readMethodChunks } from '../actions'
 
 class Home extends Component {
   state = {

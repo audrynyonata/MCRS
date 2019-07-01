@@ -1,6 +1,6 @@
 import {
   ADD_METHOD_CHUNK, READ_METHOD_CHUNK, FETCH_METHOD_CHUNK_BEGIN, FETCH_METHOD_CHUNK_FAILURE, FETCH_METHOD_CHUNK_SUCCESS
-} from '../actions/methodChunk'
+} from '../actions'
 
 const initialState = {
   methodChunks: []

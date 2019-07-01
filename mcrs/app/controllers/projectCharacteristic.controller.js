@@ -1,70 +1,61 @@
-const MethodChunk = require('../models/methodChunk.model.js');
+const ProjectCharacteristic = require('../models/projectCharacteristic.model.js');
 
-// Create and Save a new Method Chunk
 exports.create = (req, res) => {
-    // // Validate request
-    // if(!req.body.content) {
-    //     return res.status(400).send({
-    //         message: "Method Chunk content can not be empty"
-    //     });
-    // }
-
-    // Create a Method Chunk
-    const methodChunk = new MethodChunk({
-        name: req.body.name || "Untitled Method Chunk", 
-        description: req.body.description,
-        characteristics: req.body.characteristics.map(e => ({characteristic: e.characteristic, value: e.value})),
-        provider: req.body.provider,
-        source: req.body.source
+    if(!req.body.characteristic || !req.body.values_group.length || !req.body.dimension) {
+        return res.status(400).send({
+            message: "Method Chunk content can not be empty"
+        });
+    }
+  
+    const characteristic = new ProjectCharacteristic({
+        characteristic: req.body.characteristic || "Untitled Characteristic",
+        values_group: [{source: "tes", values: ["low", "med", "high"]}],//
+        dimension: req.body.dimension,
+        description: req.body.description
     });
 
-    // Save Method Chunk in the database
-    methodChunk.save()
+    characteristic.save()
     .then(data => {
         res.send(data);
     }).catch(err => {
-      console.log("err",err)
         res.status(500).send({
-            message: err.message || "Some error occurred while creating the Method Chunk."
+            message: err.message || "Some error occurred while saving."
         });
     });
 };
 
-// Retrieve and return all Method Chunks from the database.
 exports.findAll = (req, res) => {
-    MethodChunk.find()
-    .then(methodChunks => {
-        res.send(methodChunks);
+    ProjectCharacteristic.find()
+    .then(characteristic => {
+        res.send(characteristic);
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while retrieving method chunks."
+            message: err.message || "Some error occurred while retrieving."
         });
     });
 };
 
-// // Find a single Method Chunk with a methodChunkId
 // exports.findOne = (req, res) => {
 //     MethodChunk.findById(req.params.methodChunkId)
 //     .then(methodChunk => {
 //         if(!methodChunk) {
 //             return res.status(404).send({
-//                 message: "Method Chunk not found with id " + req.params.methodChunkId
+//                 message: "not found with id " + req.params.methodChunkId
 //             });            
 //         }
 //         res.send(methodChunk);
 //     }).catch(err => {
 //         if(err.kind === 'ObjectId') {
 //             return res.status(404).send({
-//                 message: "Method Chunk not found with id " + req.params.methodChunkId
+//                 message: "not found with id " + req.params.methodChunkId
 //             });                
 //         }
 //         return res.status(500).send({
-//             message: "Error retrieving Method Chunk with id " + req.params.methodChunkId
+//             message: "Error retrieving with id " + req.params.methodChunkId
 //         });
 //     });
 // };
 
-// // Update a methodChunk identified by the methodChunkId in the request
 // exports.update = (req, res) => {
 //     // Validate Request
 //     if(!req.body.content) {
@@ -81,40 +72,39 @@ exports.findAll = (req, res) => {
 //     .then(methodChunk => {
 //         if(!methodChunk) {
 //             return res.status(404).send({
-//                 message: "Method Chunk not found with id " + req.params.methodChunkId
+//                 message: "not found with id " + req.params.methodChunkId
 //             });
 //         }
 //         res.send(methodChunk);
 //     }).catch(err => {
 //         if(err.kind === 'ObjectId') {
 //             return res.status(404).send({
-//                 message: "Method Chunk not found with id " + req.params.methodChunkId
+//                 message: "not found with id " + req.params.methodChunkId
 //             });                
 //         }
 //         return res.status(500).send({
-//             message: "Error updating Method Chunk with id " + req.params.methodChunkId
+//             message: "Error updating with id " + req.params.methodChunkId
 //         });
 //     });
 // };
 
-// // Delete a methodChunk with the specified methodChunkId in the request
 // exports.delete = (req, res) => {
 //     MethodChunk.findByIdAndRemove(req.params.methodChunkId)
 //     .then(methodChunk => {
 //         if(!methodChunk) {
 //             return res.status(404).send({
-//                 message: "Method Chunk not found with id " + req.params.methodChunkId
+//                 message: "not found with id " + req.params.methodChunkId
 //             });
 //         }
 //         res.send({message: "Method Chunk deleted successfully!"});
 //     }).catch(err => {
 //         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
 //             return res.status(404).send({
-//                 message: "Method Chunk not found with id " + req.params.methodChunkId
+//                 message: "not found with id " + req.params.methodChunkId
 //             });                
 //         }
 //         return res.status(500).send({
-//             message: "Could not delete Method Chunk with id " + req.params.methodChunkId
+//             message: "Could not delete with id " + req.params.methodChunkId
 //         });
 //     });
 // };

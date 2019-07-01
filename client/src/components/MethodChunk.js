@@ -1,12 +1,12 @@
 import React from 'react'
 
-const MethodChunk = ({ onClick, title, content, match }) => (
+const MethodChunk = props => (
   <li
-    onClick={onClick}
+    onClick={props.onClick}
   >
     {/* Id: {match.id} <br/> */}
-    Title: {title} <br/>
-    Content: {content}
+    Name: {props.name} <br/>
+    Description: {props.description}
   </li>
 )
 

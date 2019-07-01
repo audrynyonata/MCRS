@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import methodChunkReducer from './methodChunk'
+import methodChunkReducer from './methodChunk.reducer'
 
 const rootReducer = combineReducers({
   methodChunkReducer

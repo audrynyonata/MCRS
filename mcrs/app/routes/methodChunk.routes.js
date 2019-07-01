@@ -8,13 +8,13 @@ router.post('/', methodChunks.create);
 // Retrieve all Method Chunk
 router.get('/', methodChunks.findAll);
 
-// Retrieve a single Method Chunk with methodChunkId
-router.get('/:methodChunkId', methodChunks.findOne);
+// // Retrieve a single Method Chunk with methodChunkId
+// router.get('/:methodChunkId', methodChunks.findOne);
 
-// Update a Method Chunk with methodChunkId
-router.put('/:methodChunkId', methodChunks.update);
+// // Update a Method Chunk with methodChunkId
+// router.put('/:methodChunkId', methodChunks.update);
 
-// Delete a Method Chunk with methodChunkId
-router.delete('/:methodChunkId', methodChunks.delete);
+// // Delete a Method Chunk with methodChunkId
+// router.delete('/:methodChunkId', methodChunks.delete);
 
 module.exports = router;
