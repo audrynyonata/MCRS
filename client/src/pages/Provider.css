@@ -1,0 +1,10 @@
+.provider-card:hover {
+  cursor:pointer;
+  text-decoration: unset;
+  background-color: #f7f7f7; 
+}
+
+.provider-card .description {
+  line-height: 1.5rem;
+  min-height: 4.5rem;
+}

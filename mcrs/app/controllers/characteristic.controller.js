@@ -14,7 +14,8 @@ exports.create = (req, res) => {
     .then(result => {
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Create characteristic", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while saving."
       })
     })
@@ -25,7 +26,8 @@ exports.findAll = (req, res) => {
     .then(result => {
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Find all characteristic", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while retrieving."
       })
     })
@@ -41,7 +43,8 @@ exports.findOne = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Find one characteristic", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while retrieving."
       })
     })
@@ -67,7 +70,8 @@ exports.update = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Update characteristic", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while updating."
       })
     })
@@ -85,7 +89,8 @@ exports.softDelete = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Soft delete characteristic", err)
+      res.status(400).send({
         message: err.message || "Could not perform delete."
       })
     })
@@ -101,7 +106,8 @@ exports.hardDelete = (req, res) => {
       }
       res.send({ message: "Deleted successfully." })
     }).catch(err => {
-      res.status(500).send({
+      console.log("Hard delete characteristic", err)
+      res.status(400).send({
         message: err.message || "Could not perform delete."
       })
     })

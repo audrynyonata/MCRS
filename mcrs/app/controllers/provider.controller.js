@@ -3,7 +3,7 @@ const slugify = require('slugify')
 
 exports.create = (req, res) => {
   const provider = new Provider({
-    id: slugify(req.body.provider, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
+    id: slugify(req.body.name, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
@@ -18,7 +18,8 @@ exports.create = (req, res) => {
     .then(result => {
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Create provider", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while saving."
       })
     })
@@ -29,7 +30,8 @@ exports.findAll = (req, res) => {
     .then(result => {
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Find all provider", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while retrieving."
       })
     })
@@ -45,7 +47,8 @@ exports.findOne = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Find one provider", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while retrieving."
       })
     })
@@ -75,7 +78,7 @@ exports.update = (req, res) => {
       result.save((err, record) => {
         if (err) {
           console.log(err)
-          res.status(500).send({
+          res.status(400).send({
             message: err.message || "Some error occurred while updating."
           })
         } else {
@@ -83,8 +86,8 @@ exports.update = (req, res) => {
         }
       })
     }).catch(err => {
-      console.log(err)
-      res.status(500).send({
+      console.log("Update provider", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while updating."
       })
     })
@@ -102,7 +105,8 @@ exports.softDelete = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Soft delete provider", err)
+      res.status(400).send({
         message: err.message || "Could not perform delete."
       })
     })
@@ -118,7 +122,8 @@ exports.hardDelete = (req, res) => {
       }
       res.send({ message: "Deleted successfully." })
     }).catch(err => {
-      res.status(500).send({
+      console.log("Hard delete provider", err)
+      res.status(400).send({
         message: err.message || "Could not perform delete."
       })
     })

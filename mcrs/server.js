@@ -10,7 +10,10 @@ const projectRouter = require('./app/routes/project.routes.js')
 
 const provider = require('./app/controllers/provider.controller.js')
 const methodChunk = require('./app/controllers/methodChunk.controller.js')
+
+const DIMENSIONS = require('./app/dimensions.js')
 const INDUSTRIES = require('./app/industries.js')
+const TYPES = require('./app/types.js')
 
 // create express app
 const app = express()
@@ -45,8 +48,17 @@ app.get('/', (req, res) => {
   res.json({ "message": "Welcome to MCRS." })
 })
 
+// helper
+app.get('/dimensions', (req, res) => {
+  res.json(DIMENSIONS)
+})
+
 app.get('/industries', (req, res) => {
   res.json(INDUSTRIES)
+})
+
+app.get('/types', (req, res) => {
+  res.json(TYPES)
 })
 
 // TO-DO: AUTH API

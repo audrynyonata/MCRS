@@ -52,14 +52,14 @@ const ProviderSchema = mongoose.Schema(
       type: String,
       required: true
     },
-    provider: {
+    name: {
       type: String,
       required: true
     },
     description: String,
     industry: {
       type: String,
-      enum: INDUSTRIES.map(e => e.description.toLowerCase()),
+      enum: INDUSTRIES.map(e => e.name.toLowerCase()),
       lowercase: true
     },
     urls: [ProviderUrlSchema],
@@ -72,8 +72,7 @@ const ProviderSchema = mongoose.Schema(
       validate: {
         validator: v => !v.includes(""),
         message: "Array element must be valid."
-      },
-      lowercase: true
+      }
     },
     is_deleted: {
       type: Boolean,

@@ -6,8 +6,8 @@ import * as serviceWorker from './serviceWorker'
 
 const store = configureStore()
 
-const renderApp = () => 
-  ReactDOM.render(<App store={store}/>, document.getElementById('root'))
+const renderApp = () =>
+  ReactDOM.render(<App store={store} />, document.getElementById('root'))
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept('./App', renderApp)

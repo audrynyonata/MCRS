@@ -12,3 +12,7 @@
 .header .navbar-text a {
   color: unset;
 }
+
+.header .navbar-text .user {
+  color: white;
+}

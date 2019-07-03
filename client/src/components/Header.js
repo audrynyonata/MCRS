@@ -16,17 +16,17 @@ const Header = () =>
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="ml-auto">
         <NavDropdown title="Browse" id="basic-nav-dropdown" className="pr-3">
-          <NavDropdown.Item><NavLink to="/providers">Providers</NavLink></NavDropdown.Item>
-          <NavDropdown.Item><NavLink to="/method-chunks">Method Chunks</NavLink></NavDropdown.Item>
-          <NavDropdown.Item><NavLink to="/characteristics">Characteristics</NavLink></NavDropdown.Item>
+          <NavLink to="/providers" className="dropdown-item" role="button">Providers</NavLink>
+          <NavLink to="/method-chunks" className="dropdown-item" role="button">Method Chunks</NavLink>
+          <NavLink to="/characteristics" className="dropdown-item" role="button">Characteristics</NavLink>
           <NavDropdown.Divider />
-          <NavDropdown.Item><NavLink to="/projects">My Projects</NavLink></NavDropdown.Item>
+          <NavLink to="/projects" className="dropdown-item" role="button">My Projects</NavLink>
         </NavDropdown>
         <Navbar.Text><NavLink to="/publish" className="pr-3">Publish</NavLink></Navbar.Text>
         <Navbar.Text><NavLink to="/find" className="pr-3">Find</NavLink></Navbar.Text>
         {user
           ? <Navbar.Text>
-            Signed in as: <NavLink to="/profile" className="user">{user.fullname}</NavLink>
+            <NavLink to="/profile">Signed in as: <span className="user">{user.fullname}</span></NavLink>
           </Navbar.Text>
           : <Nav.Link><NavLink to="/sign-in">Sign In</NavLink></Nav.Link>
         }

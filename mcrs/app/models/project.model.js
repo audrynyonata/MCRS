@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
+const TYPES = require('../types.js')
 
 const ProjectCharacteristicSchema = mongoose.Schema({
-  characteristic: {
+  name: {
     type: String,
-    required: true,
-    lowercase: true
+    required: true
   },
   optimal_sense: {
     type: String,
@@ -13,7 +13,7 @@ const ProjectCharacteristicSchema = mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['nominal', 'ordinal', 'numerical'],
+    enum: TYPES.map(e => e.name.toLowerCase()),
     required: true,
     lowercase: true
   }

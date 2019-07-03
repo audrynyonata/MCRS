@@ -15,7 +15,8 @@ exports.create = (req, res) => {
     .then(result => {
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Create MC", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while saving."
       })
     })
@@ -26,7 +27,8 @@ exports.findAll = (req, res) => {
     .then(result => {
       res.send(result)
     }).catch(err => {
-      res.status(500).send({
+      console.log("Find all MC", err)
+      res.status(400).send({
         message: err.message || "Some error occurred while retrieving."
       })
     })
@@ -42,7 +44,8 @@ exports.findOne = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      return res.status(500).send({
+      console.log("Find one MC", err)
+      return res.status(400).send({
         message: err.message || "Some error occurred while retrieving."
       })
     })
@@ -72,7 +75,8 @@ exports.update = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      return res.status(500).send({
+      console.log("Update MC", err)
+      return res.status(400).send({
         message: err.message || "Some error occurred while updating."
       })
     })
@@ -90,7 +94,8 @@ exports.softDelete = (req, res) => {
       }
       res.send(result)
     }).catch(err => {
-      return res.status(500).send({
+      console.log("Soft delete MC", err)
+      return res.status(400).send({
         message: err.message || "Colud not perform delete."
       })
     })
@@ -107,7 +112,8 @@ exports.hardDelete = (req, res) => {
       }
       res.send({ message: "Deleted successfully." })
     }).catch(err => {
-      return res.status(500).send({
+      console.log("Hard delete MC", err)
+      return res.status(400).send({
         message: err.message || "Colud not perform delete."
       })
     })

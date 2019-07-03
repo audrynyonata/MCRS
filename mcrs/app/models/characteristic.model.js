@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const TYPES = require('../types.js')
+const DIMENSIONS = require('../types.js')
 
 const noEmptyArray = v => v.length && !v.includes("")
 
@@ -13,7 +15,7 @@ const CharacteristicValueSchema = mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['nominal', 'ordinal', 'numerical'],
+    enum: TYPES.map(e => e.name.toLowerCase()),
     lowercase: true,
     required: true
   }
@@ -41,6 +43,7 @@ const CharacteristicSchema = mongoose.Schema(
     },
     dimension: {
       type: String,
+      enum: DIMENSIONS.map(e => e.name.toLowerCase()),
       required: true,
       lowercase: true
     },
