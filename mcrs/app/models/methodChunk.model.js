@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 
+const MethodChunkCharacteristicSchema = mongoose.Schema({
+  characteristic: String,
+  value: String,
+  type: String
+})
+
 const MethodChunkSchema = mongoose.Schema({
   name: String,
-  description: String,
-  characteristics: [{characteristic: String, value: String}],
-  provider: String,
-  source: String
+  description: String, 
+  provider_name: String,
+  url: String,
+  characteristics: [MethodChunkCharacteristicSchema],
+  is_deleted: Boolean
 }, {
   timestamps: true
 });
