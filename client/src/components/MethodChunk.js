@@ -5,7 +5,7 @@ const MethodChunk = props => (
     onClick={props.onClick}
   >
     {/* Id: {match.id} <br/> */}
-    Name: {props.name} <br/>
+    Name: {props.name} <br />
     Description: {props.description}
   </li>
 )

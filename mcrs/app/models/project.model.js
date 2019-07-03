@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ProjectCharacteristicSchema = mongoose.Schema({
   characteristic: String,
@@ -6,17 +6,19 @@ const ProjectCharacteristicSchema = mongoose.Schema({
   type: String
 })
 
-const ProjectSchema = mongoose.Schema({
-  name: String,
-  description: String,
-  provider_id: String,
-  characteristics: [ProjectCharacteristicSchema],
-  is_deleted: {
-    type: Boolean, 
-    default: false
+const ProjectSchema = mongoose.Schema(
+  {
+    name: String,
+    description: String,
+    provider_id: String,
+    characteristics: [ProjectCharacteristicSchema],
+    is_deleted: {
+      type: Boolean,
+      default: false
+    }
+  }, {
+    timestamps: true
   }
-}, {
-  timestamps: true
-});
+)
 
-module.exports = mongoose.model('Project', ProjectSchema);
+module.exports = mongoose.model('Project', ProjectSchema)
