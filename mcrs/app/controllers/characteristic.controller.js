@@ -3,8 +3,8 @@ const slugify = require('slugify')
 
 exports.create = (req, res) => {
   const characteristic = new Characteristic({
-    id: slugify(req.body.characteristic, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
-    characteristic: req.body.characteristic,
+    id: slugify(req.body.name, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
+    name: req.body.name,
     dimension: req.body.dimension,
     description: req.body.description,
     characteristic_values: req.body.characteristic_values

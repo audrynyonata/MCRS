@@ -67,7 +67,7 @@ const ProviderSchema = mongoose.Schema(
       type: [ProviderContactSchema],
       validate: ProviderContactValidator
     },
-    related_providers_id: {
+    related_providers: {
       type: [String],
       validate: {
         validator: v => !v.includes(""),

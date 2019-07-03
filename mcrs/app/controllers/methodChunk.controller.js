@@ -3,10 +3,10 @@ const slugify = require('slugify')
 
 exports.create = (req, res) => {
   const methodChunk = new MethodChunk({
-    id: slugify(req.body.method_chunk, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
-    method_chunk: req.body.method_chunk,
+    id: slugify(req.body.name, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
+    name: req.body.name,
     description: req.body.description,
-    provider_id: req.body.provider_id,
+    provider: req.body.provider,
     url: req.body.url,
     characteristics: req.body.characteristics
   })
@@ -50,8 +50,8 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   let doc = {}
-  if (req.body.provider_id) {
-    doc.provider_id = req.body.provider_id
+  if (req.body.provider) {
+    doc.provider = req.body.provider
   }
   if (req.body.url) {
     doc.url = req.body.url

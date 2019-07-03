@@ -1,18 +1,17 @@
 const Provider = require('../models/provider.model.js')
 const slugify = require('slugify')
-const bcrypt = require('bcrypt')
 
 exports.create = (req, res) => {
   const provider = new Provider({
     id: slugify(req.body.provider, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
     email: req.body.email,
     password: req.body.password,
-    provider: req.body.provider,
+    name: req.body.name,
     description: req.body.description,
     industry: req.body.industry,
     urls: req.body.urls,
     contacts: req.body.contacts,
-    related_providers_id: req.body.related_providers_id
+    related_providers: req.body.related_providers
   })
 
   provider.save()
@@ -67,8 +66,8 @@ exports.update = (req, res) => {
       if (req.body.contacts) {
         result.contacts = req.body.contacts
       }
-      if (req.body.related_providers_id) {
-        result.related_providers_id = req.body.related_providers_id
+      if (req.body.related_providers) {
+        result.related_providers = req.body.related_providers
       }
       if (req.body.password) {
         result.password = req.body.password

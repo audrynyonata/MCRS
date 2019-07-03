@@ -27,7 +27,7 @@ const CharacteristicSchema = mongoose.Schema(
       required: true,
       lowercase: true
     },
-    characteristic: {
+    name: {
       type: String,
       unique: true,
       required: true

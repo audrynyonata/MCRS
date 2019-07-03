@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const ProjectCharacteristicSchema = mongoose.Schema({
-  characteristic_id: {
+  characteristic: {
     type: String,
     required: true,
     lowercase: true
@@ -27,17 +27,17 @@ const ProjectSchema = mongoose.Schema(
       required: true,
       lowercase: true
     },
-    project: {
+    name: {
       type: String,
       required: true
     },
     description: String,
-    provider_id: {
+    provider: {
       type: String,
       required: true,
       lowercase: true
     },
-    project_id: {
+    project: {
       type: String,
       required: true,
       lowercase: true
