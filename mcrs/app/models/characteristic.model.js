@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const TYPES = require('../types.js')
-const DIMENSIONS = require('../types.js')
+const DIMENSIONS = require('../dimensions.js')
 
 const noEmptyArray = v => v.length && !v.includes("")
 

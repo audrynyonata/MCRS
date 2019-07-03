@@ -1,104 +1,108 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-import { Container, Card, Jumbotron, Button, CardDeck } from 'react-bootstrap'
-import MethodChunkList from '../components/MethodChunkList'
-import AddMethodChunk from '../components/AddMethodChunk'
-import { readMethodChunks } from '../actions'
+import { Container, Row, Col, Card, Form, FormControl } from 'react-bootstrap'
+import Title from '../components/Title'
+import { readCharacteristics } from '../actions'
 
-class Home extends Component {
+class Providers extends Component {
   state = {
-    methodChunks: []
+    characteristics: []
   }
 
   componentDidMount() {
-    this.props.readMethodChunks()
+    this.props.readCharacteristics()
   }
 
+  // handleChange = (e) => {
+  //   if (this.state.loading || this.state.errors) {
+  //     return ""
+  //   } else {
+  //     // Variable to hold the original version of the list
+  //     let currentList = []
+  //     // Variable to hold the filtered list before putting into state
+  //     let newList = [];
+
+  //     // If the search bar isn't empty
+  //     if (e.target.value !== "") {
+  //       // Assign the original list to currentList
+  //       currentList = this.props.providers;
+
+  //       // Use .filter() to determine which items should be displayed
+  //       // based on the search terms
+  //       newList = currentList.filter(item => {
+  //         // change current item to lowercase
+  //         const lc = item.name.toLowerCase();
+  //         const lcd = item.description.toLowerCase();
+  //         // change search term to lowercase
+  //         const filter = e.target.value.toLowerCase();
+  //         // check to see if the current list item includes the search term
+  //         // If it does, it will be added to newList. Using lowercase eliminates
+  //         // issues with capitalization in search terms and search content
+  //         return lc.includes(filter) || lcd.includes(filter);
+  //       });
+  //     } else {
+  //       // If the search bar is empty, set newList to original task list
+  //       newList = this.props.providers;
+  //     }
+  //     // Set the filtered state based on what our rules added to newList
+  //     this.setState({
+  //       filtered: newList
+  //     });
+  //   }
+  // }
+
   render() {
-    let id = 1
+    console.log(this.props)
     return (
-      <Container fluid>
-        <Jumbotron className="mt-3">
-          <h1>Welcome to MCRS!</h1>
-          <p>Method Chunk Registry System</p>
-          <p>
-            <a target="_blank" href="https://github.com/audrynyonata/mcrs" rel="noopener noreferrer">
-              <Button variant="primary">Learn more</Button>
-            </a>
-          </p>
-        </Jumbotron>
-        <CardDeck>
-          <Card>
-            <Card.Body>
-              <Card.Title>Providers</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of
-                the card's content.
-                </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-            </Card.Body>
-          </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>Method Chunks</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of
-                the card's content.
-                </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-            </Card.Body>
-          </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>Project Characteristics</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of
-                the card's content.
-                </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-            </Card.Body>
-          </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>Publish</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of
-                the card's content.
-                </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-            </Card.Body>
-          </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>Find</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of
-                the card's content.
-                </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-            </Card.Body>
-          </Card>
-        </CardDeck>
-        <div>
-          <AddMethodChunk />
-          <NavLink exact to="/ok">haha</NavLink>
-          <NavLink exact to={`/${id}`}>1</NavLink>
-          {this.state.loading
-            ? "Loading..."
-            : (
-              this.state.errors
-                ? "error"
-                : this.props.methodChunks ? <MethodChunkList methodChunks={this.props.methodChunks} /> : "empty"
-            )
-          }
-        </div>
-      </Container>
+      < Container fluid className="pt-3 pb-5" >
+        <Title xs={12} md={{ span: 8, offset: 2 }}>Characteristics</Title>
+        {/* <Row>
+          <Col xs={12} md={{ span: 8, offset: 2 }} className="mb-3">
+            <Form inline onSubmit={e => e.preventDefault()}>
+              Search: &nbsp; <FormControl onChange={this.handleChange} type="text" placeholder="Search" className="mr-sm-2" />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          </Col>
+        </Row> */}
+        <Row>
+          <Col md={{ span: 8, offset: 2 }}>
+            <table class="table-striped table-hover table">
+              <tr>
+                <th>
+                  Characteristic
+                </th>
+                <th>
+                  Dimension
+                </th>
+                <th>
+                  Values
+                </th>
+              </tr>
+              <tbody>
+                {this.state.loading ? "Loading..." : (
+                  this.state.errors ? "Error!" :
+                    this.props.characteristics ?
+                      this.props.characteristics.map((el, idx) =>
+                        <tr>
+                          <td>{el.name}</td>
+                          <td>{el.dimension}</td>
+                          <td>{el.characteristic_values[0].values}
+                          </td>
+                        </tr>) : "Empty"
+
+                )}
+              </tbody>
+
+
+            </table>
+          </Col>
+        </Row>
+      </Container >
     )
   }
 }
-const mapStateToProps = ({ methodChunkReducer }) => ({ ...methodChunkReducer })
+const mapStateToProps = ({ characteristicReducer }) => ({ ...characteristicReducer })
 
-const mapDispatchToProps = { readMethodChunks }
+const mapDispatchToProps = { readCharacteristics }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Providers)
