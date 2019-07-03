@@ -12,7 +12,10 @@ const CharacteristicSchema = mongoose.Schema({
   },
   characteristic_values: [CharacteristicValueSchema],
   domain: String,
-  is_deleted: {type: Boolean, default: false}
+  is_deleted: {
+    type: Boolean, 
+    default: false
+  }
 }, {
   timestamps: true
 });

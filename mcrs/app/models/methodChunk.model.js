@@ -12,7 +12,10 @@ const MethodChunkSchema = mongoose.Schema({
   provider_name: String,
   url: String,
   characteristics: [MethodChunkCharacteristicSchema],
-  is_deleted: Boolean
+  is_deleted: {
+    type: Boolean, 
+    default: false
+  }
 }, {
   timestamps: true
 });

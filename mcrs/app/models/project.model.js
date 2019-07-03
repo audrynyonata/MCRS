@@ -11,7 +11,10 @@ const ProjectSchema = mongoose.Schema({
   description: String,
   provider_id: String,
   characteristics: [ProjectCharacteristicSchema],
-  is_deleted: Boolean
+  is_deleted: {
+    type: Boolean, 
+    default: false
+  }
 }, {
   timestamps: true
 });
