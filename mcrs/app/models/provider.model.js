@@ -27,7 +27,10 @@ const ProviderContactSchema = mongoose.Schema({
   role: String,
   description: String,
   address: String,
-  email: String,
+  email: {
+    type: String,
+    lowercase: true
+  },
   phone: String
 })
 
@@ -36,7 +39,8 @@ const ProviderSchema = mongoose.Schema(
     id: {
       type: String,
       unique: true,
-      required: true
+      required: true,
+      lowercase: true
     },
     email: {
       type: String,
@@ -48,7 +52,7 @@ const ProviderSchema = mongoose.Schema(
       type: String,
       required: true
     },
-    name: {
+    provider: {
       type: String,
       required: true
     },
@@ -63,12 +67,18 @@ const ProviderSchema = mongoose.Schema(
       type: [ProviderContactSchema],
       validate: ProviderContactValidator
     },
-    related_providers: {
+    related_providers_id: {
       type: [String],
       validate: {
         validator: v => !v.includes(""),
         message: "Array element must be valid."
-      }
+      },
+      lowercase: true
+    },
+    is_deleted: {
+      type: Boolean,
+      default: false,
+      required: true
     }
   },
   {

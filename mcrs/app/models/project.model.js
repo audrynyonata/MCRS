@@ -1,20 +1,52 @@
 const mongoose = require('mongoose')
 
 const ProjectCharacteristicSchema = mongoose.Schema({
-  characteristic: String,
-  optimal_sense: String,
-  type: String
+  characteristic_id: {
+    type: String,
+    required: true,
+    lowercase: true
+  },
+  optimal_sense: {
+    type: String,
+    required: true,
+    lowercase: true
+  },
+  type: {
+    type: String,
+    enum: ['nominal', 'ordinal', 'numerical'],
+    required: true,
+    lowercase: true
+  }
 })
 
 const ProjectSchema = mongoose.Schema(
   {
-    name: String,
+    id: {
+      type: String,
+      unique: true,
+      required: true,
+      lowercase: true
+    },
+    project: {
+      type: String,
+      required: true
+    },
     description: String,
-    provider_id: String,
+    provider_id: {
+      type: String,
+      required: true,
+      lowercase: true
+    },
+    project_id: {
+      type: String,
+      required: true,
+      lowercase: true
+    },
     characteristics: [ProjectCharacteristicSchema],
     is_deleted: {
       type: Boolean,
-      default: false
+      default: false,
+      required: true
     }
   }, {
     timestamps: true

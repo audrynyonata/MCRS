@@ -4,15 +4,15 @@ const bcrypt = require('bcrypt')
 
 exports.create = (req, res) => {
   const provider = new Provider({
-    id: slugify(req.body.name, { replacemet: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
+    id: slugify(req.body.provider, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
     email: req.body.email,
     password: req.body.password,
-    name: req.body.name,
+    provider: req.body.provider,
     description: req.body.description,
     industry: req.body.industry,
     urls: req.body.urls,
     contacts: req.body.contacts,
-    related_providers: req.body.related_providers
+    related_providers_id: req.body.related_providers_id
   })
 
   provider.save()
@@ -67,8 +67,8 @@ exports.update = (req, res) => {
       if (req.body.contacts) {
         result.contacts = req.body.contacts
       }
-      if (req.body.related_providers) {
-        result.related_providers = req.body.related_providers
+      if (req.body.related_providers_id) {
+        result.related_providers_id = req.body.related_providers_id
       }
       if (req.body.password) {
         result.password = req.body.password
@@ -91,7 +91,25 @@ exports.update = (req, res) => {
     })
 }
 
-exports.delete = (req, res) => {
+exports.softDelete = (req, res) => {
+  Provider.findOneAndUpdate(req.params.id.toLowerCase(), {
+    is_deleted: true
+  })
+    .then(result => {
+      if (!result) {
+        return res.status(404).send({
+          message: `Provider ${req.params.id} not found.`
+        })
+      }
+      res.send(result)
+    }).catch(err => {
+      res.status(500).send({
+        message: err.message || "Could not perform delete."
+      })
+    })
+}
+
+exports.hardDelete = (req, res) => {
   Provider.findOneAndRemove(req.params.id.toLowerCase())
     .then(result => {
       if (!result) {

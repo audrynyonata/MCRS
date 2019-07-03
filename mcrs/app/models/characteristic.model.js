@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const noEmptyArray = v => v.length && !v.includes("")
 
@@ -8,7 +8,8 @@ const CharacteristicValueSchema = mongoose.Schema({
     validate: {
       validator: noEmptyArray,
       message: "Array must have at least 1 element"
-    }
+    },
+    lowercase: true
   },
   type: {
     type: String,
@@ -23,7 +24,8 @@ const CharacteristicSchema = mongoose.Schema(
     id: {
       type: String,
       unique: true,
-      required: true
+      required: true,
+      lowercase: true
     },
     characteristic: {
       type: String,
@@ -51,6 +53,6 @@ const CharacteristicSchema = mongoose.Schema(
   }, {
     timestamps: true
   }
-);
+)
 
-module.exports = mongoose.model('Characteristic', CharacteristicSchema);
+module.exports = mongoose.model('Characteristic', CharacteristicSchema)

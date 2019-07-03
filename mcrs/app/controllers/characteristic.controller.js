@@ -3,7 +3,7 @@ const slugify = require('slugify')
 
 exports.create = (req, res) => {
   const characteristic = new Characteristic({
-    id: slugify(req.body.characteristic, { replacemet: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
+    id: slugify(req.body.characteristic, { replacement: '-', remove: /[*+~.()'"!:@]/g, lower: true }),
     characteristic: req.body.characteristic,
     dimension: req.body.dimension,
     description: req.body.description,
@@ -73,7 +73,25 @@ exports.update = (req, res) => {
     })
 }
 
-exports.delete = (req, res) => {
+exports.softDelete = (req, res) => {
+  Characteristic.findOneAndUpdate(req.params.id.toLowerCase(), {
+    is_deleted: true
+  })
+    .then(result => {
+      if (!result) {
+        return res.status(404).send({
+          message: `Characteristic ${req.params.id} not found.`
+        })
+      }
+      res.send(result)
+    }).catch(err => {
+      res.status(500).send({
+        message: err.message || "Could not perform delete."
+      })
+    })
+}
+
+exports.hardDelete = (req, res) => {
   Characteristic.findOneAndRemove(req.params.id.toLowerCase())
     .then(result => {
       if (!result) {

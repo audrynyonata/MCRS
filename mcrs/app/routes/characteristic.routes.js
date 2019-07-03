@@ -10,6 +10,8 @@ router.get('/:id', characteristics.findOne)
 
 router.put('/:id', characteristics.update)
 
-router.delete('/:id', characteristics.delete)
+router.delete('/:id', characteristics.softDelete)
+
+router.delete('/:id/hard', characteristics.hardDelete)
 
 module.exports = router

@@ -2,10 +2,14 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const PORT = 4000
+
 const methodChunkRouter = require('./app/routes/methodChunk.routes.js')
 const characteristicRouter = require('./app/routes/characteristic.routes.js')
 const providerRouter = require('./app/routes/provider.routes.js')
+const projectRouter = require('./app/routes/project.routes.js')
+
 const provider = require('./app/controllers/provider.controller.js')
+const methodChunk = require('./app/controllers/methodChunk.controller.js')
 const INDUSTRIES = require('./app/industries.js')
 
 // create express app
@@ -45,16 +49,27 @@ app.get('/industries', (req, res) => {
   res.json(INDUSTRIES)
 })
 
+// TO-DO: AUTH API
 app.post('/login', (req, res) => {
   res.json({ "message": "Welcome to MCRS." })
 })
 
-app.post('/register', (req, res) => { provider.create(req, res) })
+app.post('/register', (req, res) => { methodChunk.create(req, res) })
+
+// TO-DO: FIND API
+app.post('/find', (req, res) => {
+  res.json({ "message": "Welcome to MCRS." })
+})
+
+app.post('/publish', (req, res) => {
+  res.json({ "message": "Welcome to MCRS." })
+})
 
 // Require routes
 app.use('/method-chunks', methodChunkRouter)
 app.use('/characteristics', characteristicRouter)
 app.use('/providers', providerRouter)
+app.use('/projects', projectRouter)
 
 // listen for requests
 app.listen(PORT, () => {
