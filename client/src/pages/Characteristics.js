@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Card, Form, FormControl } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import Title from '../components/Title'
 import { readCharacteristics } from '../actions'
 
@@ -66,7 +66,7 @@ class Providers extends Component {
         </Row> */}
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
-            <table class="table-striped table-hover table">
+            <table class="table-hover table">
               <tr>
                 <th>
                   Characteristic

@@ -1,22 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
 import { Container, Card, Jumbotron, Button, CardDeck } from 'react-bootstrap'
-import MethodChunkList from '../components/MethodChunkList'
-import AddMethodChunk from '../components/AddMethodChunk'
-import { readMethodChunks } from '../actions'
 
 class Home extends Component {
-  state = {
-    methodChunks: []
-  }
 
-  componentDidMount() {
-    this.props.readMethodChunks()
-  }
 
   render() {
-    let id = 1;
     return (
       <Container fluid className="pt-3">
         <Jumbotron>
@@ -36,7 +26,7 @@ class Home extends Component {
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
                 </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href={`/providers`}>Go somewhere</Card.Link>
             </Card.Body>
           </Card>
           <Card>
@@ -46,7 +36,7 @@ class Home extends Component {
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
                 </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href={`/method-chunks`}>Go somewhere</Card.Link>
             </Card.Body>
           </Card>
           <Card>
@@ -56,9 +46,12 @@ class Home extends Component {
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
                 </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href={`/characteristics`}>Go somewhere</Card.Link>
             </Card.Body>
           </Card>
+        </CardDeck>
+        <br />
+        <CardDeck>
           <Card>
             <Card.Body>
               <Card.Title>Publish</Card.Title>
@@ -66,7 +59,7 @@ class Home extends Component {
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
                 </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href={`/publish`}>Go somewhere</Card.Link>
             </Card.Body>
           </Card>
           <Card>
@@ -76,29 +69,17 @@ class Home extends Component {
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
                 </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href={`/find`}>Go somewhere</Card.Link>
             </Card.Body>
           </Card>
+          <Card style={{ border: 'none' }}>
+          </Card>
         </CardDeck>
-        <div>
-          <AddMethodChunk />
-          <NavLink exact to="/ok">haha</NavLink>
-          <NavLink exact to={`/${id}`}>1</NavLink>
-          {this.state.loading
-            ? "Loading..."
-            : (
-              this.state.errors
-                ? "error"
-                : this.props.methodChunks ? <MethodChunkList methodChunks={this.props.methodChunks} /> : "empty"
-            )
-          }
-        </div>
-      </Container>
+
+      </Container >
     )
   }
 }
-const mapStateToProps = ({ methodChunkReducer }) => ({ ...methodChunkReducer })
 
-const mapDispatchToProps = { readMethodChunks }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect()(Home)
