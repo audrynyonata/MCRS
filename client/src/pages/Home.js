@@ -8,7 +8,7 @@ class Home extends Component {
 
   render() {
     return (
-      <Container fluid className="pt-3">
+      <Container fluid className="pt-3 pb-5">
         <Jumbotron>
           <h1>Welcome to MCRS!</h1>
           <p>Method Chunk Registry System</p>

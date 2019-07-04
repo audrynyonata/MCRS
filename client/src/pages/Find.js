@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { Container, Card, Row, Col } from 'react-bootstrap'
+import { Container, Card, Row, Col, Form, Button } from 'react-bootstrap'
 import MethodChunkList from '../components/MethodChunkList'
 import AddMethodChunk from '../components/AddMethodChunk'
 import { readMethodChunks } from '../actions'
@@ -79,22 +79,56 @@ class Find extends Component {
           </Col>
           <Col xs={12} sm={6} lg={7} className="column-right">
             <h5 className="pt-3">Find Method Chunks</h5>
-            <div>
-              <AddMethodChunk />
-              <NavLink exact to="/ok">haha</NavLink>
-              <NavLink exact to={`/${id}`}>1</NavLink>
-              {this.state.loading
-                ? "Loading..."
-                : (
-                  this.state.errors
-                    ? "error"
-                    : this.props.methodChunks ? <MethodChunkList methodChunks={this.props.methodChunks} /> : "empty"
-                )
-              }
-            </div>
+            <h6 className="pt-3">Define project</h6>
+            <Form>
+              <Form.Group controlId="formName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="name" placeholder="Enter name" />
+              </Form.Group>
+
+              <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" rows="5" placeholder="Enter project description..." />
+              </Form.Group>
+
+              <Form.Row>
+                <Form.Group as={Col} controlId="formChar1">
+                  <Form.Label>Characteristic Name</Form.Label>
+                  <Form.Control placeholder="Characteristic #1" />
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formOptimal1">
+                  <Form.Label>Type</Form.Label>
+                  <Form.Control as="select">
+                    <option>Choose...</option>
+                    <option>Ordinal</option>
+                    <option>Nominal</option>
+                    <option>Numerical</option>
+                  </Form.Control>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formOptimal1">
+                  <Form.Label>Optimal Sense</Form.Label>
+                  <Form.Control as="select">
+                    <option>Choose...</option>
+                    <option>maximum</option>
+                    <option>minimum</option>
+                  </Form.Control>
+                </Form.Group>
+
+              </Form.Row>
+
+              <Form.Group id="formGridCheckbox">
+                <Form.Check type="checkbox" label="Check me out" />
+              </Form.Group>
+
+              <Button variant="primary" type="submit">
+                Submit
+  </Button>
+            </Form>
           </Col>
         </Row>
-      </Container>
+      </Container >
     )
   }
 }
