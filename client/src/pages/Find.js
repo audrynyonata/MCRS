@@ -124,7 +124,7 @@ class Find extends Component {
 
               <Button variant="primary" type="submit">
                 Submit
-  </Button>
+              </Button>
             </Form>
           </Col>
         </Row>
