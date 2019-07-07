@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
-const INDUSTRIES = require('../industries.js')
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const INDUSTRIES = require("../industries.js");
 
 const ProviderUrlSchema = mongoose.Schema({
   name: String,
@@ -9,18 +9,28 @@ const ProviderUrlSchema = mongoose.Schema({
     required: true,
     lowercase: true
   }
-})
+});
 
 const ProviderContactValidator = [
   {
-    validator: v => !v.filter(e => !e.name && !e.description && !e.role && !e.phone && !e.email && !e.address).length,
+    validator: v =>
+      !v.filter(
+        e =>
+          !e.name &&
+          !e.description &&
+          !e.role &&
+          !e.phone &&
+          !e.email &&
+          !e.address
+      ).length,
     message: "Contact object can not be all empty."
   },
   {
     validator: v => !v.filter(e => !e.phone && !e.email && !e.address).length,
-    message: "For each contact object at least one of address/email/phone must be filled."
+    message:
+      "For each contact object at least one of address/email/phone must be filled."
   }
-]
+];
 
 const ProviderContactSchema = mongoose.Schema({
   name: String,
@@ -32,7 +42,7 @@ const ProviderContactSchema = mongoose.Schema({
     lowercase: true
   },
   phone: String
-})
+});
 
 const ProviderSchema = mongoose.Schema(
   {
@@ -83,20 +93,26 @@ const ProviderSchema = mongoose.Schema(
   {
     timestamps: true
   }
-)
+);
 
-ProviderSchema.pre('save', function (next) {
-  if (this.password && this.isModified('password')) {
-    this.password = bcrypt.hashSync(this.password, 10)
+ProviderSchema.pre("save", function(next) {
+  if (this.password && this.isModified("password")) {
+    this.password = bcrypt.hashSync(this.password, 10);
   }
-  next()
-})
+  next();
+});
 
-ProviderSchema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-    if (err) return cb(err)
-    cb(null, isMatch)
-  })
-}
+ProviderSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
 
-module.exports = mongoose.model('Provider', ProviderSchema)
+ProviderSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
+module.exports = mongoose.model("Provider", ProviderSchema);

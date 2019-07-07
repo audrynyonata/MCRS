@@ -1,10 +1,14 @@
 .provider-card:hover {
-  cursor:pointer;
+  cursor: pointer;
   text-decoration: unset;
-  background-color: #f7f7f7; 
+  background-color: #f7f7f7;
 }
 
-.provider-card .description {
+.provider-card .card-body {
   line-height: 1.5rem;
   min-height: 4.5rem;
+}
+
+.button-view-mode:focus {
+  box-shadow: none !important;
 }
