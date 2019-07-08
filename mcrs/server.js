@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 const PORT = 4000;
 
 const methodChunkRouter = require("./app/routes/methodChunk.routes.js");
@@ -17,18 +18,22 @@ const TYPES = require("./app/types.js");
 
 // create express app
 const app = express();
+
 app.use(cors());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// parse requests of content-type - application/json
 app.use(bodyParser.json());
 
+// parse cookies in request
 var cookieParser = require("cookie-parser");
+
 app.use(cookieParser());
 
+// Configuring jwt auth
 const jwt = require("./config/jwt.config.js");
+
 app.use(jwt());
 
 app.use(function(err, req, res, next) {
@@ -37,6 +42,35 @@ app.use(function(err, req, res, next) {
     return;
   }
   next();
+});
+
+// Configuring API documentation
+const swaggerJSDoc = require("swagger-jsdoc");
+
+const swaggerDefinition = {
+  info: {
+    title: "MCRS",
+    version: "0.0.0",
+    description: "Method Chunk Registry System"
+  },
+  host: "localhost:4000",
+  basePath: "/"
+};
+
+const options = {
+  swaggerDefinition,
+  apis: ["server.js", "./app/routes/*.js"]
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.get("/swagger.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
+
+app.get("/docs", (req, res) => {
+  res.sendFile("index.html", { root: path.join(__dirname, "public") });
 });
 
 // Configuring the database
@@ -65,29 +99,60 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to MCRS." });
 });
 
-// helper
-app.get("/dimensions", (req, res) => {
-  res.json(DIMENSIONS);
-});
-
-app.get("/industries", (req, res) => {
-  res.json(INDUSTRIES);
-});
-
-app.get("/types", (req, res) => {
-  res.json(TYPES);
-});
-
 app.get("/login", (req, res) => {
-  provider.login(req, res);
+  res.sendFile("login.html", { root: path.join(__dirname, "public") });
+});
+
+app.post("/authenticate", (req, res) => {
+  provider.authenticate(req, res);
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile("register.html", { root: path.join(__dirname, "public") });
 });
 
 app.post("/register", (req, res) => {
   provider.create(req, res);
 });
 
-app.post("/authenticate", (req, res) => {
-  provider.authenticate(req, res);
+app.get("/dimensions", (req, res) => {
+  res.json(DIMENSIONS);
+});
+
+/**
+ * @swagger
+ * /list:
+ *   get:
+ *     summary: List all the animals
+ *     description: Returns a list of all the animals, optionally sorted
+ *     tags:
+ *       - animals
+ *     parameters:
+ *       - in: query
+ *         name: sort
+ *         type: string
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *     responses:
+ *       200:
+ *         description: List of animals
+ *         schema:
+ *           type: object
+ *           properties:
+ *             animals:
+ *               type: array
+ *               description: all the animals
+ *               items:
+ *                 type: string
+ */
+app.get("/industries", (req, res) => {
+  res.json(INDUSTRIES);
+});
+
+app.get("/types", (req, res) => {
+  res.json(TYPES);
 });
 
 // TO-DO: FIND API

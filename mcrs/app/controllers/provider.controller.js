@@ -43,7 +43,7 @@ exports.create = (req, res) => {
     password: req.body.password,
     name: req.body.name,
     description: req.body.description,
-    industry: req.body.industry,
+    industry: req.body.industry || null,
     urls: req.body.urls,
     contacts: req.body.contacts,
     related_providers: req.body.related_providers
@@ -52,7 +52,9 @@ exports.create = (req, res) => {
   provider
     .save()
     .then(result => {
-      res.send(result);
+      const token = jwt.sign({ sub: provider.email }, config.secret);
+      res.cookie("token", token);
+      res.send({ result, token });
     })
     .catch(err => {
       console.log("Create provider", err);

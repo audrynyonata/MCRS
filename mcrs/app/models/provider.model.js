@@ -56,7 +56,14 @@ const ProviderSchema = mongoose.Schema(
       type: String,
       unique: true,
       required: true,
-      lowercase: true
+      lowercase: true,
+      validate: {
+        validator: email =>
+          /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+            email
+          ),
+        message: "Email must be valid."
+      }
     },
     password: {
       type: String,
