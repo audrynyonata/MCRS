@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
-const TYPES = require('../types.js')
-const DIMENSIONS = require('../dimensions.js')
+const mongoose = require("mongoose");
+const TYPES = require("../types.js");
+const DIMENSIONS = require("../dimensions.js");
 
-const noEmptyArray = v => v.length && !v.includes("")
+const noEmptyArray = v => v.length && !v.includes("");
 
 const CharacteristicValueSchema = mongoose.Schema({
   values: {
@@ -19,7 +19,7 @@ const CharacteristicValueSchema = mongoose.Schema({
     lowercase: true,
     required: true
   }
-})
+});
 
 const CharacteristicSchema = mongoose.Schema(
   {
@@ -47,15 +47,11 @@ const CharacteristicSchema = mongoose.Schema(
       required: true,
       lowercase: true
     },
-    description: String,
-    is_deleted: {
-      type: Boolean,
-      default: false,
-      required: true
-    }
-  }, {
+    description: String
+  },
+  {
     timestamps: true
   }
-)
+);
 
-module.exports = mongoose.model('Characteristic', CharacteristicSchema)
+module.exports = mongoose.model("Characteristic", CharacteristicSchema);

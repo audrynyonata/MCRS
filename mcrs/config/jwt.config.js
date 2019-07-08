@@ -23,10 +23,7 @@ function jwt() {
       // public routes that don't require authentication
       "/",
       "/authenticate",
-      "/login",
       "/register",
-      "/docs",
-      "/swagger.json",
       { url: "/dimensions", methods: ["GET"] },
       { url: "/industries", methods: ["GET"] },
       { url: "/types", methods: ["GET"] },

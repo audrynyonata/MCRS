@@ -32,6 +32,38 @@ exports.authenticate = (req, res) => {
     });
 };
 
+exports.reqister = (req, res) => {
+  const provider = new Provider({
+    id: slugify(req.body.name, {
+      replacement: "-",
+      remove: /[*+~.()'"!:@]/g,
+      lower: true
+    }),
+    email: req.body.email,
+    password: req.body.password,
+    name: req.body.name,
+    description: req.body.description,
+    industry: req.body.industry,
+    urls: req.body.urls,
+    contacts: req.body.contacts,
+    related_providers: req.body.related_providers
+  });
+
+  provider
+    .save()
+    .then(result => {
+      const token = jwt.sign({ sub: provider.email }, config.secret);
+      res.cookie("token", token);
+      res.send({ token });
+    })
+    .catch(err => {
+      console.log("Create provider", err);
+      res.status(400).send({
+        message: err.message || "Some error occurred while saving."
+      });
+    });
+};
+
 exports.create = (req, res) => {
   const provider = new Provider({
     id: slugify(req.body.name, {
@@ -43,7 +75,7 @@ exports.create = (req, res) => {
     password: req.body.password,
     name: req.body.name,
     description: req.body.description,
-    industry: req.body.industry || null,
+    industry: req.body.industry,
     urls: req.body.urls,
     contacts: req.body.contacts,
     related_providers: req.body.related_providers
@@ -52,9 +84,7 @@ exports.create = (req, res) => {
   provider
     .save()
     .then(result => {
-      const token = jwt.sign({ sub: provider.email }, config.secret);
-      res.cookie("token", token);
-      res.send({ result, token });
+      res.send(result);
     })
     .catch(err => {
       console.log("Create provider", err);
@@ -135,34 +165,15 @@ exports.update = (req, res) => {
     });
 };
 
-exports.softDelete = (req, res) => {
-  Provider.findOneAndUpdate(req.params.id.toLowerCase(), {
-    is_deleted: true
-  })
+exports.delete = (req, res) => {
+  Provider.findOneAndRemove({ id: req.params.id.toLowerCase() })
     .then(result => {
       if (!result) {
         return res.status(404).send({
           message: `Provider ${req.params.id} not found.`
         });
       }
-      res.send(result);
-    })
-    .catch(err => {
-      console.log("Soft delete provider", err);
-      res.status(400).send({
-        message: err.message || "Could not perform delete."
-      });
-    });
-};
-
-exports.hardDelete = (req, res) => {
-  Provider.findOneAndRemove(req.params.id.toLowerCase())
-    .then(result => {
-      if (!result) {
-        return res.status(404).send({
-          message: `Provider ${req.params.id} not found.`
-        });
-      }
+      console.log("Remove", result);
       res.send({ message: "Deleted successfully." });
     })
     .catch(err => {

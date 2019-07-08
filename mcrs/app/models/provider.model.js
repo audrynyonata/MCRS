@@ -90,11 +90,6 @@ const ProviderSchema = mongoose.Schema(
         validator: v => !v.includes(""),
         message: "Array element must be valid."
       }
-    },
-    is_deleted: {
-      type: Boolean,
-      default: false,
-      required: true
     }
   },
   {

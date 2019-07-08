@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const TYPES = require('../types.js')
+const mongoose = require("mongoose");
+const TYPES = require("../types.js");
 
 const MethodChunkCharacteristicSchema = mongoose.Schema({
   name: {
@@ -17,7 +17,7 @@ const MethodChunkCharacteristicSchema = mongoose.Schema({
     required: true,
     lowercase: true
   }
-})
+});
 
 const MethodChunkSchema = mongoose.Schema(
   {
@@ -42,15 +42,11 @@ const MethodChunkSchema = mongoose.Schema(
       required: true,
       lowercase: true
     },
-    characteristics: [MethodChunkCharacteristicSchema],
-    is_deleted: {
-      type: Boolean,
-      default: false,
-      required: true
-    }
-  }, {
+    characteristics: [MethodChunkCharacteristicSchema]
+  },
+  {
     timestamps: true
   }
-)
+);
 
-module.exports = mongoose.model('MethodChunk', MethodChunkSchema)
+module.exports = mongoose.model("MethodChunk", MethodChunkSchema);

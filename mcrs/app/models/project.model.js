@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const TYPES = require('../types.js')
+const mongoose = require("mongoose");
+const TYPES = require("../types.js");
 
 const ProjectCharacteristicSchema = mongoose.Schema({
   name: {
@@ -17,7 +17,7 @@ const ProjectCharacteristicSchema = mongoose.Schema({
     required: true,
     lowercase: true
   }
-})
+});
 
 const ProjectSchema = mongoose.Schema(
   {
@@ -42,15 +42,11 @@ const ProjectSchema = mongoose.Schema(
       required: true,
       lowercase: true
     },
-    characteristics: [ProjectCharacteristicSchema],
-    is_deleted: {
-      type: Boolean,
-      default: false,
-      required: true
-    }
-  }, {
+    characteristics: [ProjectCharacteristicSchema]
+  },
+  {
     timestamps: true
   }
-)
+);
 
-module.exports = mongoose.model('Project', ProjectSchema)
+module.exports = mongoose.model("Project", ProjectSchema);
