@@ -75,12 +75,13 @@ app.get("/swagger.json", (req, res) => {
   res.send(swaggerSpec);
 });
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-app.get("/seed/characteristics", (req, res) => {
-  var a = require("./seed.js");
-  res.send(a);
-});
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: "section.models {display:none;}"
+  })
+);
 
 // Configuring jwt auth
 const jwt = require("./config/jwt.config.js");

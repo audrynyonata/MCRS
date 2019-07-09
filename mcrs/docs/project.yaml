@@ -113,7 +113,6 @@ components:
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
         characteristics: [
           {
-            _id: "5d224d482aba2723501a0cca",
             name: "Management Commitment",
             optimal_sense: "maximum",
             type: "ordinal"

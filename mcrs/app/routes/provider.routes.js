@@ -71,7 +71,7 @@ router.get("/", providers.findAll);
  *               $ref: '#/components/schemas/Provider'
  *             examples:
  *               default:
- *                 $ref: '#/components/examples/Provider  Example'
+ *                 $ref: '#/components/examples/ProviderExample'
  *     security:
  *       - bearerAuth: []
  */

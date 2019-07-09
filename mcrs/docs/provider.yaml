@@ -195,6 +195,7 @@ components:
       value:
         email: "company@a.com"
         name: "Company A (Ltd.)"
+        password: "password"
         description: "Company A (Ltd.) has been working in apparel and fashion since 1899."
         industry: "Apparel and Fashion"
         urls: [
