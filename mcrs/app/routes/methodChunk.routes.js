@@ -55,7 +55,7 @@ router.get("/", methodChunks.findAll);
  * @swagger
  * /method-chunks:
  *   post:
- *     description: Create a method chunk and add to the list
+ *     description: Create a method chunk and add to the list. For bulk insert, see `bulk` in examples.
  *     tags:
  *       - Method Chunks
  *     requestBody:
@@ -68,6 +68,21 @@ router.get("/", methodChunks.findAll);
  *           examples:
  *             default:
  *               $ref: '#/components/examples/MethodChunkInputExample'
+ *             bulk:
+ *               value:
+ *                 - name: "Kanban Board"
+ *                   provider: "Company Tobacco"
+ *                   url: "http://localhost:4000/method-chunks/kanban-board"
+ *                 - name: "Sprint retrospective"
+ *                   provider: "Company C"
+ *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
+ *                   characteristics: [
+ *                     {
+ *                       name: "delivery strategy",
+ *                       value: "incremental",
+ *                       type: "nominal"
+ *                     }
+ *                   ]
  *     responses:
  *       200:
  *         description: Add a method chunk
@@ -75,6 +90,9 @@ router.get("/", methodChunks.findAll);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/MethodChunk'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/MethodChunkExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -102,6 +120,9 @@ router.post("/", methodChunks.create);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/MethodChunk'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/MethodChunkExample'
  */
 router.get("/:id", methodChunks.findOne);
 
@@ -149,6 +170,9 @@ router.get("/:id", methodChunks.findOne);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/MethodChunk'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/MethodChunkExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -178,7 +202,7 @@ router.put("/:id", methodChunks.update);
  *               type: object
  *               properties:
  *                 message:
- *                   type: String
+ *                   type: string
  *                   example: "Deleted successfully."
  *     security:
  *       - bearerAuth: []

@@ -32,7 +32,7 @@ exports.authenticate = (req, res) => {
     });
 };
 
-exports.reqister = (req, res) => {
+exports.register = (req, res) => {
   const provider = new Provider({
     id: slugify(req.body.name, {
       replacement: "-",
@@ -65,33 +65,52 @@ exports.reqister = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const provider = new Provider({
-    id: slugify(req.body.name, {
-      replacement: "-",
-      remove: /[*+~.()'"!:@]/g,
-      lower: true
-    }),
-    email: req.body.email,
-    password: req.body.password,
-    name: req.body.name,
-    description: req.body.description,
-    industry: req.body.industry,
-    urls: req.body.urls,
-    contacts: req.body.contacts,
-    related_providers: req.body.related_providers
-  });
-
-  provider
-    .save()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      console.log("Create provider", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while saving."
+  if (req.body.length) {
+    req.body.forEach(
+      e =>
+        (e.id = slugify(e.name, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        }))
+    );
+    Provider.insertMany(req.body)
+      .then(result => res.send(result))
+      .catch(err => {
+        console.log("Create bulk provider", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
       });
+  } else {
+    const provider = new Provider({
+      id: slugify(req.body.name, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      }),
+      email: req.body.email,
+      password: req.body.password,
+      name: req.body.name,
+      description: req.body.description,
+      industry: req.body.industry,
+      urls: req.body.urls,
+      contacts: req.body.contacts,
+      related_providers: req.body.related_providers
     });
+
+    provider
+      .save()
+      .then(result => {
+        res.send(result);
+      })
+      .catch(err => {
+        console.log("Create provider", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
+      });
+  }
 };
 
 exports.findAll = (req, res) => {

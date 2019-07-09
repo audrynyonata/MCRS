@@ -48,7 +48,7 @@ router.get("/", projects.findAll);
  * @swagger
  * /projects:
  *   post:
- *     description: Create a project and add to the list
+ *     description: Create a project and add to the list. For bulk insert, see `bulk` in examples.
  *     tags:
  *       - Projects
  *     requestBody:
@@ -61,6 +61,17 @@ router.get("/", projects.findAll);
  *           examples:
  *             default:
  *               $ref: '#/components/examples/ProjectInputExample'
+ *             bulk:
+ *               value:
+ *                 - provider: "Company Tobacco"
+ *                   name: "First Project"
+ *                   characteristics: [
+ *                     {
+ *                       name: "Stakeholder number",
+ *                       optimal_sense: "maximum",
+ *                       type: "numerical"
+ *                     }
+ *                   ]
  *     responses:
  *       200:
  *         description: Add a project
@@ -68,6 +79,9 @@ router.get("/", projects.findAll);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Project'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/ProjectExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -102,6 +116,9 @@ router.post("/", projects.create);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Project'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/ProjectExample'
  */
 router.get("/:provider_id/:project_id", projects.findOne);
 
@@ -151,6 +168,9 @@ router.get("/:provider_id/:project_id", projects.findOne);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Project'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/ProjectExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -187,7 +207,7 @@ router.put("/:provider_id/:project_id", projects.update);
  *               type: object
  *               properties:
  *                 message:
- *                   type: String
+ *                   type: string
  *                   example: "Deleted successfully."
  *     security:
  *       - bearerAuth: []

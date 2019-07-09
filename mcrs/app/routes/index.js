@@ -23,7 +23,7 @@ const router = express.Router();
  *               type: object
  *               properties:
  *                 message:
- *                   type: String
+ *                   type: string
  *                   example: "Welcome to MCRS."
  *
  */
@@ -67,7 +67,7 @@ router.get("/", (req, res) => {
  *               type: object
  *               properties:
  *                 token:
- *                   type: String
+ *                   type: string
  *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb21wYW55QGEuY29tIiwiaWF0IjoxNTYyNjAyNDg3fQ"
  *
  */
@@ -101,7 +101,7 @@ router.post("/authenticate", (req, res) => {
  *               type: object
  *               properties:
  *                 token:
- *                   type: String
+ *                   type: string
  *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb21wYW55QGEuY29tIiwiaWF0IjoxNTYyNjAyNDg3fQ"
  *
  */

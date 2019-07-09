@@ -2,45 +2,81 @@ const Project = require("../models/project.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
-  const project = new Project({
-    id:
-      slugify(`${req.body.provider}`, {
+  if (req.body.length) {
+    req.body.forEach(e => {
+      e.id =
+        slugify(`${e.provider}`, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        }) +
+        "/" +
+        slugify(`${e.name}`, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        });
+
+      e.project = slugify(`${e.name}`, {
         replacement: "-",
         remove: /[*+~.()'"!:@]/g,
         lower: true
-      }) +
-      "/" +
-      slugify(`${req.body.name}`, {
+      });
+      e.provider = slugify(`${e.provider}`, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      });
+    });
+    Project.insertMany(req.body)
+      .then(result => res.send(result))
+      .catch(err => {
+        console.log("Create bulk project", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
+      });
+  } else {
+    const project = new Project({
+      id:
+        slugify(`${req.body.provider}`, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        }) +
+        "/" +
+        slugify(`${req.body.name}`, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        }),
+      name: req.body.name,
+      project: slugify(`${req.body.name}`, {
         replacement: "-",
         remove: /[*+~.()'"!:@]/g,
         lower: true
       }),
-    name: req.body.name,
-    project: slugify(`${req.body.name}`, {
-      replacement: "-",
-      remove: /[*+~.()'"!:@]/g,
-      lower: true
-    }),
-    provider: slugify(`${req.body.provider}`, {
-      replacement: "-",
-      remove: /[*+~.()'"!:@]/g,
-      lower: true
-    }),
-    description: req.body.description,
-    characteristics: req.body.characteristics
-  });
-
-  project
-    .save()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      console.log("Create project", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while saving."
-      });
+      provider: slugify(`${req.body.provider}`, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      }),
+      description: req.body.description,
+      characteristics: req.body.characteristics
     });
+
+    project
+      .save()
+      .then(result => {
+        res.send(result);
+      })
+      .catch(err => {
+        console.log("Create project", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
+      });
+  }
 };
 
 exports.findAll = (req, res) => {

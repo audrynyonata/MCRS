@@ -45,7 +45,7 @@ router.get("/", characteristics.findAll);
  * @swagger
  * /characteristics:
  *   post:
- *     description: Create a characteristic and add to the list
+ *     description: Create a characteristic and add to the list. For bulk insert, see `bulk` in examples.
  *     tags:
  *       - Characteristics
  *     requestBody:
@@ -58,6 +58,16 @@ router.get("/", characteristics.findAll);
  *           examples:
  *             default:
  *               $ref: '#/components/examples/CharacteristicInputExample'
+ *             bulk:
+ *               value:
+ *                  - name: "Management commitment"
+ *                    values: ["low", "medium", "high"]
+ *                    type: "ordinal"
+ *                    description: "The rate of commitment of management."
+ *                  - name: "Stakeholder number"
+ *                    values: ["1", "10", "50"]
+ *                    type: "numerical"
+ *                    description: "The number of stakeholder"
  *     responses:
  *       200:
  *         description: Add a characteristic
@@ -65,6 +75,9 @@ router.get("/", characteristics.findAll);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Characteristic'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/CharacteristicExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -92,6 +105,9 @@ router.post("/", characteristics.create);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Characteristic'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/CharacteristicExample'
  */
 router.get("/:id", characteristics.findOne);
 
@@ -128,6 +144,9 @@ router.get("/:id", characteristics.findOne);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Characteristic'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/CharacteristicExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -157,7 +176,7 @@ router.put("/:id", characteristics.update);
  *               type: object
  *               properties:
  *                 message:
- *                   type: String
+ *                   type: string
  *                   example: "Deleted successfully."
  *     security:
  *       - bearerAuth: []

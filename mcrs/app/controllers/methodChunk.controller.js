@@ -2,30 +2,49 @@ const MethodChunk = require("../models/methodChunk.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
-  const methodChunk = new MethodChunk({
-    id: slugify(req.body.name, {
-      replacement: "-",
-      remove: /[*+~.()'"!:@]/g,
-      lower: true
-    }),
-    name: req.body.name,
-    description: req.body.description,
-    provider: req.body.provider,
-    url: req.body.url,
-    characteristics: req.body.characteristics
-  });
-
-  methodChunk
-    .save()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      console.log("Create MC", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while saving."
+  if (req.body.length) {
+    req.body.forEach(
+      e =>
+        (e.id = slugify(e.name, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        }))
+    );
+    MethodChunk.insertMany(req.body)
+      .then(result => res.send(result))
+      .catch(err => {
+        console.log("Create bulk method chunk", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
       });
+  } else {
+    const methodChunk = new MethodChunk({
+      id: slugify(req.body.name, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      }),
+      name: req.body.name,
+      description: req.body.description,
+      provider: req.body.provider,
+      url: req.body.url,
+      characteristics: req.body.characteristics
     });
+
+    methodChunk
+      .save()
+      .then(result => {
+        res.send(result);
+      })
+      .catch(err => {
+        console.log("Create MC", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
+      });
+  }
 };
 
 exports.findAll = (req, res) => {

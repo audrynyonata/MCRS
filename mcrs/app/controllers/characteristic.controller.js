@@ -2,29 +2,48 @@ const Characteristic = require("../models/characteristic.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
-  const characteristic = new Characteristic({
-    id: slugify(req.body.name, {
-      replacement: "-",
-      remove: /[*+~.()'"!:@]/g,
-      lower: true
-    }),
-    name: req.body.name,
-    dimension: req.body.dimension,
-    description: req.body.description,
-    characteristic_values: req.body.characteristic_values
-  });
-
-  characteristic
-    .save()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      console.log("Create characteristic", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while saving."
+  if (req.body.length) {
+    req.body.forEach(
+      e =>
+        (e.id = slugify(e.name, {
+          replacement: "-",
+          remove: /[*+~.()'"!:@]/g,
+          lower: true
+        }))
+    );
+    Characteristic.insertMany(req.body)
+      .then(result => res.send(result))
+      .catch(err => {
+        console.log("Create bulk characteristic", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
       });
+  } else {
+    const characteristic = new Characteristic({
+      id: slugify(req.body.name, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      }),
+      name: req.body.name,
+      dimension: req.body.dimension,
+      description: req.body.description,
+      characteristic_values: req.body.characteristic_values
     });
+
+    characteristic
+      .save()
+      .then(result => {
+        res.send(result);
+      })
+      .catch(err => {
+        console.log("Create characteristic", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while saving."
+        });
+      });
+  }
 };
 
 exports.findAll = (req, res) => {

@@ -120,25 +120,26 @@ components:
           }
         ]
     ProjectExample:
-      _id: "5d1cfc36bdc07232bc0bc1f7"
-      id: "company-a-ltd/my-project"
-      name: "My Project"
-      project: "my-project"
-      provider: "Company A (Ltd.)"
-      description: "This is a project"
-      characteristics: [
-        {
-          _id: "5d23baf907290510cc6ad57c",
-          name: "Impact",
-          optimal_sense: "maximum",
-          type: "ordinal"
-        },
-        {
-          _id: "5d23baf907290510cc6ad57b",
-          name: "User Goals",
-          optimal_sense: "multi-goals",
-          type: "nominal"
-        }
-      ]
-      createdAt: "2019-07-07T19:51:36.284Z"
-      updatedAt: "2019-07-07T19:51:36.284Z"
+      value:
+        _id: "5d1cfc36bdc07232bc0bc1f7"
+        id: "company-a-ltd/my-project"
+        name: "My Project"
+        project: "my-project"
+        provider: "Company A (Ltd.)"
+        description: "This is a project"
+        characteristics: [
+          {
+            _id: "5d23baf907290510cc6ad57c",
+            name: "Impact",
+            optimal_sense: "maximum",
+            type: "ordinal"
+          },
+          {
+            _id: "5d23baf907290510cc6ad57b",
+            name: "User Goals",
+            optimal_sense: "multi-goals",
+            type: "nominal"
+          }
+        ]
+        createdAt: "2019-07-07T19:51:36.284Z"
+        updatedAt: "2019-07-07T19:51:36.284Z"

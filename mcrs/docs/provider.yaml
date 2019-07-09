@@ -218,36 +218,37 @@ components:
           "Company C"
         ]
     ProviderExample:
-      _id: "5d224d482aba2723501a0cc8"
-      id: "company-a-ltd"
-      email: "company@a.com"
-      name: "Company A (Ltd.)"
-      description: "Company A (Ltd.) has been working in apparel and fashion since 1899."
-      industry: "Apparel and Fashion"
-      urls: [
-        {
-          _id: "5d224d482aba2723501a0cc9",
-          name: "Company Official Site",
-          url: "http://example.com"
-        }
-      ]
-      contacts: [
-        {
-          _id: "5d224d482aba2723501a0cca",
-          name: John Doe,
-          role: Public & Relation Officer,
-          description: "Assisting in any inquiries about the company.",
-          email: "john.doe@example.com",
-          phone: "(+62) 812 345 6789",
-          address: "Centrak Park, 679, CL"
-        }
-      ]
-      related_providers: [
-        "Company B",
-        "Company C"
-      ]
-      createdAt: "2019-07-07T19:51:36.284Z"
-      updatedAt: "2019-07-07T19:51:36.284Z"
+      value:
+        _id: "5d224d482aba2723501a0cc8"
+        id: "company-a-ltd"
+        email: "company@a.com"
+        name: "Company A (Ltd.)"
+        description: "Company A (Ltd.) has been working in apparel and fashion since 1899."
+        industry: "Apparel and Fashion"
+        urls: [
+          {
+            _id: "5d224d482aba2723501a0cc9",
+            name: "Company Official Site",
+            url: "http://example.com"
+          }
+        ]
+        contacts: [
+          {
+            _id: "5d224d482aba2723501a0cca",
+            name: John Doe,
+            role: Public & Relation Officer,
+            description: "Assisting in any inquiries about the company.",
+            email: "john.doe@example.com",
+            phone: "(+62) 812 345 6789",
+            address: "Centrak Park, 679, CL"
+          }
+        ]
+        related_providers: [
+          "Company B",
+          "Company C"
+        ]
+        createdAt: "2019-07-07T19:51:36.284Z"
+        updatedAt: "2019-07-07T19:51:36.284Z"
   securitySchemes:
     bearerAuth: 
       type: http

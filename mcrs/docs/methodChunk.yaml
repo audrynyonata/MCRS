@@ -130,19 +130,20 @@ components:
           }
         ]
     MethodChunkExample:
-      _id: "5d1cfc36bdc07232bc0bc1f7"
-      id: "agile-development-essentals"
-      name: "Agile Development Essentials"
-      description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
-      provider: "Company A (Ltd.)"
-      url: "http://example.com"
-      characteristics: [
-        {
-          _id: "5d224d482aba2723501a0cca",
-          name: "Management Commitment",
-          value: "high",
-          type: "ordinal"
-        }
-      ]
-      createdAt: "2019-07-07T19:51:36.284Z"
-      updatedAt: "2019-07-07T19:51:36.284Z"
+      value:
+        _id: "5d1cfc36bdc07232bc0bc1f7"
+        id: "agile-development-essentals"
+        name: "Agile Development Essentials"
+        description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
+        provider: "Company A (Ltd.)"
+        url: "http://example.com"
+        characteristics: [
+          {
+            _id: "5d224d482aba2723501a0cca",
+            name: "Management Commitment",
+            value: "high",
+            type: "ordinal"
+          }
+        ]
+        createdAt: "2019-07-07T19:51:36.284Z"
+        updatedAt: "2019-07-07T19:51:36.284Z"

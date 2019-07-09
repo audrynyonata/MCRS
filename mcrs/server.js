@@ -56,7 +56,13 @@ const options = {
       version: "0.1.0",
       description:
         "Method Chunk Registry System. [GitHub](https://github.com/audrynyonata/mcrs)"
-    }
+    },
+    servers: [
+      {
+        url: "http://localhost:4000",
+        description: "Development server for testing purposes"
+      }
+    ]
   },
   apis: ["./app/routes/index.js", "./app/routes/*.routes.js", "./docs/*.yaml"]
 };
@@ -66,11 +72,15 @@ const swaggerSpec = swaggerJSDoc(options);
 // Define docs routes
 app.get("/swagger.json", (req, res) => {
   res.setHeader("Content-Type", "application/json");
-  console.log("Generated api docs");
   res.send(swaggerSpec);
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get("/seed/characteristics", (req, res) => {
+  var a = require("./seed.js");
+  res.send(a);
+});
 
 // Configuring jwt auth
 const jwt = require("./config/jwt.config.js");

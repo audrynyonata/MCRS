@@ -39,7 +39,7 @@ router.get("/", providers.findAll);
  * @swagger
  * /providers:
  *   post:
- *     description: Create a provider and add to the list
+ *     description: Create a provider and add to the list. For bulk insert, see `bulk` in examples.
  *     tags:
  *       - Providers
  *     requestBody:
@@ -52,6 +52,16 @@ router.get("/", providers.findAll);
  *           examples:
  *             default:
  *               $ref: '#/components/examples/ProviderInputExample'
+ *             bulk:
+ *                value:
+ *                  - name: "Company Tobacco"
+ *                    industry: "Tobacco"
+ *                    email: "company@tobacco.com"
+ *                    password: "password"
+ *                  - name: "Company C"
+ *                    industry: "consumer services"
+ *                    email: "company_c@example.com"
+ *                    password: "password"
  *     responses:
  *       200:
  *         description: Add a provider
@@ -59,6 +69,9 @@ router.get("/", providers.findAll);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Provider'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/Provider  Example'
  *     security:
  *       - bearerAuth: []
  */
@@ -86,6 +99,9 @@ router.post("/", providers.create);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Provider'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/ProviderExample'
  */
 router.get("/:id", providers.findOne);
 
@@ -132,6 +148,9 @@ router.get("/:id", providers.findOne);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Provider'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/ProviderExample'
  *     security:
  *       - bearerAuth: []
  */
@@ -161,7 +180,7 @@ router.put("/:id", providers.update);
  *               type: object
  *               properties:
  *                 message:
- *                   type: String
+ *                   type: string
  *                   example: "Deleted successfully."
  *     security:
  *       - bearerAuth: []
