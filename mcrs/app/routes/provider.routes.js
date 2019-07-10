@@ -30,6 +30,16 @@ const providers = require("../controllers/provider.controller.js");
  *         name: related_providers
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: sort
+ *         description: sort by key e.g. name, industry
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: order
+ *         description: sort order e.g. asc, desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: List of all providers

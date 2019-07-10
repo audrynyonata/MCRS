@@ -38,6 +38,16 @@ const projects = require("../controllers/project.controller.js");
  *         name: characteristics_type
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: sort
+ *         description: sort by key e.g. name, provider
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: order
+ *         description: sort order e.g. asc, desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: List of all projects

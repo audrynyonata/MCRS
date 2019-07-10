@@ -123,7 +123,22 @@ exports.findAll = (req, res) => {
       $options: "i"
     };
   }
+  var sort = {};
+  if (req.query.sort) {
+    switch (req.query.order) {
+      case "desc":
+      case "DESC":
+      case "dsc":
+      case "DSC":
+        sort[req.query.sort] = -1;
+        break;
+      default:
+        sort[req.query.sort] = 1;
+        break;
+    }
+  }
   Project.find(criteria)
+    .sort(sort)
     .then(result => {
       res.send(result);
     })
