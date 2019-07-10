@@ -105,24 +105,27 @@ exports.findAll = (req, res) => {
       $options: "i"
     };
   }
+  var criteriaCharacteristics = {};
   if (req.query.characteristics_name) {
-    criteria["characteristics.name"] = {
+    criteriaCharacteristics.name = {
       $regex: new RegExp(req.query.characteristics_name, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_optimal_sense) {
-    criteria["characteristics.optimal_sense"] = {
+    criteriaCharacteristics.value = {
       $regex: new RegExp(req.query.characteristics_optimal_sense, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_type) {
-    criteria["characteristics.type"] = {
+    criteriaCharacteristics.type = {
       $regex: new RegExp(req.query.characteristics_type, "g"),
       $options: "i"
     };
   }
+  criteria.characteristics = { $elemMatch: criteriaCharacteristics };
+
   var sort = {};
   if (req.query.sort) {
     switch (req.query.order) {

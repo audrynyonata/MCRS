@@ -16,6 +16,9 @@ const ProjectCharacteristicSchema = mongoose.Schema({
     enum: TYPES.map(e => e.name.toLowerCase()),
     required: true,
     lowercase: true
+  },
+  weight: {
+    type: Number
   }
 });
 

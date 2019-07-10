@@ -1,9 +1,13 @@
 const provider = require("../controllers/provider.controller.js");
+const methodChunk = require("../controllers/methodChunk.controller.js");
+const MethodChunk = require("../models/methodChunk.model.js");
 
 const DIMENSIONS = require("../dimensions.js");
 const INDUSTRIES = require("../industries.js");
 const TYPES = require("../types.js");
 
+const path = require("path");
+const axios = require("axios");
 const express = require("express");
 const router = express.Router();
 
@@ -107,6 +111,183 @@ router.post("/authenticate", (req, res) => {
  */
 router.post("/register", (req, res) => {
   provider.register(req, res);
+});
+
+/**
+ * @swagger
+ * /publish:
+ *   post:
+ *     description: Create a method chunk and add to the list. For bulk insert, see `bulk` in examples.
+ *     tags:
+ *       - Publish & Find Method Chunk
+ *     requestBody:
+ *       description: Method Chunk info
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MethodChunkInput'
+ *           examples:
+ *             default:
+ *               $ref: '#/components/examples/MethodChunkInputExample'
+ *             bulk:
+ *               value:
+ *                 - name: "Kanban Board"
+ *                   provider: "Company Tobacco"
+ *                   url: "http://localhost:4000/method-chunks/kanban-board"
+ *                 - name: "Sprint retrospective"
+ *                   provider: "Company C"
+ *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
+ *                   characteristics: [
+ *                     {
+ *                       name: "delivery strategy",
+ *                       value: "incremental",
+ *                       type: "nominal"
+ *                     }
+ *                   ]
+ *     responses:
+ *       200:
+ *         description: Add a method chunk
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MethodChunk'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/MethodChunkExample'
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post("/publish", (req, res) => {
+  methodChunk.create(req, res);
+});
+
+router.get("/find", (req, res) => {
+  // project.create(req, res);
+  const testProject = {
+    name: "Test Project",
+    provider: "Company A (Ltd.)",
+    description: "IS security chunks evaluation.",
+    characteristics: [
+      {
+        name: "Impact",
+        optimal_sense: "maximum",
+        type: "ordinal"
+      },
+      {
+        name: "Level of innovation",
+        optimal_sense: "maximum",
+        type: "ordinal"
+      },
+      {
+        name: "Expertise",
+        optimal_sense: "minimum",
+        type: "ordinal"
+      },
+      {
+        name: "Guidance",
+        optimal_sense: "predefined taxonomy",
+        type: "nominal"
+      },
+      {
+        name: "Approach",
+        optimal_sense: "systemic",
+        type: "nominal"
+      },
+      {
+        name: "Formalism",
+        optimal_sense: "formal",
+        type: "nominal"
+      }
+    ]
+  };
+  axios
+    .post("http://localhost:5000/find", {
+      project: testProject
+    })
+    .then(function(response) {
+      console.log(response);
+      res.send(response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  return;
+});
+
+router.get("/find2", (req, res) => {
+  const testProject = {
+    name: "Test Project",
+    provider: "Company A (Ltd.)",
+    description: "IS security chunks evaluation.",
+    characteristics: [
+      {
+        name: "Impact",
+        optimal_sense: "maximum",
+        type: "ordinal"
+      },
+      {
+        name: "Level of innovation",
+        optimal_sense: "maximum",
+        type: "ordinal"
+      },
+      {
+        name: "Expertise",
+        optimal_sense: "minimum",
+        type: "ordinal"
+      },
+      {
+        name: "Guidance",
+        optimal_sense: "predefined taxonomy",
+        type: "nominal"
+      },
+      {
+        name: "Approach",
+        optimal_sense: "systemic",
+        type: "nominal"
+      },
+      {
+        name: "Formalism",
+        optimal_sense: "formal",
+        type: "nominal"
+      }
+    ]
+  };
+  MethodChunk.find()
+    .then(result => {
+      let runPy = new Promise((resolve, reject) => {
+        const { spawn } = require("child_process");
+        const pyProg = spawn("python", [
+          path.join(__dirname, "./../mcdm.py"),
+          JSON.stringify(testProject.characteristics),
+          JSON.stringify(result)
+        ]);
+        pyProg.stdout.on("data", data => {
+          resolve(data);
+        });
+        pyProg.stderr.on("data", data => {
+          reject(data);
+        });
+      });
+
+      runPy
+        .then(result => {
+          var resultString = result.toString("utf8");
+          res.send(resultString);
+        })
+        .catch(err => {
+          console.log("MCDM", err.toString("utf8"));
+          res.status(500).send({
+            message: err.message || "Some error occurred while retrieving."
+          });
+        });
+    })
+    .catch(err => {
+      console.log("Find all MC", err);
+      res.status(400).send({
+        message: err.message || "Some error occurred while retrieving."
+      });
+    });
 });
 
 /**
@@ -237,16 +418,6 @@ router.get("/industries", (req, res) => {
  */
 router.get("/types", (req, res) => {
   res.json(TYPES);
-});
-
-// TO-DO: FIND API
-router.post("/find", (req, res) => {
-  res.json({ message: "Welcome to MCRS." });
-});
-
-// TO-DO: PUBLISH API
-router.post("/publish", (req, res) => {
-  res.json({ message: "Welcome to MCRS." });
 });
 
 module.exports = router;

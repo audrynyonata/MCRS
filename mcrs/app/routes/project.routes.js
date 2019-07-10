@@ -70,13 +70,15 @@ const projects = require("../controllers/project.controller.js");
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
  *                      name: "Goal Number",
  *                      optimal_sense: "multi-goals",
- *                      type: "nominal"
+ *                      type: "nominal",
+ *                      weight: 0.15
  *                   },
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
  *                      name: "User Involvement",
  *                      optimal_sense: "minimum",
- *                      type: "ordinal"
+ *                      type: "ordinal",
+ *                      weight: 0.85
  *                   }
  *                 ]
  *                 createdAt: "2019-07-07T09:51:41.221Z"
