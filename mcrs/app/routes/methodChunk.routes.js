@@ -9,6 +9,31 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *     description: Returns a list of all method chunks
  *     tags:
  *       - Method Chunks
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: description
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: provider
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_value
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_type
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: List of all method chunks
@@ -16,6 +41,7 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *           application/json:
  *             schema:
  *               type: array
+ *               description: array of method chunks
  *               items:
  *                 $ref: '#/components/schemas/MethodChunk'
  *             example:

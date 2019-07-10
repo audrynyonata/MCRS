@@ -80,7 +80,50 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  Project.find()
+  var criteria = {};
+  if (req.query.name) {
+    criteria.name = {
+      $regex: new RegExp(req.query.name, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.description) {
+    criteria.description = {
+      $regex: new RegExp(req.query.description, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.provider) {
+    criteria.provider = {
+      $regex: new RegExp(req.query.provider, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.project) {
+    criteria.project = {
+      $regex: new RegExp(req.query.project, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.characteristics_name) {
+    criteria["characteristics.name"] = {
+      $regex: new RegExp(req.query.characteristics_name, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.characteristics_optimal_sense) {
+    criteria["characteristics.optimal_sense"] = {
+      $regex: new RegExp(req.query.characteristics_optimal_sense, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.characteristics_type) {
+    criteria["characteristics.type"] = {
+      $regex: new RegExp(req.query.characteristics_type, "g"),
+      $options: "i"
+    };
+  }
+  Project.find(criteria)
     .then(result => {
       res.send(result);
     })

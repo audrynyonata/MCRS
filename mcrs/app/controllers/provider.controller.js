@@ -114,7 +114,38 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  Provider.find()
+  var criteria = {};
+  if (req.query.email) {
+    criteria.email = {
+      $regex: new RegExp(req.query.email, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.name) {
+    criteria.name = {
+      $regex: new RegExp(req.query.name, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.description) {
+    criteria.description = {
+      $regex: new RegExp(req.query.description, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.industry) {
+    criteria.industry = {
+      $regex: new RegExp(req.query.industry, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.related_providers) {
+    criteria.related_providers = {
+      $regex: new RegExp(req.query.related_providers, "g"),
+      $options: "i"
+    };
+  }
+  Provider.find(criteria)
     .then(result => {
       res.send(result);
     })

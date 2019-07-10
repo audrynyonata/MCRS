@@ -9,6 +9,27 @@ const providers = require("../controllers/provider.controller.js");
  *     description: Returns a list of all the providers
  *     tags:
  *       - Providers
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: description
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: industry
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: related_providers
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: List of all providers
@@ -16,6 +37,7 @@ const providers = require("../controllers/provider.controller.js");
  *           application/json:
  *             schema:
  *               type: array
+ *               description: array of providers
  *               items:
  *                 $ref: '#/components/schemas/Provider'
  *             example:

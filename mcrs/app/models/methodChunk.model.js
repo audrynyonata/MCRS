@@ -39,8 +39,7 @@ const MethodChunkSchema = mongoose.Schema(
     },
     url: {
       type: String,
-      required: true,
-      lowercase: true
+      required: true
     },
     characteristics: [MethodChunkCharacteristicSchema]
   },

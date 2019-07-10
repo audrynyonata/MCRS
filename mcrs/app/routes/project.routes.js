@@ -9,6 +9,35 @@ const projects = require("../controllers/project.controller.js");
  *     description: Returns a list of all projects
  *     tags:
  *       - Projects
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: description
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: provider
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: project
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_optimal_sense
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_type
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: List of all projects
@@ -16,6 +45,7 @@ const projects = require("../controllers/project.controller.js");
  *           application/json:
  *             schema:
  *               type: array
+ *               description: array of projects
  *               items:
  *                 $ref: '#/components/schemas/Project'
  *             example:

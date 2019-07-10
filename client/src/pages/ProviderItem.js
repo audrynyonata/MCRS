@@ -27,7 +27,7 @@ class ProviderItem extends Component {
               {this.props.provider.name}
             </Title>
             <Row>
-              <Col md={{ span: 6, offset: 2 }}>
+              <Col md={{ span: 5, offset: 2 }}>
                 <h6>Description</h6>
                 <p>{this.props.provider.description}</p>
                 <h6>Useful links</h6>
@@ -38,21 +38,6 @@ class ProviderItem extends Component {
                     </li>
                   ))}
                 </ol>
-                <h6>Related providers</h6>
-                <ul>
-                  {this.props.provider.related_providers.map((e, idx) => (
-                    <li key={idx}>{e}</li>
-                  ))}
-                </ul>
-                <h6>Method chunks</h6>
-                <ul>
-                  {this.props.provider.related_providers.map((e, idx) => (
-                    <li key={idx}>{e}</li>
-                  ))}
-                </ul>
-              </Col>
-              <Col xs={4}>
-                <p>Industry: {this.props.provider.industry}</p>
                 <h6>Contacts</h6>
                 <ul>
                   {this.props.provider.contacts.map((e, idx) => (
@@ -62,6 +47,24 @@ class ProviderItem extends Component {
                     </li>
                   ))}
                 </ul>
+                <h6>Related providers</h6>
+                <ul>
+                  {this.props.provider.related_providers.map((e, idx) => (
+                    <li key={idx}>{e}</li>
+                  ))}
+                </ul>
+                <h6>Method chunks</h6>
+                <ol>
+                  {this.props.provider.related_providers.map((e, idx) => (
+                    <li key={idx}>{e}</li>
+                  ))}
+                </ol>
+              </Col>
+              <Col xs={3}>
+                <p>Industry: {this.props.provider.industry}</p>
+                <br />
+                <h6>Last updated</h6>
+                <p>{this.props.provider.updatedAt}</p>
               </Col>
             </Row>
           </div>

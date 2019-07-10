@@ -9,6 +9,27 @@ const characteristics = require("../controllers/characteristic.controller.js");
  *     description: Returns a list of all characteristics
  *     tags:
  *       - Characteristics
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: description
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: dimension
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_value
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: characteristics_type
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: List of all characteristics
@@ -16,6 +37,7 @@ const characteristics = require("../controllers/characteristic.controller.js");
  *           application/json:
  *             schema:
  *               type: array
+ *               description: array of characteristics
  *               items:
  *                 $ref: '#/components/schemas/Characteristic'
  *             example:

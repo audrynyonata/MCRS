@@ -6,8 +6,7 @@ const ProviderUrlSchema = mongoose.Schema({
   name: String,
   url: {
     type: String,
-    required: true,
-    lowercase: true
+    required: true
   }
 });
 

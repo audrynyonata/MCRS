@@ -47,7 +47,38 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  Characteristic.find()
+  var criteria = {};
+  if (req.query.name) {
+    criteria.name = {
+      $regex: new RegExp(req.query.name, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.description) {
+    criteria.description = {
+      $regex: new RegExp(req.query.description, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.dimension) {
+    criteria.dimension = {
+      $regex: new RegExp(req.query.dimension, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.characteristics_type) {
+    criteria["characteristic_values.type"] = {
+      $regex: new RegExp(req.query.characteristics_type, "g"),
+      $options: "i"
+    };
+  }
+  if (req.query.characteristics_value) {
+    criteria["characteristic_values.values"] = {
+      $regex: new RegExp(req.query.characteristics_value, "g"),
+      $options: "i"
+    };
+  }
+  Characteristic.find(criteria)
     .then(result => {
       res.send(result);
     })
