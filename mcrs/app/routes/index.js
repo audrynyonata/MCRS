@@ -133,14 +133,14 @@ router.post("/register", (req, res) => {
  *             bulk:
  *               value:
  *                 - name: "Kanban Board"
- *                   provider: "Company Tobacco"
+ *                   provider: "company-b"
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
  *                 - name: "Sprint retrospective"
- *                   provider: "Company C"
+ *                   provider: "company-c"
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
- *                       name: "delivery strategy",
+ *                       id: "delivery-strategy",
  *                       value: "incremental",
  *                       type: "nominal"
  *                     }
@@ -162,45 +162,49 @@ router.post("/publish", (req, res) => {
   methodChunk.create(req, res);
 });
 
-router.get("/find", (req, res) => {
+const testProject = {
+  name: "Test Project",
+  provider: "company-a-ltd",
+  description: "IS security chunks evaluation.",
+  characteristics: [
+    {
+      id: "impact",
+      optimal_sense: "maximum",
+      type: "ordinal",
+      weight: 0.3
+    },
+    {
+      id: "level-of-innovation",
+      optimal_sense: "maximum",
+      type: "ordinal",
+      weight: 0.2
+    },
+    {
+      id: "expertise",
+      optimal_sense: "minimum",
+      type: "ordinal",
+      weight: 0.5
+    },
+    {
+      id: "guidance",
+      optimal_sense: "predefined taxonomy",
+      type: "nominal"
+    },
+    {
+      id: "approach",
+      optimal_sense: "systemic",
+      type: "nominal"
+    },
+    {
+      id: "formalism",
+      optimal_sense: "formal",
+      type: "nominal"
+    }
+  ]
+};
+router.get("/find2", (req, res) => {
   // project.create(req, res);
-  const testProject = {
-    name: "Test Project",
-    provider: "Company A (Ltd.)",
-    description: "IS security chunks evaluation.",
-    characteristics: [
-      {
-        name: "Impact",
-        optimal_sense: "maximum",
-        type: "ordinal"
-      },
-      {
-        name: "Level of innovation",
-        optimal_sense: "maximum",
-        type: "ordinal"
-      },
-      {
-        name: "Expertise",
-        optimal_sense: "minimum",
-        type: "ordinal"
-      },
-      {
-        name: "Guidance",
-        optimal_sense: "predefined taxonomy",
-        type: "nominal"
-      },
-      {
-        name: "Approach",
-        optimal_sense: "systemic",
-        type: "nominal"
-      },
-      {
-        name: "Formalism",
-        optimal_sense: "formal",
-        type: "nominal"
-      }
-    ]
-  };
+
   axios
     .post("http://localhost:5000/find", {
       project: testProject
@@ -215,44 +219,7 @@ router.get("/find", (req, res) => {
   return;
 });
 
-router.get("/find2", (req, res) => {
-  const testProject = {
-    name: "Test Project",
-    provider: "Company A (Ltd.)",
-    description: "IS security chunks evaluation.",
-    characteristics: [
-      {
-        name: "Impact",
-        optimal_sense: "maximum",
-        type: "ordinal"
-      },
-      {
-        name: "Level of innovation",
-        optimal_sense: "maximum",
-        type: "ordinal"
-      },
-      {
-        name: "Expertise",
-        optimal_sense: "minimum",
-        type: "ordinal"
-      },
-      {
-        name: "Guidance",
-        optimal_sense: "predefined taxonomy",
-        type: "nominal"
-      },
-      {
-        name: "Approach",
-        optimal_sense: "systemic",
-        type: "nominal"
-      },
-      {
-        name: "Formalism",
-        optimal_sense: "formal",
-        type: "nominal"
-      }
-    ]
-  };
+router.get("/find", (req, res) => {
   MethodChunk.find()
     .then(result => {
       let runPy = new Promise((resolve, reject) => {

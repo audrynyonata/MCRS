@@ -8,7 +8,7 @@ components:
           description: project name (unique per provider)
         provider:
           type: string
-          description: name of the provider company
+          description: slug-type id of the provider company
         description:
           type: string
           description: a brief description about the project
@@ -21,9 +21,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               optimal_sense:
                 type: string
                 description: the most optimum value to be seek. (e.g. maximum or minimum for ordinal data type, exact value for nominal data type)
@@ -53,9 +53,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               optimal_sense:
                 type: string
                 description: the most optimum value to be seek. (e.g. maximum or minimum for ordinal data type, exact value for nominal data type)
@@ -83,7 +83,7 @@ components:
           description: slug-type-id of the project name
         provider:
           type: string
-          description: name of the provider company
+          description: slug-type id of the provider company
         description:
           type: string
           description: a brief description about the project
@@ -96,9 +96,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               optimal_sense:
                 type: string
                 description: the most optimum value to be seek. (e.g. maximum or minimum for ordinal data type, exact value for nominal data type)
@@ -125,7 +125,7 @@ components:
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
         characteristics: [
           {
-            name: "Management Commitment",
+            id: "management-commitment",
             optimal_sense: "maximum",
             type: "ordinal"
           }
@@ -141,14 +141,14 @@ components:
         characteristics: [
           {
             _id: "5d23baf907290510cc6ad57c",
-            name: "Impact",
+            id: "impact",
             optimal_sense: "maximum",
             type: "ordinal",
             weight: 0.15
           },
           {
             _id: "5d23baf907290510cc6ad57b",
-            name: "User Goals",
+            id: "user-goals",
             optimal_sense: "multi-goals",
             type: "nominal",
             weight: 0.85

@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 const TYPES = require("../types.js");
 
 const ProjectCharacteristicSchema = mongoose.Schema({
-  name: {
+  id: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true
   },
   optimal_sense: {
     type: String,

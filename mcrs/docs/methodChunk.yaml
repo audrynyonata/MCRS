@@ -11,7 +11,7 @@ components:
           description: a brief description about the method chunk
         provider:
           type: string
-          description: name of the provider company
+          description: slug-type id of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -24,9 +24,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               value:
                 type: string
                 description: value of characteristic in string (e.g. low, medium, high, weak, strong)
@@ -45,7 +45,7 @@ components:
           description: a brief description about the method chunk
         provider:
           type: string
-          description: name of the provider company
+          description: slug-type id of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -58,9 +58,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               value:
                 type: string
                 description: value of characteristic in string (e.g. low, medium, high, weak, strong)
@@ -84,7 +84,7 @@ components:
           description: a brief description about the method chunk
         provider:
           type: string
-          description: name of the provider company
+          description: slug-type id of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -97,9 +97,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               value:
                 type: string
                 description: value of characteristic in string (e.g. low, medium, high, weak, strong)
@@ -123,7 +123,7 @@ components:
         url: "http://example.com"
         characteristics: [
           {
-            name: "Management Commitment",
+            id: "management-commitment",
             value: "high",
             type: "ordinal"
           }
@@ -139,7 +139,7 @@ components:
         characteristics: [
           {
             _id: "5d224d482aba2723501a0cca",
-            name: "Management Commitment",
+            id: "management-commitment",
             value: "high",
             type: "ordinal"
           }

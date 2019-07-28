@@ -27,7 +27,7 @@ const projects = require("../controllers/project.controller.js");
  *         schema:
  *           type: string
  *       - in: query
- *         name: characteristics_name
+ *         name: characteristics_id
  *         schema:
  *           type: string
  *       - in: query
@@ -63,19 +63,19 @@ const projects = require("../controllers/project.controller.js");
  *                 id: "company-a-ltd/my-project"
  *                 name: "My Project"
  *                 project: "my-project"
- *                 provider: "Company A (Ltd.)"
+ *                 provider: "company-a-ltd"
  *                 url: "https://localhost:4000/projects/company-a-ltd/my-project"
  *                 characteristics: [
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      name: "Goal Number",
+ *                      id: "goal-number",
  *                      optimal_sense: "multi-goals",
  *                      type: "nominal",
  *                      weight: 0.15
  *                   },
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      name: "User Involvement",
+ *                      id: "user-involvement",
  *                      optimal_sense: "minimum",
  *                      type: "ordinal",
  *                      weight: 0.85
@@ -109,7 +109,7 @@ router.get("/", projects.findAll);
  *                   name: "First Project"
  *                   characteristics: [
  *                     {
- *                       name: "Stakeholder number",
+ *                       id: "stakeholder-number",
  *                       optimal_sense: "maximum",
  *                       type: "numerical"
  *                     }
@@ -198,7 +198,7 @@ router.get("/:provider_id/:project_id", projects.findOne);
  *               value:
  *                  characteristics: [
  *                    {
- *                      name: "User Involvement",
+ *                      id: "user-involvement",
  *                      optimal_sense: "maximum",
  *                      type: "ordinal"
  *                    }

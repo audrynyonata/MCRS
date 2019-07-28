@@ -68,9 +68,9 @@ exports.findAll = (req, res) => {
     };
   }
   var criteriaCharacteristics = {};
-  if (req.query.characteristics_name) {
-    criteriaCharacteristics.name = {
-      $regex: new RegExp(req.query.characteristics_name, "g"),
+  if (req.query.characteristics_id) {
+    criteriaCharacteristics.id = {
+      $regex: new RegExp(req.query.characteristics_id, "g"),
       $options: "i"
     };
   }

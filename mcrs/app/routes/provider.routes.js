@@ -86,9 +86,9 @@ router.get("/", providers.findAll);
  *               $ref: '#/components/examples/ProviderInputExample'
  *             bulk:
  *                value:
- *                  - name: "Company Tobacco"
+ *                  - name: "Company B"
  *                    industry: "Tobacco"
- *                    email: "company@tobacco.com"
+ *                    email: "company@b.com"
  *                    password: "password"
  *                  - name: "Company C"
  *                    industry: "consumer services"

@@ -23,7 +23,7 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *         schema:
  *           type: string
  *       - in: query
- *         name: characteristics_name
+ *         name: characteristics_id
  *         schema:
  *           type: string
  *       - in: query
@@ -56,20 +56,20 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *                 $ref: '#/components/schemas/MethodChunk'
  *             example:
  *               - _id: "5d22f6449f200f0e74fbbfc0"
- *                 id: "agile-development-essentials"
- *                 name: "Agile Development Essentials"
- *                 provider: "Company A (Ltd.)"
- *                 url: "https://localhost:4000/method-chunks/agile-development-essentials"
+ *                 id: "agile-development"
+ *                 name: "Agile Development"
+ *                 provider: "company-a-ltd"
+ *                 url: "https://localhost:4000/method-chunks/agile-development"
  *                 characteristics: [
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      name: "Goal Number",
+ *                      id: "goal-number",
  *                      value: "multi-goals",
  *                      type: "nominal"
  *                   },
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      name: "User Involvement",
+ *                      id: "user-involvement",
  *                      value: "high",
  *                      type: "ordinal"
  *                   }
@@ -79,7 +79,7 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *               - _id: "5d224d482aba2723501a0cc8"
  *                 id: "kaos"
  *                 name: "KAOS"
- *                 provider: "Company A (Ltd.)"
+ *                 provider: "company-a-ltd"
  *                 url: "https://localhost:4000/method-chunks/kaos"
  *                 createdAt: "2019-07-08T08:24:41.221Z"
  *                 updatedAt: "2019-07-08T08:24:41.221Z"
@@ -107,14 +107,14 @@ router.get("/", methodChunks.findAll);
  *             bulk:
  *               value:
  *                 - name: "Kanban Board"
- *                   provider: "Company Tobacco"
+ *                   provider: "company-b"
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
  *                 - name: "Sprint retrospective"
- *                   provider: "Company C"
+ *                   provider: "company-c"
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
- *                       name: "delivery strategy",
+ *                       id: "delivery-strategy",
  *                       value: "incremental",
  *                       type: "nominal"
  *                     }
@@ -189,12 +189,12 @@ router.get("/:id", methodChunks.findOne);
  *               value:
  *                  characteristics: [
  *                    {
- *                      name: "User Involvement",
+ *                      id: "user-involvement",
  *                      value: "medium",
  *                      type: "ordinal"
  *                    },
  *                    {
- *                      name: "Management Commitment",
+ *                      id: "management-commitment",
  *                      value: "low",
  *                      type: "ordinal"
  *                    }
