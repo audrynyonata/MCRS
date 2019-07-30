@@ -1,10 +1,10 @@
-import { companyA, companyB, companyC } from "./seed/provider.seed";
-import { CHARACTERISTICS } from "./seed/characteristic.seed";
-import {
+const { companyA, companyB, companyC } = require("./seed/provider.seed");
+const { CHARACTERISTICS } = require("./seed/characteristic.seed");
+const {
   METHOD_CHUNKS,
   METHOD_CHUNKS_ADDITIONAL
-} from "./seed/methodChunk.seed";
-import { testProject } from "./seed/project.seed";
+} = require("./seed/methodChunk.seed");
+const { testProject } = require("./seed/project.seed");
 
 const fetch = require("node-fetch");
 
@@ -97,13 +97,17 @@ const server = "http://localhost:4000";
 var token = "";
 
 const seed = () => {
-  register().then(res => {
-    token = res.token;
-    seedProvider();
-    seedCharacteristic();
-    seedMethodChunk();
-    seedProject();
-  });
+  register()
+    .then(res => {
+      token = res.token;
+      seedProvider();
+      seedCharacteristic();
+      seedMethodChunk();
+      seedProject();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 const dbConfig = require("./config/database.config.js");

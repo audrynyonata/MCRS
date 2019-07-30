@@ -1,13 +1,13 @@
-export const ORGANISATIONAL = "organisational";
-export const HUMAN = "human";
-export const APPLICATION_DOMAIN = "application domain";
-export const DEVELOPMENT_STRATEGY = "development strategy";
+const ORGANISATIONAL = "organisational";
+const HUMAN = "human";
+const APPLICATION_DOMAIN = "application domain";
+const DEVELOPMENT_STRATEGY = "development strategy";
 
-export const ORDINAL = "ordinal";
-export const NOMINAL = "nominal";
-export const NUMERICAL = "numerical";
+const ORDINAL = "ordinal";
+const NOMINAL = "nominal";
+const NUMERICAL = "numerical";
 
-export const CHARACTERISTICS = [
+const CHARACTERISTICS = [
   {
     name: "Management commitment",
     characteristic_values: [
@@ -348,3 +348,14 @@ export const CHARACTERISTICS = [
     dimension: DEVELOPMENT_STRATEGY
   }
 ];
+
+module.exports = {
+  ORGANISATIONAL,
+  HUMAN,
+  APPLICATION_DOMAIN,
+  DEVELOPMENT_STRATEGY,
+  ORDINAL,
+  NOMINAL,
+  NUMERICAL,
+  CHARACTERISTICS
+};

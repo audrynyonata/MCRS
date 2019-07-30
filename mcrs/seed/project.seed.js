@@ -1,6 +1,6 @@
-import { ORDINAL, NOMINAL, NUMERICAL } from "./characteristic.seed";
+const { ORDINAL, NOMINAL, NUMERICAL } = require("./characteristic.seed");
 
-export const testProject = {
+const testProject = {
   name: "Test Project",
   provider: "company-a-ltd",
   description: "IS security chunks evaluation.",
@@ -37,3 +37,5 @@ export const testProject = {
     }
   ]
 };
+
+module.exports = { testProject };

@@ -1,10 +1,11 @@
 const Provider = require("../models/provider.model.js");
 const slugify = require("slugify");
-const config = require("../../config/config.json");
+const jwtConfig = require("../../config/jwt.config.js");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.authenticate = (req, res) => {
-  const provider = Provider.findOne({ email: req.body.email })
+  return Provider.findOne({ email: req.body.email })
     .then(result => {
       if (!result) {
         return res.status(401).send({
@@ -14,7 +15,13 @@ exports.authenticate = (req, res) => {
       result.comparePassword(req.body.password, function(err, isMatch) {
         if (err) throw err;
         if (isMatch) {
-          const token = jwt.sign({ sub: provider.email }, config.secret);
+          const token = jwt.sign(
+            {
+              sub: result.id,
+              exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
+            },
+            jwtConfig.secret
+          );
           res.cookie("token", token);
           res.send({ token });
         } else {
@@ -40,7 +47,7 @@ exports.register = (req, res) => {
       lower: true
     }),
     email: req.body.email,
-    password: req.body.password,
+    password: bcrypt.hashSync(req.body.password, 10),
     name: req.body.name,
     description: req.body.description,
     industry: req.body.industry,
@@ -52,7 +59,13 @@ exports.register = (req, res) => {
   provider
     .save()
     .then(result => {
-      const token = jwt.sign({ sub: provider.email }, config.secret);
+      const token = jwt.sign(
+        {
+          sub: result.email,
+          exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
+        },
+        jwtConfig.secret
+      );
       res.cookie("token", token);
       res.send({ token });
     })
@@ -66,14 +79,14 @@ exports.register = (req, res) => {
 
 exports.create = (req, res) => {
   if (req.body.length) {
-    req.body.forEach(
-      e =>
-        (e.id = slugify(e.name, {
-          replacement: "-",
-          remove: /[*+~.()'"!:@]/g,
-          lower: true
-        }))
-    );
+    req.body.forEach(e => {
+      (e.id = slugify(e.name, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      })),
+        (e.password = bcrypt.hashSync(e.password, 10));
+    });
     Provider.insertMany(req.body)
       .then(result => res.send(result))
       .catch(err => {
@@ -90,7 +103,7 @@ exports.create = (req, res) => {
         lower: true
       }),
       email: req.body.email,
-      password: req.body.password,
+      password: bcrypt.hashSync(req.body.password, 10),
       name: req.body.name,
       description: req.body.description,
       industry: req.body.industry,

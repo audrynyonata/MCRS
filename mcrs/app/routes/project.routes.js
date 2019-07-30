@@ -105,7 +105,7 @@ router.get("/", projects.findAll);
  *               $ref: '#/components/examples/ProjectInputExample'
  *             bulk:
  *               value:
- *                 - provider: "Company Tobacco"
+ *                 - provider: "company-a"
  *                   name: "First Project"
  *                   characteristics: [
  *                     {

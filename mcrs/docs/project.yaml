@@ -121,7 +121,7 @@ components:
     ProjectInputExample:
       value:
         name: "My Project"
-        provider: "Company A (Ltd.)"
+        provider: "company-a-ltd"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
         characteristics: [
           {
@@ -136,7 +136,7 @@ components:
         id: "company-a-ltd/my-project"
         name: "My Project"
         project: "my-project"
-        provider: "Company A (Ltd.)"
+        provider: "company-a-ltd"
         description: "This is a project"
         characteristics: [
           {

@@ -96,13 +96,6 @@ const ProviderSchema = mongoose.Schema(
   }
 );
 
-ProviderSchema.pre("save", function(next) {
-  if (this.password && this.isModified("password")) {
-    this.password = bcrypt.hashSync(this.password, 10);
-  }
-  next();
-});
-
 ProviderSchema.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
     if (err) return cb(err);

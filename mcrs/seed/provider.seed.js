@@ -1,4 +1,4 @@
-export const companyA = {
+const companyA = {
   name: "Company A (Ltd.)",
   email: "company@a.com",
   password: "password",
@@ -24,7 +24,7 @@ export const companyA = {
   related_providers: ["Company B", "Company C"]
 };
 
-export const companyB = {
+const companyB = {
   name: "Company B",
   email: "company@b.com",
   password: "password",
@@ -33,11 +33,13 @@ export const companyB = {
   industry: "Tobacco"
 };
 
-export const companyC = {
+const companyC = {
   name: "Company C",
-  email: "company@example.com",
+  email: "company@c.com",
   password: "password",
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vehicula hendrerit mollis. Sed gravida augue ut interdum placerat. Maecenas posuere enim nibh. Sed lobortis velit sit amet sapien pharetra, a condimentum turpis laoreet. Donec consectetur lacinia nisi, et sagittis lorem laoreet a. Praesent iaculis gravida magna non imperdiet. Mauris pharetra, quam non semper pulvinar, dolor nulla vehicula nisl, ac dignissim lacus sapien vitae tortor. Etiam vitae pharetra libero, nec vulputate metus. Maecenas sed elementum eros. Mauris libero nisl, semper suscipit rhoncus sit amet, iaculis eget dui. Nulla scelerisque diam id mauris mattis, nec lacinia quam lacinia.",
   industry: "E-learning"
 };
+
+module.exports = { companyA, companyB, companyC };

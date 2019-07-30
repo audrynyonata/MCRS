@@ -117,9 +117,9 @@ components:
   examples:
     MethodChunkInputExample:
       value:
-        name: "Agile Development Essentials"
+        name: "Agile Development"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
-        provider: "Company A (Ltd.)"
+        provider: "company-a-ltd"
         url: "http://example.com"
         characteristics: [
           {
@@ -131,10 +131,10 @@ components:
     MethodChunkExample:
       value:
         _id: "5d1cfc36bdc07232bc0bc1f7"
-        id: "agile-development-essentals"
-        name: "Agile Development Essentials"
+        id: "agile-development"
+        name: "Agile Development"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
-        provider: "Company A (Ltd.)"
+        provider: "company-a-ltd"
         url: "http://example.com"
         characteristics: [
           {

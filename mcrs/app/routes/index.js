@@ -11,6 +11,11 @@ const axios = require("axios");
 const express = require("express");
 const router = express.Router();
 
+router.get("/test/method-chunks", (req, res) => {
+  const { METHOD_CHUNKS } = require("../../seed/methodChunk.seed");
+  res.send(METHOD_CHUNKS);
+});
+
 /**
  * @swagger
  * /:

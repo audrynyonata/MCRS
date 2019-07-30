@@ -148,7 +148,7 @@ router.post("/", methodChunks.create);
  *         required: true
  *         schema:
  *           type: string
- *         example: "agile-development-essentials"
+ *         example: "agile-development"
  *     responses:
  *       200:
  *         description: Get a method chunk
@@ -176,7 +176,7 @@ router.get("/:id", methodChunks.findOne);
  *         required: true
  *         schema:
  *           type: string
- *         example: "agile-development-essentials"
+ *         example: "agile-development"
  *     requestBody:
  *       description: Method Chunk info
  *       required: true
@@ -228,7 +228,7 @@ router.put("/:id", methodChunks.update);
  *         required: true
  *         schema:
  *           type: string
- *         example: "agile-development-essentials"
+ *         example: "agile-development"
  *     responses:
  *       200:
  *         description: Deleted successfully
