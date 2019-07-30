@@ -63,7 +63,6 @@ const projects = require("../controllers/project.controller.js");
  *                 id: "company-a-ltd/my-project"
  *                 name: "My Project"
  *                 project: "my-project"
- *                 provider: "company-a-ltd"
  *                 url: "https://localhost:4000/projects/company-a-ltd/my-project"
  *                 characteristics: [
  *                   {
@@ -105,8 +104,7 @@ router.get("/", projects.findAll);
  *               $ref: '#/components/examples/ProjectInputExample'
  *             bulk:
  *               value:
- *                 - provider: "company-a"
- *                   name: "First Project"
+ *                 - name: "First Project"
  *                   characteristics: [
  *                     {
  *                       id: "stakeholder-number",

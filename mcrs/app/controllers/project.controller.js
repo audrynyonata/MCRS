@@ -22,11 +22,13 @@ exports.create = (req, res) => {
         remove: /[*+~.()'"!:@]/g,
         lower: true
       });
-      e.provider = slugify(`${e.provider}`, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true
-      });
+      e.provider = e.provider
+        ? slugify(`${e.provider}`, {
+            replacement: "-",
+            remove: /[*+~.()'"!:@]/g,
+            lower: true
+          })
+        : req.user.id;
     });
     Project.insertMany(req.body)
       .then(result => res.send(result))
@@ -56,11 +58,13 @@ exports.create = (req, res) => {
         remove: /[*+~.()'"!:@]/g,
         lower: true
       }),
-      provider: slugify(`${req.body.provider}`, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true
-      }),
+      provider: req.body.provider
+        ? slugify(`${req.body.provider}`, {
+            replacement: "-",
+            remove: /[*+~.()'"!:@]/g,
+            lower: true
+          })
+        : req.user.id,
       description: req.body.description,
       characteristics: req.body.characteristics
     });

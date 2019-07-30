@@ -9,9 +9,6 @@ components:
         description:
           type: string
           description: a brief description about the method chunk
-        provider:
-          type: string
-          description: slug-type id of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -43,9 +40,6 @@ components:
         description:
           type: string
           description: a brief description about the method chunk
-        provider:
-          type: string
-          description: slug-type id of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -119,7 +113,6 @@ components:
       value:
         name: "Agile Development"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
-        provider: "company-a-ltd"
         url: "http://example.com"
         characteristics: [
           {

@@ -6,9 +6,6 @@ components:
         name:
           type: string
           description: project name (unique per provider)
-        provider:
-          type: string
-          description: slug-type id of the provider company
         description:
           type: string
           description: a brief description about the project
@@ -121,7 +118,6 @@ components:
     ProjectInputExample:
       value:
         name: "My Project"
-        provider: "company-a-ltd"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
         characteristics: [
           {

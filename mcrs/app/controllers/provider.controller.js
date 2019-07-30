@@ -17,7 +17,7 @@ exports.authenticate = (req, res) => {
         if (isMatch) {
           const token = jwt.sign(
             {
-              sub: result.id,
+              id: result.id,
               exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
             },
             jwtConfig.secret
@@ -61,7 +61,7 @@ exports.register = (req, res) => {
     .then(result => {
       const token = jwt.sign(
         {
-          sub: result.email,
+          id: result.email,
           exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
         },
         jwtConfig.secret

@@ -9,7 +9,8 @@ exports.create = (req, res) => {
           replacement: "-",
           remove: /[*+~.()'"!:@]/g,
           lower: true
-        }))
+        })),
+      (e.provider = e.provider || req.user.id)
     );
     MethodChunk.insertMany(req.body)
       .then(result => res.send(result))
@@ -28,7 +29,7 @@ exports.create = (req, res) => {
       }),
       name: req.body.name,
       description: req.body.description,
-      provider: req.body.provider,
+      provider: req.body.provider || req.user.id,
       url: req.body.url,
       characteristics: req.body.characteristics
     });

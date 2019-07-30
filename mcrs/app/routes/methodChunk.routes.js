@@ -107,10 +107,8 @@ router.get("/", methodChunks.findAll);
  *             bulk:
  *               value:
  *                 - name: "Kanban Board"
- *                   provider: "company-b"
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
  *                 - name: "Sprint retrospective"
- *                   provider: "company-c"
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
