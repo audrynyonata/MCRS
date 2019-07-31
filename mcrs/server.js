@@ -45,6 +45,55 @@ mongoose
     process.exit();
   });
 
+// Configuring jwt auth
+const jwtConfig = require("./config/jwt.config.js");
+const expressJwt = require("express-jwt");
+
+app.use(
+  expressJwt({
+    secret: jwtConfig.secret,
+    getToken: function fromHeaderOrCookie(req) {
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.split(" ")[0] === "Bearer"
+      ) {
+        return req.headers.authorization.split(" ")[1];
+      } else if (req.cookies && req.cookies.token) {
+        return req.cookies.token;
+      }
+      return null;
+    }
+  }).unless({
+    path: [
+      // public routes that don't require authentication publish?find?
+      "/",
+      "/swagger.json",
+      "/api-docs",
+      "/authenticate",
+      "/register",
+      { url: "/dimensions", methods: ["GET"] },
+      { url: "/industries", methods: ["GET"] },
+      { url: "/types", methods: ["GET"] },
+      { url: "/providers", methods: ["GET"] },
+      { url: /^\/providers\/.*/, methods: ["GET"] },
+      { url: "/method-chunks", methods: ["GET"] },
+      { url: /^\/method-chunks\/.*/, methods: ["GET"] },
+      { url: "/characteristics", methods: ["GET"] },
+      { url: /^\/characteristics\/.*/, methods: ["GET"] },
+      { url: "/projects", methods: ["GET"] },
+      { url: /^\/projects\/.*/, methods: ["GET"] }
+    ]
+  })
+);
+
+app.use(function(err, req, res, next) {
+  if (err.name === "UnauthorizedError") {
+    res.status(err.status).send({ message: err.message });
+    return;
+  }
+  next();
+});
+
 // Configuring API documentation
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
@@ -83,20 +132,7 @@ app.use(
   })
 );
 
-// Configuring jwt auth
-const jwt = require("./config/jwt.config.js");
-
-app.use(jwt());
-
-app.use(function(err, req, res, next) {
-  if (err.name === "UnauthorizedError") {
-    res.status(err.status).send({ message: err.message });
-    return;
-  }
-  next();
-});
-
-// Require routes that uses jwt auth
+// Require routes
 app.use("/", router);
 app.use("/method-chunks", methodChunkRouter);
 app.use("/characteristics", characteristicRouter);

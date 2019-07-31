@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 const TYPES = require("../types.js");
 
 const MethodChunkCharacteristicSchema = mongoose.Schema({
-  name: {
+  id: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true
   },
   value: {
     type: String,
@@ -35,7 +36,8 @@ const MethodChunkSchema = mongoose.Schema(
     description: String,
     provider: {
       type: String,
-      required: true
+      required: true,
+      lowercase: true
     },
     url: {
       type: String,

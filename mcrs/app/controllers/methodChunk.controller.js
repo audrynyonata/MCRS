@@ -9,7 +9,8 @@ exports.create = (req, res) => {
           replacement: "-",
           remove: /[*+~.()'"!:@]/g,
           lower: true
-        }))
+        })),
+      (e.provider = e.provider || req.user.id)
     );
     MethodChunk.insertMany(req.body)
       .then(result => res.send(result))
@@ -28,7 +29,7 @@ exports.create = (req, res) => {
       }),
       name: req.body.name,
       description: req.body.description,
-      provider: req.body.provider,
+      provider: req.body.provider || req.user.id,
       url: req.body.url,
       characteristics: req.body.characteristics
     });
@@ -67,24 +68,27 @@ exports.findAll = (req, res) => {
       $options: "i"
     };
   }
-  if (req.query.characteristics_name) {
-    criteria["characteristics.name"] = {
-      $regex: new RegExp(req.query.characteristics_name, "g"),
+  var criteriaCharacteristics = {};
+  if (req.query.characteristics_id) {
+    criteriaCharacteristics.id = {
+      $regex: new RegExp(req.query.characteristics_id, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_value) {
-    criteria["characteristics.value"] = {
+    criteriaCharacteristics.value = {
       $regex: new RegExp(req.query.characteristics_value, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_type) {
-    criteria["characteristics.type"] = {
+    criteriaCharacteristics.type = {
       $regex: new RegExp(req.query.characteristics_type, "g"),
       $options: "i"
     };
   }
+  criteria.characteristics = { $elemMatch: criteriaCharacteristics };
+
   var sort = {};
   if (req.query.sort) {
     switch (req.query.order) {

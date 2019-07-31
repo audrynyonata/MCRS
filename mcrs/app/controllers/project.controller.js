@@ -22,11 +22,13 @@ exports.create = (req, res) => {
         remove: /[*+~.()'"!:@]/g,
         lower: true
       });
-      e.provider = slugify(`${e.provider}`, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true
-      });
+      e.provider = e.provider
+        ? slugify(`${e.provider}`, {
+            replacement: "-",
+            remove: /[*+~.()'"!:@]/g,
+            lower: true
+          })
+        : req.user.id;
     });
     Project.insertMany(req.body)
       .then(result => res.send(result))
@@ -56,11 +58,13 @@ exports.create = (req, res) => {
         remove: /[*+~.()'"!:@]/g,
         lower: true
       }),
-      provider: slugify(`${req.body.provider}`, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true
-      }),
+      provider: req.body.provider
+        ? slugify(`${req.body.provider}`, {
+            replacement: "-",
+            remove: /[*+~.()'"!:@]/g,
+            lower: true
+          })
+        : req.user.id,
       description: req.body.description,
       characteristics: req.body.characteristics
     });
@@ -105,24 +109,27 @@ exports.findAll = (req, res) => {
       $options: "i"
     };
   }
-  if (req.query.characteristics_name) {
-    criteria["characteristics.name"] = {
-      $regex: new RegExp(req.query.characteristics_name, "g"),
+  var criteriaCharacteristics = {};
+  if (req.query.characteristics_id) {
+    criteriaCharacteristics.id = {
+      $regex: new RegExp(req.query.characteristics_id, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_optimal_sense) {
-    criteria["characteristics.optimal_sense"] = {
+    criteriaCharacteristics.value = {
       $regex: new RegExp(req.query.characteristics_optimal_sense, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_type) {
-    criteria["characteristics.type"] = {
+    criteriaCharacteristics.type = {
       $regex: new RegExp(req.query.characteristics_type, "g"),
       $options: "i"
     };
   }
+  criteria.characteristics = { $elemMatch: criteriaCharacteristics };
+
   var sort = {};
   if (req.query.sort) {
     switch (req.query.order) {

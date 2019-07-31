@@ -9,9 +9,6 @@ components:
         description:
           type: string
           description: a brief description about the method chunk
-        provider:
-          type: string
-          description: name of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -24,9 +21,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               value:
                 type: string
                 description: value of characteristic in string (e.g. low, medium, high, weak, strong)
@@ -43,9 +40,6 @@ components:
         description:
           type: string
           description: a brief description about the method chunk
-        provider:
-          type: string
-          description: name of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -58,9 +52,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               value:
                 type: string
                 description: value of characteristic in string (e.g. low, medium, high, weak, strong)
@@ -84,7 +78,7 @@ components:
           description: a brief description about the method chunk
         provider:
           type: string
-          description: name of the provider company
+          description: slug-type id of the provider company
         url:
           type: string
           description: location of method chunk that can be accessed
@@ -97,9 +91,9 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              name:
+              id:
                 type: string
-                description: name of characteristic
+                description: slug-type id of characteristic
               value:
                 type: string
                 description: value of characteristic in string (e.g. low, medium, high, weak, strong)
@@ -117,13 +111,12 @@ components:
   examples:
     MethodChunkInputExample:
       value:
-        name: "Agile Development Essentials"
+        name: "Agile Development"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
-        provider: "Company A (Ltd.)"
         url: "http://example.com"
         characteristics: [
           {
-            name: "Management Commitment",
+            id: "management-commitment",
             value: "high",
             type: "ordinal"
           }
@@ -131,15 +124,15 @@ components:
     MethodChunkExample:
       value:
         _id: "5d1cfc36bdc07232bc0bc1f7"
-        id: "agile-development-essentals"
-        name: "Agile Development Essentials"
+        id: "agile-development"
+        name: "Agile Development"
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
-        provider: "Company A (Ltd.)"
+        provider: "company-a-ltd"
         url: "http://example.com"
         characteristics: [
           {
             _id: "5d224d482aba2723501a0cca",
-            name: "Management Commitment",
+            id: "management-commitment",
             value: "high",
             type: "ordinal"
           }
