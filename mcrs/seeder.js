@@ -8,6 +8,22 @@ const { testProject } = require("./seed/project.seed");
 
 const fetch = require("node-fetch");
 
+const authenticate = () => {
+  return fetch(`${server}/authenticate`, {
+    method: "POST",
+    body: JSON.stringify(companyA),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+      return res;
+    })
+    .catch(err => console.log(err));
+};
+
 const register = () => {
   return fetch(`${server}/register`, {
     method: "POST",
@@ -25,7 +41,7 @@ const register = () => {
 };
 
 const seedProvider = () => {
-  fetch(`${server}/providers`, {
+  return fetch(`${server}/providers`, {
     method: "POST",
     body: JSON.stringify([companyB, companyC]),
     headers: {
@@ -42,7 +58,7 @@ const seedProvider = () => {
 };
 
 const seedCharacteristic = () => {
-  fetch(`${server}/characteristics`, {
+  return fetch(`${server}/characteristics`, {
     method: "POST",
     body: JSON.stringify(CHARACTERISTICS),
     headers: {
@@ -59,9 +75,10 @@ const seedCharacteristic = () => {
 };
 
 const seedMethodChunk = () => {
-  fetch(`${server}/method-chunks`, {
+  return fetch(`${server}/method-chunks`, {
     method: "POST",
-    body: JSON.stringify(METHOD_CHUNKS.concat(METHOD_CHUNKS_ADDITIONAL)),
+    body: JSON.stringify(METHOD_CHUNKS),
+    // body: JSON.stringify(METHOD_CHUNKS.concat(METHOD_CHUNKS_ADDITIONAL)),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
@@ -76,7 +93,7 @@ const seedMethodChunk = () => {
 };
 
 const seedProject = () => {
-  fetch(`${server}/projects`, {
+  return fetch(`${server}/projects`, {
     method: "POST",
     body: JSON.stringify(testProject),
     headers: {
@@ -101,9 +118,10 @@ const seed = () => {
     .then(res => {
       token = res.token;
       seedProvider();
-      seedCharacteristic();
-      seedMethodChunk();
-      seedProject();
+      seedCharacteristic().then(() => {
+        seedMethodChunk();
+        seedProject();
+      });
     })
     .catch(err => {
       console.log(err);

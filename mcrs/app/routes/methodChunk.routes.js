@@ -31,10 +31,6 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *         schema:
  *           type: string
  *       - in: query
- *         name: characteristics_type
- *         schema:
- *           type: string
- *       - in: query
  *         name: sort
  *         description: sort by key e.g. name, provider
  *         schema:
@@ -63,15 +59,13 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *                 characteristics: [
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      id: "goal-number",
- *                      value: "multi-goals",
- *                      type: "nominal"
+ *                      characteristic: "goal-number",
+ *                      value: "multi-goals"
  *                   },
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      id: "user-involvement",
- *                      value: "high",
- *                      type: "ordinal"
+ *                      characteristic: "user-involvement",
+ *                      value: "high"
  *                   }
  *                 ]
  *                 createdAt: "2019-07-07T09:51:41.221Z"
@@ -108,13 +102,18 @@ router.get("/", methodChunks.findAll);
  *               value:
  *                 - name: "Kanban Board"
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
+ *                   characteristics: [
+ *                     {
+ *                       characteristic: "impact",
+ *                       value: "high"
+ *                     }
+ *                   ]
  *                 - name: "Sprint retrospective"
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
- *                       id: "delivery-strategy",
- *                       value: "incremental",
- *                       type: "nominal"
+ *                       characteristic: "delivery-strategy",
+ *                       value: "incremental"
  *                     }
  *                   ]
  *     responses:
@@ -187,14 +186,12 @@ router.get("/:id", methodChunks.findOne);
  *               value:
  *                  characteristics: [
  *                    {
- *                      id: "user-involvement",
- *                      value: "medium",
- *                      type: "ordinal"
+ *                      characteristic: "user-involvement",
+ *                      value: "medium"
  *                    },
  *                    {
- *                      id: "management-commitment",
- *                      value: "low",
- *                      type: "ordinal"
+ *                      characteristic: "management-commitment",
+ *                      value: "low"
  *                    }
  *                  ]
  *     responses:

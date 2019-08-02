@@ -51,20 +51,22 @@ const characteristics = require("../controllers/characteristic.controller.js");
  *               items:
  *                 $ref: '#/components/schemas/Characteristic'
  *             example:
- *               - _id: "5d22f6449f200f0e74fbbfc0"
+ *               - _id: "5d1cfc36bdc07232bc0bc1f7"
  *                 id: "impact"
  *                 name: "Impact"
- *                 dimension: "organisational"
- *                 characteristic_values: [
+ *                 description: "Impact that will be generated in project."
+ *                 dimension: "Development strategy"
+ *                 characteristicValues: [
  *                   {
- *                      _id: "5d1d39e2f1cb6b35106f36d8",
+ *                      _id: "5d224d482aba2723501a0cca",
  *                      values: ["low", "medium", "high"],
- *                      type: "ordinal"
+ *                      isQuantifiable: true
  *                   },
  *                   {
- *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      values: ["application with GUI","application with API"],
- *                      type: "nominal"
+ *                      _id: "5d224d482aba2723501a0ccb",
+ *                      ref: "on project/on company",
+ *                      values: ["on project", "on company"],
+ *                      isQuantifiable: false
  *                   }
  *                 ]
  *                 createdAt: "2019-07-07T09:51:41.221Z"
@@ -93,13 +95,20 @@ router.get("/", characteristics.findAll);
  *             bulk:
  *               value:
  *                  - name: "Management commitment"
- *                    values: ["low", "medium", "high"]
- *                    type: "ordinal"
- *                    description: "The rate of commitment of management."
- *                  - name: "Stakeholder number"
- *                    values: ["1", "10", "50"]
- *                    type: "numerical"
- *                    description: "The number of stakeholder"
+ *                    characteristicValues: [
+ *                      {
+ *                        values: ["low", "medium", "high"],
+ *                        isQuantifiable: true
+ *                      }
+ *                    ]
+ *                    dimension: "organisational"
+ *                  - name: "Formalism"
+ *                    characteristicValues: [
+ *                      {
+ *                        values: ["formal", "semi-formal", "informal"],
+ *                        isQuantifiable: false
+ *                      }
+ *                    ]
  *     responses:
  *       200:
  *         description: Add a characteristic

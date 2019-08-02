@@ -1,39 +1,37 @@
-const { ORDINAL, NOMINAL, NUMERICAL } = require("./characteristic.seed");
-
 const testProject = {
   name: "Test Project",
   provider: "company-a-ltd",
   description: "IS security chunks evaluation.",
   characteristics: [
     {
-      id: "impact",
-      optimal_sense: "maximum",
-      type: ORDINAL
+      characteristic: "impact",
+      rule: "maximum"
     },
     {
-      id: "level-of-innovation",
-      optimal_sense: "maximum",
-      type: ORDINAL
+      characteristic: "level-of-innovation",
+      rule: "maximum"
     },
     {
-      id: "expertise",
-      optimal_sense: "minimum",
-      type: ORDINAL
+      characteristic: "expertise",
+      rule: "minimum"
     },
     {
-      id: "guidance",
-      optimal_sense: "predefined taxonomy",
-      type: NOMINAL
+      characteristic: "guidance",
+      ref: "predefined taxonomy/heuristics/guidelines",
+      rule: "preference_list",
+      value: ["predefined taxonomy", "heuristics", "guidelines"]
     },
     {
-      id: "approach",
-      optimal_sense: "systemic",
-      type: NOMINAL
+      characteristic: "approach",
+      ref: "systemic/exploratory/explanatory",
+      rule: "preference_list",
+      value: ["systemic", "exploratory", "explanatory"]
     },
     {
-      id: "formalism",
-      optimal_sense: "formal",
-      type: NOMINAL
+      characteristic: "formalism",
+      ref: "formal/semi-formal/informal",
+      rule: "preference_list",
+      value: ["formal", "semi-formal", "informal"]
     }
   ]
 };

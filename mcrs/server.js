@@ -65,12 +65,14 @@ app.use(
     }
   }).unless({
     path: [
-      // public routes that don't require authentication publish?find?
+      // public routes that don't require authentication
       "/",
       "/swagger.json",
-      "/api-docs",
+      /\/api-docs/i,
       "/authenticate",
       "/register",
+      "/find",
+      // "/publish",
       { url: "/dimensions", methods: ["GET"] },
       { url: "/industries", methods: ["GET"] },
       { url: "/types", methods: ["GET"] },

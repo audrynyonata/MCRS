@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
-const TYPES = require("../types.js");
 const DIMENSIONS = require("../dimensions.js");
 
 const noEmptyArray = v => v.length && !v.includes("");
 
 const CharacteristicValueSchema = mongoose.Schema({
+  ref: {
+    type: String,
+    lowercase: true,
+    required: true
+  },
   values: {
     type: [String],
     validate: {
@@ -13,10 +17,8 @@ const CharacteristicValueSchema = mongoose.Schema({
     },
     lowercase: true
   },
-  type: {
-    type: String,
-    enum: TYPES.map(e => e.name.toLowerCase()),
-    lowercase: true,
+  isQuantifiable: {
+    type: Boolean,
     required: true
   }
 });
@@ -34,7 +36,7 @@ const CharacteristicSchema = mongoose.Schema(
       unique: true,
       required: true
     },
-    characteristic_values: {
+    characteristicValues: {
       type: [CharacteristicValueSchema],
       validate: {
         validator: noEmptyArray,
@@ -44,7 +46,6 @@ const CharacteristicSchema = mongoose.Schema(
     dimension: {
       type: String,
       enum: DIMENSIONS.map(e => e.name.toLowerCase()),
-      required: true,
       lowercase: true
     },
     description: String

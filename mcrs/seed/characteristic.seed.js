@@ -3,298 +3,354 @@ const HUMAN = "human";
 const APPLICATION_DOMAIN = "application domain";
 const DEVELOPMENT_STRATEGY = "development strategy";
 
-const ORDINAL = "ordinal";
-const NOMINAL = "nominal";
-const NUMERICAL = "numerical";
-
 const CHARACTERISTICS = [
   {
-    name: "Management commitment",
-    characteristic_values: [
+    name: "Guidance",
+    characteristicValues: [
       {
+        ref: "predefined taxonomy/heuristics/guidelines",
+        values: ["predefined taxonomy", "heuristics", "guidelines"],
+        isQuantifiable: false
+      }
+    ]
+  },
+  {
+    name: "Approach",
+    characteristicValues: [
+      {
+        ref: "systemic/exploratory/explanatory",
+        values: ["systemic", "exploratory", "explanatory"],
+        isQuantifiable: false
+      }
+    ]
+  },
+  {
+    name: "Formalism",
+    characteristicValues: [
+      {
+        ref: "formal/semi-formal/informal",
+        values: ["formal", "semi-formal", "informal"],
+        isQuantifiable: false
+      }
+    ]
+  },
+  {
+    name: "Management commitment",
+    characteristicValues: [
+      {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Importance",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Impact",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Time pressure",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Shortage of resources",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       },
       {
+        ref: "human/means",
         values: ["human", "means"],
-        type: NOMINAL
+        isQuantifiable: false
       },
       {
+        ref: "financial/human/temporal/informational",
         values: [
           "financial resources",
           "human resources",
           "temporal resources",
           "informational resources"
         ],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Size",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Level of innovation",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       },
       {
+        ref: "business/technology",
         values: ["business innovation", "technology innovation"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: ORGANISATIONAL
   },
   {
     name: "Resistance and conflict",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: HUMAN
   },
   {
     name: "Expertise",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       },
       {
+        ref: "tester/developer/designer/analyst",
         values: ["tester", "developer", "designer", "analyst"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: HUMAN
   },
   {
     name: "Clarity and stability",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: HUMAN
   },
   {
     name: "User involvement",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["real", "virtual"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: HUMAN
   },
   {
     name: "Stakeholder number",
-    characteristic_values: [
+    characteristicValues: [
       {
-        values: ["0", "1", "10", "50"],
-        type: NUMERICAL
+        ref: "default",
+        values: ["1", "5", "10", "50"],
+        isQuantifiable: true
       }
     ],
     dimension: HUMAN
   },
   {
     name: "Formality",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Relationships",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Dependency",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Complexity",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "normal", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
-    name: "Application type",
-    characteristic_values: [
+    name: "Application isQuantifiable",
+    characteristicValues: [
       {
+        ref: "default",
         values: [
           "intra-organization application",
           "inter-organization application",
           "organization-customer application"
         ],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Application technology",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: [
           "application to develop includes a database",
           "application to develop is distributed",
           "application to develop includes a GUI"
         ],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Dividing project",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: [
           "one single system",
           "establishing system-oriented subprojects",
           "establishing process-oriented subprojects",
           "establishing hybrid subprojects"
         ],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Repetitiveness",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "medium", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Variability",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["low", "medium", "high"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Variable artefacts",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: [
           "organisational",
           "human",
           "application domain",
           "development strategy"
         ],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: APPLICATION_DOMAIN
   },
   {
     name: "Source system",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["code reuse", "functional domain reuse", "interface reuse"],
-        type: NOMINAL
+        isQuantifiable: false
       },
       {
+        ref: "weak/medium/strong",
         values: ["weak", "medium", "strong"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
   },
   {
     name: "Project organization",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["standard", "adapted"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
   },
   {
     name: "Development strategy",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: [
           "outsourcing",
           "iterative",
@@ -302,47 +358,51 @@ const CHARACTERISTICS = [
           "phase-wise",
           "title-wise"
         ],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
   },
   {
     name: "Realization strategy",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["at once", "incremental", "concurrent", "overlapping"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
   },
   {
     name: "Delivery strategy",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["at once", "incremental", "evolutionary"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
   },
   {
     name: "Tracing project",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["weak", "strong"],
-        type: ORDINAL
+        isQuantifiable: true
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
   },
   {
     name: "Goal number",
-    characteristic_values: [
+    characteristicValues: [
       {
+        ref: "default",
         values: ["one goal", "multi-goals"],
-        type: NOMINAL
+        isQuantifiable: false
       }
     ],
     dimension: DEVELOPMENT_STRATEGY
@@ -354,8 +414,5 @@ module.exports = {
   HUMAN,
   APPLICATION_DOMAIN,
   DEVELOPMENT_STRATEGY,
-  ORDINAL,
-  NOMINAL,
-  NUMERICAL,
   CHARACTERISTICS
 };

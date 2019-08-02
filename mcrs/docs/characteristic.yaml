@@ -12,7 +12,7 @@ components:
         description:
           type: string
           description: a brief description about the characteristic
-        characteristic_values:
+        characteristicValues:
           type: array
           description: value groups of characteristic.
           items:
@@ -21,18 +21,21 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
+              ref:
+                type: string
+                description: a string to help reference this group of values. If not specified, will be auto generated from values.
               values:
                 type: array
                 items: 
                   type: string
-                description: value of characteristic in string (e.g. low, medium, high, weak, strong)
-              type:
-                type: string
-                description: name of data type of value. See `types` for more info.
+                description: value of characteristic in string (e.g. low, medium, high, weak, strong) in ascending order (smallest/min-largest/max)
+              isQuantifiable:
+                type: boolean
+                description: whether or not the values has sort/order. If `true`, the `minimum/maximum` rule will be available.
       required:
         - name
         - dimension
-        - characteristic_values
+        - characteristicValues
     CharacteristicUpdateInput:
       type: object
       properties:
@@ -42,7 +45,7 @@ components:
         description:
           type: string
           description: a brief description about the characteristic
-        characteristic_values:
+        characteristicValues:
           type: array
           description: value groups of characteristic.
           items:
@@ -51,14 +54,17 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
+              ref:
+                type: string
+                description: a string to help reference this group of values. If not specified, will be auto generated from values.
               values:
                 type: array
                 items: 
                   type: string
-                description: value of characteristic in string (e.g. low, medium, high, weak, strong)
-              type:
-                type: string
-                description: name of data type of value. See `types` for more info.
+                description: value of characteristic in string (e.g. low, medium, high, weak, strong) in ascending order (smallest/min-largest/max)
+              isQuantifiable:
+                type: boolean
+                description: whether or not the values has sort/order. If `true`, the `minimum/maximum` rule will be available.
     Characteristic:
       type: object
       properties:
@@ -77,7 +83,7 @@ components:
         description:
           type: string
           description: a brief description about the characteristic
-        characteristic_values:
+        characteristicValues:
           type: array
           description: value groups of characteristic.
           items:
@@ -86,14 +92,17 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
+              ref:
+                type: string
+                description: a string to help reference this group of values. If not specified, will be auto generated from values.
               values:
                 type: array
                 items: 
                   type: string
-                description: value of characteristic in string (e.g. low, medium, high, weak, strong)
-              type:
-                type: string
-                description: name of data type of value. See `types` for more info.
+                description: value of characteristic in string (e.g. low, medium, high, weak, strong) in ascending order (smallest/min-largest/max)
+              isQuantifiable:
+                type: boolean
+                description: whether or not the values has sort/order. If `true`, the `minimum/maximum` rule will be available.
         createdAt:
           type: string
           format: date-time
@@ -108,10 +117,10 @@ components:
         name: "User Involvement"
         dimension: "Human"
         description: "The rate of user involvement in project."
-        characteristic_values: [
+        characteristicValues: [
           {
-            values: ["low","medium","high"],
-            type: "ordinal"
+            values: ["low", "medium", "high"],
+            isQuantifiable: true
           }
         ]
     CharacteristicExample:
@@ -121,16 +130,17 @@ components:
         name: "Impact"
         description: "Impact that will be generated in project."
         dimension: "Development strategy"
-        characteristic_values: [
+        characteristicValues: [
           {
             _id: "5d224d482aba2723501a0cca",
-            values: ["low","medium","high"],
-            type: "ordinal"
+            values: ["low", "medium", "high"],
+            isQuantifiable: true
           },
           {
             _id: "5d224d482aba2723501a0ccb",
+            ref: "on project/on company",
             values: ["on project", "on company"],
-            type: "nominal"
+            isQuantifiable: false
           }
         ]
         createdAt: "2019-07-07T19:51:36.284Z"

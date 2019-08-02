@@ -31,11 +31,7 @@ const projects = require("../controllers/project.controller.js");
  *         schema:
  *           type: string
  *       - in: query
- *         name: characteristics_optimal_sense
- *         schema:
- *           type: string
- *       - in: query
- *         name: characteristics_type
+ *         name: characteristics_value
  *         schema:
  *           type: string
  *       - in: query
@@ -66,18 +62,17 @@ const projects = require("../controllers/project.controller.js");
  *                 url: "https://localhost:4000/projects/company-a-ltd/my-project"
  *                 characteristics: [
  *                   {
- *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      id: "goal-number",
- *                      optimal_sense: "multi-goals",
- *                      type: "nominal",
- *                      weight: 0.15
+ *                     _id: "5d23baf907290510cc6ad57c",
+ *                     id: "impact",
+ *                     rule: "maximum",
+ *                     weight: 0.15
  *                   },
  *                   {
- *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      id: "user-involvement",
- *                      optimal_sense: "minimum",
- *                      type: "ordinal",
- *                      weight: 0.85
+ *                     _id: "5d23baf907290510cc6ad57b",
+ *                     id: "user-goals",
+ *                     rule: "preference_list",
+ *                     value: ["one goal", "multi-goals"],
+ *                     weight: 0.85
  *                   }
  *                 ]
  *                 createdAt: "2019-07-07T09:51:41.221Z"
@@ -108,8 +103,7 @@ router.get("/", projects.findAll);
  *                   characteristics: [
  *                     {
  *                       id: "stakeholder-number",
- *                       optimal_sense: "maximum",
- *                       type: "numerical"
+ *                       rule: "maximum"
  *                     }
  *                   ]
  *     responses:
@@ -196,9 +190,8 @@ router.get("/:provider_id/:project_id", projects.findOne);
  *               value:
  *                  characteristics: [
  *                    {
- *                      id: "user-involvement",
- *                      optimal_sense: "maximum",
- *                      type: "ordinal"
+ *                      id: "expertise",
+ *                      rule: "minimum"
  *                    }
  *                  ]
  *     responses:

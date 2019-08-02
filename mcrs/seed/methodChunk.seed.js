@@ -1,5 +1,3 @@
-const { ORDINAL, NOMINAL, NUMERICAL } = require("./characteristic.seed");
-
 const baseUrl = "http://example.com/";
 
 const METHOD_CHUNKS = [
@@ -10,34 +8,31 @@ const METHOD_CHUNKS = [
     url: "http://example.com/NFR-framework",
     characteristics: [
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       },
       {
-        id: "level-of-innovation",
-        value: "high",
-        type: ORDINAL
+        characteristic: "level-of-innovation",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "normal",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "normal"
       },
       {
-        id: "guidance",
+        characteristic: "guidance",
         value: "predefined taxonomy",
-        type: NOMINAL
+        ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        id: "approach",
+        characteristic: "approach",
         value: "explanatory",
-        type: NOMINAL
+        ref: "systemic/exploratory/explanatory"
       },
       {
-        id: "formalism",
+        characteristic: "formalism",
         value: "semi-formal",
-        type: NOMINAL
+        ref: "formal/semi-formal/informal"
       }
     ]
   },
@@ -48,34 +43,31 @@ const METHOD_CHUNKS = [
     url: "http://example.com/KAOS",
     characteristics: [
       {
-        id: "impact",
-        value: "low",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "low"
       },
       {
-        id: "level-of-innovation",
-        value: "high",
-        type: ORDINAL
+        characteristic: "level-of-innovation",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "guidance",
+        characteristic: "guidance",
         value: "heuristics",
-        type: NOMINAL
+        ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        id: "approach",
+        characteristic: "approach",
         value: "exploratory",
-        type: NOMINAL
+        ref: "systemic/exploratory/explanatory"
       },
       {
-        id: "formalism",
+        characteristic: "formalism",
         value: "formal",
-        type: NOMINAL
+        ref: "formal/semi-formal/informal"
       }
     ]
   },
@@ -86,34 +78,26 @@ const METHOD_CHUNKS = [
     url: "http://example.com/secure-tropos",
     characteristics: [
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       },
       {
-        id: "level-of-innovation",
-        value: "low",
-        type: ORDINAL
+        characteristic: "level-of-innovation",
+        value: "low"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "guidance",
-        value: "no guidance",
-        type: NOMINAL
-      },
-      {
-        id: "approach",
+        characteristic: "approach",
         value: "systemic",
-        type: NOMINAL
+        ref: "systemic/exploratory/explanatory"
       },
       {
-        id: "formalism",
+        characteristic: "formalism",
         value: "formal",
-        type: NOMINAL
+        ref: "formal/semi-formal/informal"
       }
     ]
   },
@@ -124,29 +108,26 @@ const METHOD_CHUNKS = [
     url: "http://example.com/gbram",
     characteristics: [
       {
-        id: "impact",
-        value: "low",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "low"
       },
       {
-        id: "level-of-innovation",
-        value: "high",
-        type: ORDINAL
+        characteristic: "level-of-innovation",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "normal",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "normal"
       },
       {
-        id: "guidance",
+        characteristic: "guidance",
         value: "heuristics",
-        type: NOMINAL
+        ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        id: "formalism",
+        characteristic: "formalism",
         value: "informal",
-        type: NOMINAL
+        ref: "formal/semi-formal/informal"
       }
     ]
   },
@@ -157,37 +138,31 @@ const METHOD_CHUNKS = [
     url: "http://example.com/misusecases",
     characteristics: [
       {
-        id: "impact",
-        value: "normal",
-        type: ORDINAL,
-        weight: 0.3
+        characteristic: "impact",
+        value: "normal"
       },
       {
-        id: "level-of-innovation",
-        value: "high",
-        type: ORDINAL,
-        weight: 0.2
+        characteristic: "level-of-innovation",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "low",
-        type: ORDINAL,
-        weight: 0.5
+        characteristic: "expertise",
+        value: "low"
       },
       {
-        id: "guidance",
+        characteristic: "guidance",
         value: "guidelines",
-        type: NOMINAL
+        ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        id: "approach",
+        characteristic: "approach",
         value: "explanatory",
-        type: NOMINAL
+        ref: "systemic/exploratory/explanatory"
       },
       {
-        id: "formalism",
+        characteristic: "formalism",
         value: "informal",
-        type: NOMINAL
+        ref: "formal/semi-formal/informal"
       }
     ]
   }
@@ -202,29 +177,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AcceptanceTestDrivenDevelopment",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "low",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "low"
       },
       {
-        id: "importance",
-        value: "normal",
-        type: ORDINAL
+        characteristic: "importance",
+        value: "normal"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "user-involvement",
-        value: "real",
-        type: NOMINAL
+        characteristic: "user-involvement",
+        value: "real"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -236,29 +206,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileDevelopment",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "user-involvement",
-        value: "real",
-        type: NOMINAL
+        characteristic: "user-involvement",
+        value: "real"
       },
       {
-        id: "goal-number",
-        value: "multi-goals",
-        type: NOMINAL
+        characteristic: "goal-number",
+        value: "multi-goals"
       },
       {
-        id: "development-strategy",
-        value: "iterative",
-        type: NOMINAL
+        characteristic: "development-strategy",
+        value: "iterative"
       },
       {
-        id: "delivery-strategy",
-        value: "incremental",
-        type: NOMINAL
+        characteristic: "delivery-strategy",
+        value: "incremental"
       }
     ]
   },
@@ -270,29 +235,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileRetrospective",
     characteristics: [
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       },
       {
-        id: "resistance-and-conflict",
-        value: "high",
-        type: ORDINAL
+        characteristic: "resistance-and-conflict",
+        value: "high"
       },
       {
-        id: "formality",
-        value: "low",
-        type: ORDINAL
+        characteristic: "formality",
+        value: "low"
       },
       {
-        id: "Variability",
-        value: "high",
-        type: ORDINAL
+        characteristic: "Variability",
+        value: "high"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       }
     ]
   },
@@ -304,24 +264,20 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileTeaming",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "normal",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "normal"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "resistance-and-conflict",
-        value: "high",
-        type: ORDINAL
+        characteristic: "resistance-and-conflict",
+        value: "high"
       },
       {
-        id: "formality",
-        value: "low",
-        type: ORDINAL
+        characteristic: "formality",
+        value: "low"
       }
     ]
   },
@@ -333,34 +289,28 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileTimeboxing",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "time-pressure",
-        value: "high",
-        type: ORDINAL
+        characteristic: "time-pressure",
+        value: "high"
       },
       {
-        id: "development-strategy",
-        value: "iterative",
-        type: NOMINAL
+        characteristic: "development-strategy",
+        value: "iterative"
       },
       {
-        id: "delivery-strategy",
-        value: "incremental",
-        type: NOMINAL
+        characteristic: "delivery-strategy",
+        value: "incremental"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       },
       {
-        id: "goal-number",
-        value: "multi-goals",
-        type: NOMINAL
+        characteristic: "goal-number",
+        value: "multi-goals"
       }
     ]
   },
@@ -372,29 +322,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "BehaviorDrivenDevelopment",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "importance",
-        value: "high",
-        type: ORDINAL
+        characteristic: "importance",
+        value: "high"
       },
       {
-        id: "clarity-and-stability",
-        value: "high",
-        type: ORDINAL
+        characteristic: "clarity-and-stability",
+        value: "high"
       },
       {
-        id: "user-involvement",
-        value: "real",
-        type: NOMINAL
+        characteristic: "user-involvement",
+        value: "real"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -406,29 +351,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "BigDesignUpFront",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "importance",
-        value: "high",
-        type: ORDINAL
+        characteristic: "importance",
+        value: "high"
       },
       {
-        id: "clarity-and-stability",
-        value: "high",
-        type: ORDINAL
+        characteristic: "clarity-and-stability",
+        value: "high"
       },
       {
-        id: "user-involvement",
-        value: "real",
-        type: NOMINAL
+        characteristic: "user-involvement",
+        value: "real"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -440,29 +380,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ContinuousDelivery",
     characteristics: [
       {
-        id: "time-pressure",
-        value: "high",
-        type: ORDINAL
+        characteristic: "time-pressure",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       },
       {
-        id: "complexity",
-        value: "high",
-        type: ORDINAL
+        characteristic: "complexity",
+        value: "high"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -474,29 +409,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ContinuousIntegration",
     characteristics: [
       {
-        id: "time-pressure",
-        value: "high",
-        type: ORDINAL
+        characteristic: "time-pressure",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       },
       {
-        id: "complexity",
-        value: "high",
-        type: ORDINAL
+        characteristic: "complexity",
+        value: "high"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -508,39 +438,32 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "DailyStandUp",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "time-pressure",
-        value: "high",
-        type: ORDINAL
+        characteristic: "time-pressure",
+        value: "high"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       },
       {
-        id: "clarity-and-stability",
-        value: "high",
-        type: ORDINAL
+        characteristic: "clarity-and-stability",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "low",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "low"
       },
       {
-        id: "formality",
-        value: "low",
-        type: ORDINAL
+        characteristic: "formality",
+        value: "low"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       }
     ]
   },
@@ -552,29 +475,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "PairProgramming",
     characteristics: [
       {
-        id: "resistance-and-conflict",
-        value: "high",
-        type: ORDINAL
+        characteristic: "resistance-and-conflict",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "low",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "low"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       },
       {
-        id: "complexity",
-        value: "normal",
-        type: ORDINAL
+        characteristic: "complexity",
+        value: "normal"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -586,29 +504,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ProductBacklog",
     characteristics: [
       {
-        id: "importance",
-        value: "high",
-        type: ORDINAL
+        characteristic: "importance",
+        value: "high"
       },
       {
-        id: "user-involvement",
-        value: "real",
-        type: NOMINAL
+        characteristic: "user-involvement",
+        value: "real"
       },
       {
-        id: "clarity-and-stability",
-        value: "high",
-        type: ORDINAL
+        characteristic: "clarity-and-stability",
+        value: "high"
       },
       {
-        id: "dependency",
-        value: "low",
-        type: ORDINAL
+        characteristic: "dependency",
+        value: "low"
       },
       {
-        id: "realization-strategy",
-        value: "incremental",
-        type: NOMINAL
+        characteristic: "realization-strategy",
+        value: "incremental"
       }
     ]
   },
@@ -620,24 +533,20 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ProductOwnership",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "importance",
-        value: "normal",
-        type: ORDINAL
+        characteristic: "importance",
+        value: "normal"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       }
     ]
   },
@@ -649,29 +558,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "SpecificationByExample",
     characteristics: [
       {
-        id: "management-commitment",
-        value: "high",
-        type: ORDINAL
+        characteristic: "management-commitment",
+        value: "high"
       },
       {
-        id: "importance",
-        value: "high",
-        type: ORDINAL
+        characteristic: "importance",
+        value: "high"
       },
       {
-        id: "clarity-and-stability",
-        value: "high",
-        type: ORDINAL
+        characteristic: "clarity-and-stability",
+        value: "high"
       },
       {
-        id: "user-involvement",
-        value: "real",
-        type: NOMINAL
+        characteristic: "user-involvement",
+        value: "real"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   },
@@ -683,29 +587,24 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "TestDrivenDevelopment",
     characteristics: [
       {
-        id: "dependency",
-        value: "high",
-        type: ORDINAL
+        characteristic: "dependency",
+        value: "high"
       },
       {
-        id: "expertise",
-        value: "high",
-        type: ORDINAL
+        characteristic: "expertise",
+        value: "high"
       },
       {
-        id: "tracing-project",
-        value: "strong",
-        type: ORDINAL
+        characteristic: "tracing-project",
+        value: "strong"
       },
       {
-        id: "complexity",
-        value: "high",
-        type: ORDINAL
+        characteristic: "complexity",
+        value: "high"
       },
       {
-        id: "impact",
-        value: "high",
-        type: ORDINAL
+        characteristic: "impact",
+        value: "high"
       }
     ]
   }

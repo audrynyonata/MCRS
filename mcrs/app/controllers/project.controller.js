@@ -122,12 +122,6 @@ exports.findAll = (req, res) => {
       $options: "i"
     };
   }
-  if (req.query.characteristics_type) {
-    criteriaCharacteristics.type = {
-      $regex: new RegExp(req.query.characteristics_type, "g"),
-      $options: "i"
-    };
-  }
   criteria.characteristics = { $elemMatch: criteriaCharacteristics };
 
   var sort = {};

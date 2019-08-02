@@ -4,7 +4,6 @@ const MethodChunk = require("../models/methodChunk.model.js");
 
 const DIMENSIONS = require("../dimensions.js");
 const INDUSTRIES = require("../industries.js");
-const TYPES = require("../types.js");
 
 const path = require("path");
 const axios = require("axios");
@@ -65,7 +64,7 @@ router.get("/", (req, res) => {
  *           examples:
  *             default:
  *               value:
- *                 email: "company@example.com"
+ *                 email: "company@a.com"
  *                 password: "password"
  *     responses:
  *       200:
@@ -118,6 +117,7 @@ router.post("/register", (req, res) => {
   provider.register(req, res);
 });
 
+// TO-DO
 /**
  * @swagger
  * /publish:
@@ -125,89 +125,14 @@ router.post("/register", (req, res) => {
  *     description: Create a method chunk and add to the list. For bulk insert, see `bulk` in examples.
  *     tags:
  *       - Publish & Find Method Chunk
- *     requestBody:
- *       description: Method Chunk info
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/MethodChunkInput'
- *           examples:
- *             default:
- *               $ref: '#/components/examples/MethodChunkInputExample'
- *             bulk:
- *               value:
- *                 - name: "Kanban Board"
- *                   url: "http://localhost:4000/method-chunks/kanban-board"
- *                 - name: "Sprint retrospective"
- *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
- *                   characteristics: [
- *                     {
- *                       id: "delivery-strategy",
- *                       value: "incremental",
- *                       type: "nominal"
- *                     }
- *                   ]
- *     responses:
- *       200:
- *         description: Add a method chunk
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/MethodChunk'
- *             examples:
- *               default:
- *                 $ref: '#/components/examples/MethodChunkExample'
- *     security:
- *       - bearerAuth: []
  */
 router.post("/publish", (req, res) => {
   methodChunk.create(req, res);
 });
 
-const testProject = {
-  name: "Test Project",
-  provider: "company-a-ltd",
-  description: "IS security chunks evaluation.",
-  characteristics: [
-    {
-      id: "impact",
-      optimal_sense: "maximum",
-      type: "ordinal",
-      weight: 0.3
-    },
-    {
-      id: "level-of-innovation",
-      optimal_sense: "maximum",
-      type: "ordinal",
-      weight: 0.2
-    },
-    {
-      id: "expertise",
-      optimal_sense: "minimum",
-      type: "ordinal",
-      weight: 0.5
-    },
-    {
-      id: "guidance",
-      optimal_sense: "predefined taxonomy",
-      type: "nominal"
-    },
-    {
-      id: "approach",
-      optimal_sense: "systemic",
-      type: "nominal"
-    },
-    {
-      id: "formalism",
-      optimal_sense: "formal",
-      type: "nominal"
-    }
-  ]
-};
 router.get("/find2", (req, res) => {
   // project.create(req, res);
-
+  const { testProject } = require("../../seed/project.seed");
   axios
     .post("http://localhost:5000/find", {
       project: testProject
@@ -340,54 +265,6 @@ router.get("/dimensions", (req, res) => {
  */
 router.get("/industries", (req, res) => {
   res.json(INDUSTRIES);
-});
-
-/**
- * @swagger
- * /types:
- *   get:
- *     description: Return list of all characteristics value type
- *     tags:
- *       - Other Resources
- *     responses:
- *       200:
- *         description: List of all characteristics value type
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     description: slug-type id of data type name
- *                   name:
- *                     type: string
- *                     description: name of data type
- *                   description:
- *                     type: string
- *                     description: a brief description about this data type
- *             example: [
- *               {
- *                 "id": "ordinal",
- *                 "name": "Ordinal",
- *                 "description": "Non-quantifiable / qualitative data that can be ordered / sorted."
- *               },
- *               {
- *                 "id": "nominal",
- *                 "name": "Nominal",
- *                 "description": "Non-quantifiable / qualitative data for unordered categories."
- *               },
- *               {
- *                 "id": "numerical",
- *                 "name": "Numerical",
- *                 "description": "Quantifiable / quantitative data in numbers (interval vs. ratio, discrete vs. continuous)."
- *               }
- *             ]
- */
-router.get("/types", (req, res) => {
-  res.json(TYPES);
 });
 
 module.exports = router;
