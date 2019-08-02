@@ -1,6 +1,5 @@
 const provider = require("../controllers/provider.controller.js");
 const methodChunk = require("../controllers/methodChunk.controller.js");
-const MethodChunk = require("../models/methodChunk.model.js");
 
 const DIMENSIONS = require("../dimensions.js");
 const INDUSTRIES = require("../industries.js");
@@ -9,11 +8,6 @@ const path = require("path");
 const axios = require("axios");
 const express = require("express");
 const router = express.Router();
-
-router.get("/test/method-chunks", (req, res) => {
-  const { METHOD_CHUNKS } = require("../../seed/methodChunk.seed");
-  res.send(METHOD_CHUNKS);
-});
 
 /**
  * @swagger
@@ -117,7 +111,6 @@ router.post("/register", (req, res) => {
   provider.register(req, res);
 });
 
-// TO-DO
 /**
  * @swagger
  * /publish:
@@ -125,65 +118,162 @@ router.post("/register", (req, res) => {
  *     description: Create a method chunk and add to the list. For bulk insert, see `bulk` in examples.
  *     tags:
  *       - Publish & Find Method Chunk
+ *     requestBody:
+ *       description: Method Chunk info
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MethodChunkInput'
+ *           examples:
+ *             default:
+ *               $ref: '#/components/examples/MethodChunkInputExample'
+ *             bulk:
+ *               value:
+ *                 - name: "Kanban Board"
+ *                   url: "http://localhost:4000/method-chunks/kanban-board"
+ *                   characteristics: [
+ *                     {
+ *                       characteristic: "impact",
+ *                       value: "high"
+ *                     }
+ *                   ]
+ *                 - name: "Sprint retrospective"
+ *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
+ *                   characteristics: [
+ *                     {
+ *                       characteristic: "delivery-strategy",
+ *                       value: "incremental"
+ *                     }
+ *                   ]
+ *     responses:
+ *       200:
+ *         description: Add a method chunk
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MethodChunk'
+ *             examples:
+ *               default:
+ *                 $ref: '#/components/examples/MethodChunkExample'
+ *     security:
+ *       - bearerAuth: []
  */
 router.post("/publish", (req, res) => {
   methodChunk.create(req, res);
 });
 
-router.get("/find2", (req, res) => {
-  // project.create(req, res);
-  const { testProject } = require("../../seed/project.seed");
+/**
+ * @swagger
+ * /find:
+ *   post:
+ *     description: Find ranked method chunk recommendation according to project characteristics
+ *     tags:
+ *       - Publish & Find
+ *     requestBody:
+ *       description: Project id
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               project:
+ *                 type: string
+ *                 description: slug-type id of the project name
+ *           examples:
+ *             default:
+ *               value:
+ *                 project: company-a-ltd/test-project
+ *     responses:
+ *       '200':
+ *         description: Return ranked method chunk recommendation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 project:
+ *                   type: string
+ *                   description: slug-type id of the project name
+ *                   example: company-a-ltd/test-project
+ *                 model:
+ *                   type: string
+ *                   description: multi-criteria algorithm model that is used. Currently available are `WeightedSum` and `TOPSIS`.
+ *                   example: WeightedSum
+ *                 result:
+ *                   type: array
+ *                   description: array of recommended method chunks sorted by best rank
+ *                   items: object
+ *                     properties:
+ *                       methodChunk:
+ *                         type: string
+ *                         description: slug-type id of method chunk name
+ *                         example: AgileDevelopment
+ *                       rank:
+ *                         type: integer
+ *                         description: rank of method chunk (`1` = most recommended)
+ *                         example: 1
+ *                       score:
+ *                         type: float
+ *                         description: numerical score of method chunk by the algorithm. In `WeightedSum` it uses points/sum. In `TOPSIS` it uses closeness.
+ *                         example: 8
+ */
+router.get("/find", (req, res) => {
   axios
     .post("http://localhost:5000/find", {
-      project: testProject
+      project: req.project
     })
-    .then(function(response) {
-      console.log(response);
+    .then(response => {
       res.send(response.data);
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(err => {
+      console.log("Find", err);
+      res.status(400).send({
+        message: err.message || "Some error occurred while finding."
+      });
     });
   return;
 });
 
-router.get("/find", (req, res) => {
-  MethodChunk.find()
-    .then(result => {
-      let runPy = new Promise((resolve, reject) => {
-        const { spawn } = require("child_process");
-        const pyProg = spawn("python", [
-          path.join(__dirname, "./../mcdm.py"),
-          JSON.stringify(testProject.characteristics),
-          JSON.stringify(result)
-        ]);
-        pyProg.stdout.on("data", data => {
-          resolve(data);
-        });
-        pyProg.stderr.on("data", data => {
-          reject(data);
-        });
-      });
+// TO-DO
+// router.get("/find2", (req, res) => {
+//   MethodChunk.find()
+//     .then(result => {
+//       let runPy = new Promise((resolve, reject) => {
+//         const { spawn } = require("child_process");
+//         const pyProg = spawn("python", [
+//           path.join(__dirname, "./../mcdm.py"),
+//           JSON.stringify(testProject.characteristics),
+//           JSON.stringify(result)
+//         ]);
+//         pyProg.stdout.on("data", data => {
+//           resolve(data);
+//         });
+//         pyProg.stderr.on("data", data => {
+//           reject(data);
+//         });
+//       });
 
-      runPy
-        .then(result => {
-          var resultString = result.toString("utf8");
-          res.send(resultString);
-        })
-        .catch(err => {
-          console.log("MCDM", err.toString("utf8"));
-          res.status(500).send({
-            message: err.message || "Some error occurred while retrieving."
-          });
-        });
-    })
-    .catch(err => {
-      console.log("Find all MC", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while retrieving."
-      });
-    });
-});
+//       runPy
+//         .then(result => {
+//           var resultString = result.toString("utf8");
+//           res.send(resultString);
+//         })
+//         .catch(err => {
+//           console.log("MCDM", err.toString("utf8"));
+//           res.status(500).send({
+//             message: err.message || "Some error occurred while retrieving."
+//           });
+//         });
+//     })
+//     .catch(err => {
+//       console.log("Find all MC", err);
+//       res.status(400).send({
+//         message: err.message || "Some error occurred while retrieving."
+//       });
+//     });
+// });
 
 /**
  * @swagger

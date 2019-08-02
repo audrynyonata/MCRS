@@ -136,7 +136,7 @@ components:
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
         characteristics: [
           {
-            id: "management-commitment",
+            characteristic: "management-commitment",
             rule: "maximum"
           }
         ]
@@ -151,13 +151,13 @@ components:
         characteristics: [
           {
             _id: "5d23baf907290510cc6ad57c",
-            id: "impact",
+            characteristic: "impact",
             rule: "maximum",
             weight: 0.15
           },
           {
             _id: "5d23baf907290510cc6ad57b",
-            id: "user-goals",
+            characteristic: "user-goals",
             rule: "preference_list",
             value: ["one goal", "multi-goals"],
             weight: 0.85

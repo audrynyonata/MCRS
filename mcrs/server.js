@@ -90,8 +90,19 @@ app.use(
 
 app.use(function(err, req, res, next) {
   if (err.name === "UnauthorizedError") {
-    res.status(err.status).send({ message: err.message });
-    return;
+    return res.status(err.status).send({ message: err.message });
+  }
+  next();
+});
+
+app.use(function(req, res, next) {
+  if (req.method == "POST" || req.method == "PUT") {
+    if (
+      Object.entries(req.body).length === 0 &&
+      req.body.constructor === Object
+    ) {
+      return res.status(400).send({ message: "Invalid request body" });
+    }
   }
   next();
 });

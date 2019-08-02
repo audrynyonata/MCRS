@@ -77,8 +77,7 @@ const seedCharacteristic = () => {
 const seedMethodChunk = () => {
   return fetch(`${server}/method-chunks`, {
     method: "POST",
-    body: JSON.stringify(METHOD_CHUNKS),
-    // body: JSON.stringify(METHOD_CHUNKS.concat(METHOD_CHUNKS_ADDITIONAL)),
+    body: JSON.stringify(METHOD_CHUNKS.concat(METHOD_CHUNKS_ADDITIONAL)),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
