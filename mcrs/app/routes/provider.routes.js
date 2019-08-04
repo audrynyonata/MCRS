@@ -27,7 +27,7 @@ const providers = require("../controllers/provider.controller.js");
  *         schema:
  *           type: string
  *       - in: query
- *         name: related_providers
+ *         name: relatedProviders
  *         schema:
  *           type: string
  *       - in: query

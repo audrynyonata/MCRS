@@ -15,13 +15,7 @@ exports.authenticate = (req, res) => {
       result.comparePassword(req.body.password, function(err, isMatch) {
         if (err) throw err;
         if (isMatch) {
-          const token = jwt.sign(
-            {
-              id: result.id,
-              exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
-            },
-            jwtConfig.secret
-          );
+          const token = jwt.sign({ id: result.id }, jwtConfig.secret);
           res.cookie("token", token);
           res.send({ token });
         } else {
@@ -53,19 +47,13 @@ exports.register = (req, res) => {
     industry: req.body.industry,
     urls: req.body.urls,
     contacts: req.body.contacts,
-    related_providers: req.body.related_providers
+    relatedProviders: req.body.relatedProviders
   });
 
   provider
     .save()
     .then(result => {
-      const token = jwt.sign(
-        {
-          id: result.email,
-          exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
-        },
-        jwtConfig.secret
-      );
+      const token = jwt.sign({ id: result.id }, jwtConfig.secret);
       res.cookie("token", token);
       res.send({ token });
     })
@@ -109,7 +97,7 @@ exports.create = (req, res) => {
       industry: req.body.industry,
       urls: req.body.urls,
       contacts: req.body.contacts,
-      related_providers: req.body.related_providers
+      relatedProviders: req.body.relatedProviders
     });
 
     provider
@@ -152,9 +140,9 @@ exports.findAll = (req, res) => {
       $options: "i"
     };
   }
-  if (req.query.related_providers) {
-    criteria.related_providers = {
-      $regex: new RegExp(req.query.related_providers, "g"),
+  if (req.query.relatedProviders) {
+    criteria.relatedProviders = {
+      $regex: new RegExp(req.query.relatedProviders, "g"),
       $options: "i"
     };
   }
@@ -218,8 +206,8 @@ exports.update = (req, res) => {
       if (req.body.contacts) {
         result.contacts = req.body.contacts;
       }
-      if (req.body.related_providers) {
-        result.related_providers = req.body.related_providers;
+      if (req.body.relatedProviders) {
+        result.relatedProviders = req.body.relatedProviders;
       }
       if (req.body.password) {
         result.password = req.body.password;

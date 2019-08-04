@@ -1,85 +1,113 @@
+const Characteristic = require("../models/characteristic.model.js");
 const Project = require("../models/project.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
+  console.log(req);
   if (req.body.length) {
-    req.body.forEach(e => {
-      e.id =
-        slugify(`${e.provider}`, {
-          replacement: "-",
-          remove: /[*+~.()'"!:@]/g,
-          lower: true
-        }) +
-        "/" +
-        slugify(`${e.name}`, {
+    var initAll = req.body.map(doc => {
+      var init = doc.characteristics.map(e =>
+        e.ref
+          ? Promise.resolve(e)
+          : new Promise((resolve, reject) => {
+              let c = Characteristic.findOne({ id: e.id })
+                .then(res => {
+                  if (res) {
+                    let characteristic = {
+                      ...e,
+                      ref: res.characteristicValues[0].ref
+                    };
+                    return characteristic;
+                  }
+                })
+                .catch(err => {
+                  console.log("Find ref project", err);
+                  return err;
+                });
+              resolve(c);
+            })
+      );
+
+      return new Promise((resolve, reject) => {
+        let projectId = slugify(doc.name, {
           replacement: "-",
           remove: /[*+~.()'"!:@]/g,
           lower: true
         });
 
-      e.project = slugify(`${e.name}`, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true
-      });
-      e.provider = e.provider
-        ? slugify(`${e.provider}`, {
-            replacement: "-",
-            remove: /[*+~.()'"!:@]/g,
-            lower: true
-          })
-        : req.user.id;
-    });
-    Project.insertMany(req.body)
-      .then(result => res.send(result))
-      .catch(err => {
-        console.log("Create bulk project", err);
-        res.status(400).send({
-          message: err.message || "Some error occurred while saving."
+        let p = Promise.all(init).then(characteristics => {
+          let provider = doc.provider || req.user.id;
+          let d = {
+            ...doc,
+            project: projectId,
+            provider: provider,
+            id: provider + "/" + projectId,
+            characteristics: characteristics
+          };
+          console.log(d);
+          return d;
         });
+        resolve(p);
       });
+    });
+
+    Promise.all(initAll).then(docs => {
+      Project.insertMany(docs)
+        .then(result => res.send(result))
+        .catch(err => {
+          console.log("Create bulk project", err);
+          res.status(400).send({
+            message: err.message || "Some error occurred while saving."
+          });
+        });
+    });
   } else {
-    const project = new Project({
-      id:
-        slugify(`${req.body.provider}`, {
-          replacement: "-",
-          remove: /[*+~.()'"!:@]/g,
-          lower: true
-        }) +
-        "/" +
-        slugify(`${req.body.name}`, {
-          replacement: "-",
-          remove: /[*+~.()'"!:@]/g,
-          lower: true
-        }),
-      name: req.body.name,
-      project: slugify(`${req.body.name}`, {
+    let doc = req.body;
+    var init = doc.characteristics.map(e =>
+      e.ref
+        ? Promise.resolve(e)
+        : new Promise((resolve, reject) => {
+            let c = Characteristic.findOne({ id: e.id })
+              .then(res => {
+                if (res) {
+                  let characteristic = {
+                    ...e,
+                    ref: res.characteristicValues[0].ref
+                  };
+                  return characteristic;
+                }
+              })
+              .catch(err => {
+                console.log("Find ref project", err);
+                return err;
+              });
+            resolve(c);
+          })
+    );
+
+    Promise.all(init).then(characteristics => {
+      doc.project = slugify(doc.name, {
         replacement: "-",
         remove: /[*+~.()'"!:@]/g,
         lower: true
-      }),
-      provider: req.body.provider
-        ? slugify(`${req.body.provider}`, {
-            replacement: "-",
-            remove: /[*+~.()'"!:@]/g,
-            lower: true
-          })
-        : req.user.id,
-      description: req.body.description,
-      characteristics: req.body.characteristics
-    });
-
-    project
-      .save()
-      .then(result => {
-        res.send(result);
-      })
-      .catch(err => {
-        console.log("Create project", err);
-        res.status(400).send({
-          message: err.message || "Some error occurred while saving."
-        });
       });
+      doc.provider = doc.provider || req.user.id;
+      doc.id = doc.provider + "/" + doc.project;
+      doc.characteristics = characteristics;
+
+      const project = new Project(doc);
+      project
+        .save()
+        .then(result => {
+          res.send(result);
+        })
+        .catch(err => {
+          console.log("Create project", err);
+          res.status(400).send({
+            message: err.message || "Some error occurred while saving."
+          });
+        });
+    });
   }
 };
 
@@ -113,18 +141,6 @@ exports.findAll = (req, res) => {
   if (req.query.characteristics_id) {
     criteriaCharacteristics.id = {
       $regex: new RegExp(req.query.characteristics_id, "g"),
-      $options: "i"
-    };
-  }
-  if (req.query.characteristics_optimal_sense) {
-    criteriaCharacteristics.value = {
-      $regex: new RegExp(req.query.characteristics_optimal_sense, "g"),
-      $options: "i"
-    };
-  }
-  if (req.query.characteristics_type) {
-    criteriaCharacteristics.type = {
-      $regex: new RegExp(req.query.characteristics_type, "g"),
       $options: "i"
     };
   }
@@ -186,33 +202,59 @@ exports.update = (req, res) => {
   if (req.body.description) {
     doc.description = req.body.description;
   }
+  var init = [];
   if (req.body.characteristics) {
-    doc.characteristics = req.body.characteristics;
+    init = req.body.characteristics.map(e =>
+      e.ref
+        ? Promise.resolve(e)
+        : new Promise((resolve, reject) => {
+            let c = Characteristic.findOne({ id: e.id })
+              .then(res => {
+                if (res) {
+                  let characteristic = {
+                    ...e,
+                    ref: res.characteristicValues[0].ref
+                  };
+                  return characteristic;
+                }
+              })
+              .catch(err => {
+                console.log("Find ref method chunk", err);
+                return err;
+              });
+            resolve(c);
+          })
+    );
   }
-  Project.findOneAndUpdate(
-    {
-      provider: req.params.provider_id.toLowerCase(),
-      project: req.params.project_id.toLowerCase()
-    },
-    doc,
-    { new: true }
-  )
-    .then(result => {
-      if (!result) {
-        return res.status(404).send({
-          message: `Project ${req.params.provider_id}/${
-            req.params.project_id
-          } not found.`
+  Promise.all(init).then(characteristics => {
+    if (init != []) {
+      doc.characteristics = characteristics;
+    }
+    Project.findOneAndUpdate(
+      {
+        provider: req.params.provider_id.toLowerCase(),
+        project: req.params.project_id.toLowerCase()
+      },
+      doc,
+      { new: true }
+    )
+      .then(result => {
+        if (!result) {
+          return res.status(404).send({
+            message: `Project ${req.params.provider_id}/${
+              req.params.project_id
+            } not found.`
+          });
+        }
+        res.send(result);
+      })
+      .catch(err => {
+        console.log("Update project", err);
+        res.status(400).send({
+          message: err.message || "Some error occurred while updating."
         });
-      }
-      res.send(result);
-    })
-    .catch(err => {
-      console.log("Update project", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while updating."
       });
-    });
+  });
 };
 
 exports.delete = (req, res) => {

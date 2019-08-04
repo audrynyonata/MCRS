@@ -21,20 +21,25 @@ components:
               id:
                 type: string
                 description: slug-type id of characteristic
-              optimal_sense:
+              ref:
                 type: string
-                description: the most optimum value to be seek. (e.g. maximum or minimum for ordinal data type, exact value for nominal data type)
-              type:
+                description: ref of the group the value belongs to. If not specified, will use first group.
+              rule:
                 type: string
-                description: name of data type of value. See `types` for more info.
+                description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
+              value:
+                type: array
+                description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
+                items:
+                  type: string
               weight:
                 type: number
                 format: float
-                description: weight / importance of characteristic. Max value is 1.0.
+                description: weight / importance of characteristic. Max value is 1.0. (optional)
       required:
         - name
         - provider
-        - characteristic
+        - characteristics
     ProjectUpdateInput:
       type: object
       properties:
@@ -53,16 +58,21 @@ components:
               id:
                 type: string
                 description: slug-type id of characteristic
-              optimal_sense:
+              ref:
                 type: string
-                description: the most optimum value to be seek. (e.g. maximum or minimum for ordinal data type, exact value for nominal data type)
-              type:
+                description: ref of the group the value belongs to. If not specified, will use first group.
+              rule:
                 type: string
-                description: name of data type of value. See `types` for more info.
+                description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
+              value:
+                type: array
+                description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
+                items:
+                  type: string
               weight:
                 type: number
                 format: float
-                description: weight / importance of characteristic. Max value is 1.0.
+                description: weight / importance of characteristic. Max value is 1.0. (optional)
     Project:
       type: object
       properties:
@@ -96,16 +106,21 @@ components:
               id:
                 type: string
                 description: slug-type id of characteristic
-              optimal_sense:
+              ref:
                 type: string
-                description: the most optimum value to be seek. (e.g. maximum or minimum for ordinal data type, exact value for nominal data type)
-              type:
+                description: ref of the group the value belongs to. If not specified, will use first group.
+              rule:
                 type: string
-                description: name of data type of value. See `types` for more info.
+                description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
+              value:
+                type: array
+                description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
+                items:
+                  type: string
               weight:
                 type: number
                 format: float
-                description: weight / importance of characteristic. Max value is 1.0.
+                description: weight / importance of characteristic. Max value is 1.0. (optional)
         createdAt:
           type: string
           format: date-time
@@ -122,8 +137,7 @@ components:
         characteristics: [
           {
             id: "management-commitment",
-            optimal_sense: "maximum",
-            type: "ordinal"
+            rule: "maximum"
           }
         ]
     ProjectExample:
@@ -138,15 +152,14 @@ components:
           {
             _id: "5d23baf907290510cc6ad57c",
             id: "impact",
-            optimal_sense: "maximum",
-            type: "ordinal",
+            rule: "maximum",
             weight: 0.15
           },
           {
             _id: "5d23baf907290510cc6ad57b",
             id: "user-goals",
-            optimal_sense: "multi-goals",
-            type: "nominal",
+            rule: "preference_list",
+            value: ["one goal", "multi-goals"],
             weight: 0.85
           }
         ]

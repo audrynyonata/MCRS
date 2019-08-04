@@ -65,15 +65,15 @@ app.use(
     }
   }).unless({
     path: [
-      // public routes that don't require authentication publish?find?
+      // public routes that don't require authentication
       "/",
-      "/swagger.json",
-      "/api-docs",
-      "/authenticate",
-      "/register",
+      /\/swagger.json/i,
+      /\/api-docs/i,
+      /\/authenticate/i,
+      /\/register/i,
+      /\/find/i,
       { url: "/dimensions", methods: ["GET"] },
       { url: "/industries", methods: ["GET"] },
-      { url: "/types", methods: ["GET"] },
       { url: "/providers", methods: ["GET"] },
       { url: /^\/providers\/.*/, methods: ["GET"] },
       { url: "/method-chunks", methods: ["GET"] },
@@ -88,8 +88,19 @@ app.use(
 
 app.use(function(err, req, res, next) {
   if (err.name === "UnauthorizedError") {
-    res.status(err.status).send({ message: err.message });
-    return;
+    return res.status(err.status).send({ message: err.message });
+  }
+  next();
+});
+
+app.use(function(req, res, next) {
+  if (req.method == "POST" || req.method == "PUT") {
+    if (
+      Object.entries(req.body).length === 0 &&
+      req.body.constructor === Object
+    ) {
+      return res.status(400).send({ message: "Invalid request body" });
+    }
   }
   next();
 });

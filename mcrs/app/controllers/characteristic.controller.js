@@ -3,14 +3,16 @@ const slugify = require("slugify");
 
 exports.create = (req, res) => {
   if (req.body.length) {
-    req.body.forEach(
-      e =>
-        (e.id = slugify(e.name, {
-          replacement: "-",
-          remove: /[*+~.()'"!:@]/g,
-          lower: true
-        }))
-    );
+    req.body.forEach(e => {
+      e.id = slugify(e.name, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+      });
+      e.characteristicValues.forEach(el => {
+        el.ref = el.ref ? el.ref : el.values.join("/");
+      });
+    });
     Characteristic.insertMany(req.body)
       .then(result => res.send(result))
       .catch(err => {
@@ -20,6 +22,9 @@ exports.create = (req, res) => {
         });
       });
   } else {
+    req.body.characteristicValues.forEach(el => {
+      el.ref = el.ref ? el.ref : el.values.join("/");
+    });
     const characteristic = new Characteristic({
       id: slugify(req.body.name, {
         replacement: "-",
@@ -29,7 +34,7 @@ exports.create = (req, res) => {
       name: req.body.name,
       dimension: req.body.dimension,
       description: req.body.description,
-      characteristic_values: req.body.characteristic_values
+      characteristicValues: req.body.characteristicValues
     });
 
     characteristic
@@ -67,13 +72,13 @@ exports.findAll = (req, res) => {
     };
   }
   if (req.query.characteristics_type) {
-    criteria["characteristic_values.type"] = {
+    criteria["characteristicValues.type"] = {
       $regex: new RegExp(req.query.characteristics_type, "g"),
       $options: "i"
     };
   }
   if (req.query.characteristics_value) {
-    criteria["characteristic_values.values"] = {
+    criteria["characteristicValues.values"] = {
       $regex: new RegExp(req.query.characteristics_value, "g"),
       $options: "i"
     };
@@ -131,8 +136,11 @@ exports.update = (req, res) => {
   if (req.body.description) {
     doc.description = req.body.description;
   }
-  if (req.body.characteristic_values) {
-    doc.characteristic_values = req.body.characteristic_values;
+  if (req.body.characteristicValues) {
+    req.body.characteristicValues.forEach(el => {
+      el.ref = el.ref ? el.ref : el.values.join("/");
+    });
+    doc.characteristicValues = req.body.characteristicValues;
   }
   Characteristic.findOneAndUpdate({ id: req.params.id.toLowerCase() }, doc, {
     new: true

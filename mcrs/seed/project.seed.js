@@ -1,5 +1,3 @@
-const { ORDINAL, NOMINAL, NUMERICAL } = require("./characteristic.seed");
-
 const testProject = {
   name: "Test Project",
   provider: "company-a-ltd",
@@ -7,35 +5,54 @@ const testProject = {
   characteristics: [
     {
       id: "impact",
-      optimal_sense: "maximum",
-      type: ORDINAL
+      rule: "maximum"
     },
     {
       id: "level-of-innovation",
-      optimal_sense: "maximum",
-      type: ORDINAL
+      rule: "maximum"
     },
     {
       id: "expertise",
-      optimal_sense: "minimum",
-      type: ORDINAL
+      rule: "minimum"
     },
     {
       id: "guidance",
-      optimal_sense: "predefined taxonomy",
-      type: NOMINAL
+      ref: "predefined taxonomy/heuristics/guidelines",
+      rule: "preference_list",
+      value: ["predefined taxonomy", "heuristics", "guidelines"]
     },
     {
       id: "approach",
-      optimal_sense: "systemic",
-      type: NOMINAL
+      ref: "systemic/exploratory/explanatory",
+      rule: "preference_list",
+      value: ["systemic", "exploratory", "explanatory"]
     },
     {
       id: "formalism",
-      optimal_sense: "formal",
-      type: NOMINAL
+      ref: "formal/semi-formal/informal",
+      rule: "preference_list",
+      value: ["formal", "semi-formal", "informal"]
     }
   ]
 };
 
-module.exports = { testProject };
+const testProject2 = {
+  name: "Test Project 2",
+  description:
+    "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable.",
+  characteristics: [
+    {
+      id: "shortage-of-resources",
+      ref: "human/means",
+      rule: "exact",
+      value: "human"
+    },
+    {
+      id: "impact",
+      ref: "default",
+      rule: "preference_list",
+      value: ["high", "low"]
+    }
+  ]
+};
+module.exports = { testProject, testProject2 };

@@ -21,7 +21,7 @@ const companyA = {
       address: "Centrak Park, 679, CL"
     }
   ],
-  related_providers: ["Company B", "Company C"]
+  relatedProviders: ["company-b", "company-c"]
 };
 
 const companyB = {

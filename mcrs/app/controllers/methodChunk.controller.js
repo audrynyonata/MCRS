@@ -1,50 +1,104 @@
+const Characteristic = require("../models/characteristic.model.js");
 const MethodChunk = require("../models/methodChunk.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
   if (req.body.length) {
-    req.body.forEach(
-      e =>
-        (e.id = slugify(e.name, {
-          replacement: "-",
-          remove: /[*+~.()'"!:@]/g,
-          lower: true
-        })),
-      (e.provider = e.provider || req.user.id)
-    );
-    MethodChunk.insertMany(req.body)
-      .then(result => res.send(result))
-      .catch(err => {
-        console.log("Create bulk method chunk", err);
-        res.status(400).send({
-          message: err.message || "Some error occurred while saving."
+    var initAll = req.body.map(doc => {
+      var init = doc.characteristics.map(e =>
+        e.ref
+          ? Promise.resolve(e)
+          : new Promise((resolve, reject) => {
+              let c = Characteristic.findOne({ id: e.id })
+                .then(res => {
+                  if (res) {
+                    let characteristic = {
+                      ...e,
+                      ref: res.characteristicValues[0].ref
+                    };
+                    return characteristic;
+                  }
+                })
+                .catch(err => {
+                  console.log("Find ref method chunk", err);
+                  return err;
+                });
+              resolve(c);
+            })
+      );
+      return new Promise((resolve, reject) => {
+        let p = Promise.all(init).then(characteristics => {
+          let d = {
+            ...doc,
+            id: slugify(doc.name, {
+              replacement: "-",
+              remove: /[*+~.()'"!:@]/g,
+              lower: true
+            }),
+            provider: doc.provider || req.user.id,
+            characteristics: characteristics
+          };
+          return d;
         });
+        resolve(p);
       });
+    });
+
+    Promise.all(initAll).then(docs => {
+      MethodChunk.insertMany(docs)
+        .then(result => res.send(result))
+        .catch(err => {
+          console.log("Create bulk method chunk", err);
+          res.status(400).send({
+            message: err.message || "Some error occurred while saving."
+          });
+        });
+    });
   } else {
-    const methodChunk = new MethodChunk({
-      id: slugify(req.body.name, {
+    let doc = req.body;
+    var init = doc.characteristics.map(e =>
+      e.ref
+        ? Promise.resolve(e)
+        : new Promise((resolve, reject) => {
+            let c = Characteristic.findOne({ id: e.id })
+              .then(res => {
+                if (res) {
+                  let characteristic = {
+                    ...e,
+                    ref: res.characteristicValues[0].ref
+                  };
+                  return characteristic;
+                }
+              })
+              .catch(err => {
+                console.log("Find ref method chunk", err);
+                return err;
+              });
+            resolve(c);
+          })
+    );
+    Promise.all(init).then(characteristics => {
+      doc.id = slugify(doc.name, {
         replacement: "-",
         remove: /[*+~.()'"!:@]/g,
         lower: true
-      }),
-      name: req.body.name,
-      description: req.body.description,
-      provider: req.body.provider || req.user.id,
-      url: req.body.url,
-      characteristics: req.body.characteristics
-    });
-
-    methodChunk
-      .save()
-      .then(result => {
-        res.send(result);
-      })
-      .catch(err => {
-        console.log("Create MC", err);
-        res.status(400).send({
-          message: err.message || "Some error occurred while saving."
-        });
       });
+      doc.provider = doc.provider || req.user.id;
+      doc.characteristics = characteristics;
+
+      const methodChunk = new MethodChunk(doc);
+      methodChunk
+        .save()
+        .then(result => {
+          res.send(result);
+        })
+        .catch(err => {
+          console.log("Create MC", err);
+          res.status(400).send({
+            message: err.message || "Some error occurred while saving."
+          });
+        });
+    });
   }
 };
 
@@ -78,12 +132,6 @@ exports.findAll = (req, res) => {
   if (req.query.characteristics_value) {
     criteriaCharacteristics.value = {
       $regex: new RegExp(req.query.characteristics_value, "g"),
-      $options: "i"
-    };
-  }
-  if (req.query.characteristics_type) {
-    criteriaCharacteristics.type = {
-      $regex: new RegExp(req.query.characteristics_type, "g"),
       $options: "i"
     };
   }
@@ -145,27 +193,52 @@ exports.update = (req, res) => {
   if (req.body.description) {
     doc.description = req.body.description;
   }
+  var init = [];
   if (req.body.characteristics) {
-    doc.characteristics = req.body.characteristics;
+    init = req.body.characteristics.map(e =>
+      e.ref
+        ? Promise.resolve(e)
+        : new Promise((resolve, reject) => {
+            let c = Characteristic.findOne({ id: e.id })
+              .then(res => {
+                if (res) {
+                  let characteristic = {
+                    ...e,
+                    ref: res.characteristicValues[0].ref
+                  };
+                  return characteristic;
+                }
+              })
+              .catch(err => {
+                console.log("Find ref method chunk", err);
+                return err;
+              });
+            resolve(c);
+          })
+    );
   }
-
-  MethodChunk.findOneAndUpdate({ id: req.params.id.toLowerCase() }, doc, {
-    new: true
-  })
-    .then(result => {
-      if (!result) {
-        return res.status(404).send({
-          message: `Method Chunk ${req.params.id} not found.`
-        });
-      }
-      res.send(result);
+  Promise.all(init).then(characteristics => {
+    if (init != []) {
+      doc.characteristics = characteristics;
+    }
+    MethodChunk.findOneAndUpdate({ id: req.params.id.toLowerCase() }, doc, {
+      new: true
     })
-    .catch(err => {
-      console.log("Update MC", err);
-      return res.status(400).send({
-        message: err.message || "Some error occurred while updating."
+      .then(result => {
+        if (!result) {
+          return res.status(404).send({
+            message: `Method Chunk ${req.params.id} not found.`
+          });
+        }
+        res.send(result);
+      })
+      .catch(err => {
+        console.log("Update MC", err);
+        return res.status(400).send({
+          message: err.message || "Some error occurred while updating."
+        });
       });
-    });
+  });
 };
 
 exports.delete = (req, res) => {

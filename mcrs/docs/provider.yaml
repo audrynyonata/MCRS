@@ -55,9 +55,9 @@ components:
               address:
                 type: string
                 description: mailing address of this contact info
-        related_providers:
+        relatedProviders:
           type: array
-          description: a set of companies names that have business-related relationship to this company
+          description: a set of companies id that have business-related relationship to this company
           items:
             type: string
       required:
@@ -109,9 +109,9 @@ components:
               address:
                 type: string
                 description: mailing address of this contact info
-        related_providers:
+        relatedProviders:
           type: array
-          description: a set of companies names that have business-related relationship to this company
+          description: a set of companies id that have business-related relationship to this company
           items:
             type: string
     Provider:
@@ -177,9 +177,9 @@ components:
               address:
                 type: string
                 description: mailing address of this contact info
-        related_providers:
+        relatedProviders:
           type: array
-          description: a set of companies names that have business-related relationship to this company
+          description: a set of companies id that have business-related relationship to this company
           items:
             type: string
         createdAt:
@@ -214,9 +214,9 @@ components:
             address: "Centrak Park, 679, CL"
           }
         ]
-        related_providers: [
-          "Company B",
-          "Company C"
+        relatedProviders: [
+          "company-b",
+          "company-c"
         ]
     ProviderExample:
       value:
@@ -244,9 +244,9 @@ components:
             address: "Centrak Park, 679, CL"
           }
         ]
-        related_providers: [
-          "Company B",
-          "Company C"
+        relatedProviders: [
+          "company-b",
+          "company-c"
         ]
         createdAt: "2019-07-07T19:51:36.284Z"
         updatedAt: "2019-07-07T19:51:36.284Z"

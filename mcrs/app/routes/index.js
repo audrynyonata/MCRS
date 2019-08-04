@@ -1,20 +1,13 @@
 const provider = require("../controllers/provider.controller.js");
 const methodChunk = require("../controllers/methodChunk.controller.js");
-const MethodChunk = require("../models/methodChunk.model.js");
 
 const DIMENSIONS = require("../dimensions.js");
 const INDUSTRIES = require("../industries.js");
-const TYPES = require("../types.js");
 
 const path = require("path");
 const axios = require("axios");
 const express = require("express");
 const router = express.Router();
-
-router.get("/test/method-chunks", (req, res) => {
-  const { METHOD_CHUNKS } = require("../../seed/methodChunk.seed");
-  res.send(METHOD_CHUNKS);
-});
 
 /**
  * @swagger
@@ -65,7 +58,7 @@ router.get("/", (req, res) => {
  *           examples:
  *             default:
  *               value:
- *                 email: "company@example.com"
+ *                 email: "company@a.com"
  *                 password: "password"
  *     responses:
  *       200:
@@ -139,13 +132,18 @@ router.post("/register", (req, res) => {
  *               value:
  *                 - name: "Kanban Board"
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
+ *                   characteristics: [
+ *                     {
+ *                       id: "impact",
+ *                       value: "high"
+ *                     }
+ *                   ]
  *                 - name: "Sprint retrospective"
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
  *                       id: "delivery-strategy",
- *                       value: "incremental",
- *                       type: "nominal"
+ *                       value: "incremental"
  *                     }
  *                   ]
  *     responses:
@@ -165,100 +163,176 @@ router.post("/publish", (req, res) => {
   methodChunk.create(req, res);
 });
 
-const testProject = {
-  name: "Test Project",
-  provider: "company-a-ltd",
-  description: "IS security chunks evaluation.",
-  characteristics: [
-    {
-      id: "impact",
-      optimal_sense: "maximum",
-      type: "ordinal",
-      weight: 0.3
-    },
-    {
-      id: "level-of-innovation",
-      optimal_sense: "maximum",
-      type: "ordinal",
-      weight: 0.2
-    },
-    {
-      id: "expertise",
-      optimal_sense: "minimum",
-      type: "ordinal",
-      weight: 0.5
-    },
-    {
-      id: "guidance",
-      optimal_sense: "predefined taxonomy",
-      type: "nominal"
-    },
-    {
-      id: "approach",
-      optimal_sense: "systemic",
-      type: "nominal"
-    },
-    {
-      id: "formalism",
-      optimal_sense: "formal",
-      type: "nominal"
-    }
-  ]
-};
-router.get("/find2", (req, res) => {
-  // project.create(req, res);
-
+/**
+ * @swagger
+ * /find:
+ *   post:
+ *     description: Find ranked method chunk recommendation according to project characteristics
+ *     tags:
+ *       - Publish & Find Method Chunk
+ *     requestBody:
+ *       description: Project id
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               project:
+ *                 type: string
+ *                 description: slug-type id of the project name
+ *           examples:
+ *             default:
+ *               value:
+ *                 project: company-a-ltd/test-project
+ *     responses:
+ *       '200':
+ *         description: Return ranked method chunk recommendation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 projectCharacteristics:
+ *                   type: array
+ *                   description: details of characteristics used to calculate result
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: slug-type id of characteristic
+ *                         example: expertise
+ *                       encoder:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         description: encoder used to convert categories to its index position in array
+ *                         example: ["N/A", "high", "normal", "low"]
+ *                       ref:
+ *                         type: string
+ *                         description: ref of the group the value belongs to. If not specified, will use first group.
+ *                         example: default
+ *                       rule:
+ *                         type: string
+ *                         description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
+ *                         example: minimum
+ *                       value:
+ *                         type: array
+ *                         description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
+ *                         items:
+ *                           type: string
+ *                         example: []
+ *                       weight:
+ *                         type: number
+ *                         format: float
+ *                         description: weight / importance of characteristic. Max value is 1.0. (optional)
+ *                         example: 1.0
+ *                 results:
+ *                   type: array
+ *                   description: result of various multi-criteria decision making algorithm
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       model:
+ *                         type: string
+ *                         description: multi-criteria algorithm model that is used. Currently available are `WeightedSum` and `TOPSIS`.
+ *                         example: WeightedSum
+ *                       methodChunks:
+ *                         type: array
+ *                         description: array of recommended method chunks sorted by rank
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                               description: slug-type id of method chunk name
+ *                             score:
+ *                               type: number
+ *                               description: numerical score of method chunk by the algorithm. In `WeightedSum` it uses points/sum. In `TOPSIS` it uses closeness.
+ *                             rank:
+ *                               type: integer
+ *                               description: rank of method chunk (`1` = most recommended)
+ *                         example:
+ *                           - id: kaos
+ *                             score: 0.842387499
+ *                             rank: 1
+ *                           - id: nfr-framework
+ *                             score: 0.034234
+ *                             rank: 2
+ */
+router.post("/find", (req, res) => {
   axios
     .post("http://localhost:5000/find", {
-      project: testProject
+      project: req.body.project
     })
-    .then(function(response) {
-      console.log(response);
+    .then(response => {
       res.send(response.data);
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(err => {
+      console.log("Find", err.message);
+      return res.status(400).send({
+        message: err.message || "Some error occurred while finding."
+      });
     });
   return;
 });
 
-router.get("/find", (req, res) => {
-  MethodChunk.find()
-    .then(result => {
-      let runPy = new Promise((resolve, reject) => {
-        const { spawn } = require("child_process");
-        const pyProg = spawn("python", [
-          path.join(__dirname, "./../mcdm.py"),
-          JSON.stringify(testProject.characteristics),
-          JSON.stringify(result)
-        ]);
-        pyProg.stdout.on("data", data => {
-          resolve(data);
-        });
-        pyProg.stderr.on("data", data => {
-          reject(data);
-        });
-      });
-
-      runPy
-        .then(result => {
-          var resultString = result.toString("utf8");
-          res.send(resultString);
-        })
-        .catch(err => {
-          console.log("MCDM", err.toString("utf8"));
-          res.status(500).send({
-            message: err.message || "Some error occurred while retrieving."
-          });
-        });
+router.get("/find/:provider/:project", (req, res) => {
+  axios
+    .post("http://localhost:5000/find", {
+      project: req.params.provider + "/" + req.params.project
+    })
+    .then(response => {
+      res.send(response.data);
     })
     .catch(err => {
-      console.log("Find all MC", err);
-      res.status(400).send({
-        message: err.message || "Some error occurred while retrieving."
+      console.log("Find", err.message);
+      return res.status(400).send({
+        message: err.message || "Some error occurred while finding."
       });
     });
+  return;
 });
+
+// TO-DO
+// router.get("/find2", (req, res) => {
+//   MethodChunk.find()
+//     .then(result => {
+//       let runPy = new Promise((resolve, reject) => {
+//         const { spawn } = require("child_process");
+//         const pyProg = spawn("python", [
+//           path.join(__dirname, "./../mcdm.py"),
+//           JSON.stringify(testProject.characteristics),
+//           JSON.stringify(result)
+//         ]);
+//         pyProg.stdout.on("data", data => {
+//           resolve(data);
+//         });
+//         pyProg.stderr.on("data", data => {
+//           reject(data);
+//         });
+//       });
+
+//       runPy
+//         .then(result => {
+//           var resultString = result.toString("utf8");
+//           res.send(resultString);
+//         })
+//         .catch(err => {
+//           console.log("MCDM", err.toString("utf8"));
+//           res.status(500).send({
+//             message: err.message || "Some error occurred while retrieving."
+//           });
+//         });
+//     })
+//     .catch(err => {
+//       console.log("Find all MC", err);
+//       res.status(400).send({
+//         message: err.message || "Some error occurred while retrieving."
+//       });
+//     });
+// });
 
 /**
  * @swagger
@@ -340,54 +414,6 @@ router.get("/dimensions", (req, res) => {
  */
 router.get("/industries", (req, res) => {
   res.json(INDUSTRIES);
-});
-
-/**
- * @swagger
- * /types:
- *   get:
- *     description: Return list of all characteristics value type
- *     tags:
- *       - Other Resources
- *     responses:
- *       200:
- *         description: List of all characteristics value type
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     description: slug-type id of data type name
- *                   name:
- *                     type: string
- *                     description: name of data type
- *                   description:
- *                     type: string
- *                     description: a brief description about this data type
- *             example: [
- *               {
- *                 "id": "ordinal",
- *                 "name": "Ordinal",
- *                 "description": "Non-quantifiable / qualitative data that can be ordered / sorted."
- *               },
- *               {
- *                 "id": "nominal",
- *                 "name": "Nominal",
- *                 "description": "Non-quantifiable / qualitative data for unordered categories."
- *               },
- *               {
- *                 "id": "numerical",
- *                 "name": "Numerical",
- *                 "description": "Quantifiable / quantitative data in numbers (interval vs. ratio, discrete vs. continuous)."
- *               }
- *             ]
- */
-router.get("/types", (req, res) => {
-  res.json(TYPES);
 });
 
 module.exports = router;

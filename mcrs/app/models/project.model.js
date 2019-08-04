@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const TYPES = require("../types.js");
 
 const ProjectCharacteristicSchema = mongoose.Schema({
   id: {
@@ -7,19 +6,23 @@ const ProjectCharacteristicSchema = mongoose.Schema({
     required: true,
     lowercase: true
   },
-  optimal_sense: {
-    type: String,
-    required: true,
-    lowercase: true
-  },
-  type: {
-    type: String,
-    enum: TYPES.map(e => e.name.toLowerCase()),
-    required: true,
-    lowercase: true
-  },
   weight: {
     type: Number
+  },
+  ref: {
+    type: String,
+    required: true,
+    lowercase: true
+  },
+  rule: {
+    type: String,
+    enum: ["maximum", "minimum", "exact", "preference_list"],
+    required: true,
+    lowercase: true
+  },
+  value: {
+    type: [String],
+    lowercase: true
   }
 });
 
