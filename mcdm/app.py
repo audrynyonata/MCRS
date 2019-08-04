@@ -14,11 +14,7 @@ mongo = PyMongo(app)
 def index():
   return 'Welcome to MCDM!'
 
-@app.route('/find', methods=['POST'])
-def find():
-  id = request.get_json()["project"]
-  print("Receive request with id:", id)
-
+def calculate(id):
   # fetch & preprocess
   project = mongo.db.projects.find_one_or_404({"id": id})
   projectCharacteristics = {p["id"] : p for p in project["characteristics"]}
@@ -147,6 +143,18 @@ def find():
   default = lambda o: f"<<non-serializable: {type(o).__qualname__}>>"
   result = json.loads(json_util.dumps(res, default=default))
   return result
+
+@app.route('/find/<provider>/<project>')
+def findById(provider, project):
+  id = request.view_args["provider"] + "/" + request.view_args["project"]
+  print("Receive request with id:", id)
+  return calculate(id)
+
+@app.route('/find', methods=['POST'])
+def find():
+  id = request.get_json()["project"]
+  print("Receive request with id:", id)
+  return calculate(id) 
 
 @app.route('/projects')
 def projects():
