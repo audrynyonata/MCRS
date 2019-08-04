@@ -36,4 +36,23 @@ const testProject = {
   ]
 };
 
-module.exports = { testProject };
+const testProject2 = {
+  name: "Test Project 2",
+  description:
+    "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable.",
+  characteristics: [
+    {
+      characteristic: "shortage-of-resources",
+      ref: "human/means",
+      rule: "exact",
+      value: "human"
+    },
+    {
+      characteristic: "impact",
+      ref: "default",
+      rule: "preference_list",
+      value: ["high", "low"]
+    }
+  ]
+};
+module.exports = { testProject, testProject2 };

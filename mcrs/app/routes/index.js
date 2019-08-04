@@ -169,7 +169,7 @@ router.post("/publish", (req, res) => {
  *   post:
  *     description: Find ranked method chunk recommendation according to project characteristics
  *     tags:
- *       - Publish & Find
+ *       - Publish & Find Method Chunk
  *     requestBody:
  *       description: Project id
  *       required: true
@@ -204,7 +204,8 @@ router.post("/publish", (req, res) => {
  *                 result:
  *                   type: array
  *                   description: array of recommended method chunks sorted by best rank
- *                   items: object
+ *                   items:
+ *                     type: object
  *                     properties:
  *                       methodChunk:
  *                         type: string
@@ -219,23 +220,39 @@ router.post("/publish", (req, res) => {
  *                         description: numerical score of method chunk by the algorithm. In `WeightedSum` it uses points/sum. In `TOPSIS` it uses closeness.
  *                         example: 8
  */
-router.get("/find", (req, res) => {
+router.post("/find", (req, res) => {
   axios
     .post("http://localhost:5000/find", {
-      project: req.project
+      project: req.body.project
     })
     .then(response => {
       res.send(response.data);
     })
     .catch(err => {
       console.log("Find", err);
-      res.status(400).send({
+      return res.status(400).send({
         message: err.message || "Some error occurred while finding."
       });
     });
   return;
 });
 
+router.get("/find/:provider/:project", (req, res) => {
+  axios
+    .post("http://localhost:5000/find", {
+      project: req.params.provider + "/" + req.params.project
+    })
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(err => {
+      console.log("Find", err);
+      return res.status(400).send({
+        message: err.message || "Some error occurred while finding."
+      });
+    });
+  return;
+});
 // TO-DO
 // router.get("/find2", (req, res) => {
 //   MethodChunk.find()
