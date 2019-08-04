@@ -21,7 +21,7 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              characteristic:
+              id:
                 type: string
                 description: slug-type id of characteristic
               ref:
@@ -52,7 +52,7 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              characteristic:
+              id:
                 type: string
                 description: slug-type id of characteristic
               ref:
@@ -91,7 +91,7 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              characteristic:
+              id:
                 type: string
                 description: slug-type id of characteristic
               ref:
@@ -116,7 +116,7 @@ components:
         url: "http://example.com"
         characteristics: [
           {
-            characteristic: "management-commitment",
+            id: "management-commitment",
             value: "high"
           }
         ]
@@ -131,7 +131,7 @@ components:
         characteristics: [
           {
             _id: "5d224d482aba2723501a0cca",
-            characteristic: "management-commitment",
+            id: "management-commitment",
             value: "high"
           }
         ]

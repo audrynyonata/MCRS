@@ -8,29 +8,29 @@ const METHOD_CHUNKS = [
     url: "http://example.com/NFR-framework",
     characteristics: [
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       },
       {
-        characteristic: "level-of-innovation",
+        id: "level-of-innovation",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "normal"
       },
       {
-        characteristic: "guidance",
+        id: "guidance",
         value: "predefined taxonomy",
         ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        characteristic: "approach",
+        id: "approach",
         value: "explanatory",
         ref: "systemic/exploratory/explanatory"
       },
       {
-        characteristic: "formalism",
+        id: "formalism",
         value: "semi-formal",
         ref: "formal/semi-formal/informal"
       }
@@ -43,29 +43,29 @@ const METHOD_CHUNKS = [
     url: "http://example.com/KAOS",
     characteristics: [
       {
-        characteristic: "impact",
+        id: "impact",
         value: "low"
       },
       {
-        characteristic: "level-of-innovation",
+        id: "level-of-innovation",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "guidance",
+        id: "guidance",
         value: "heuristics",
         ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        characteristic: "approach",
+        id: "approach",
         value: "exploratory",
         ref: "systemic/exploratory/explanatory"
       },
       {
-        characteristic: "formalism",
+        id: "formalism",
         value: "formal",
         ref: "formal/semi-formal/informal"
       }
@@ -78,24 +78,24 @@ const METHOD_CHUNKS = [
     url: "http://example.com/secure-tropos",
     characteristics: [
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       },
       {
-        characteristic: "level-of-innovation",
+        id: "level-of-innovation",
         value: "low"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "approach",
+        id: "approach",
         value: "systemic",
         ref: "systemic/exploratory/explanatory"
       },
       {
-        characteristic: "formalism",
+        id: "formalism",
         value: "formal",
         ref: "formal/semi-formal/informal"
       }
@@ -108,24 +108,24 @@ const METHOD_CHUNKS = [
     url: "http://example.com/gbram",
     characteristics: [
       {
-        characteristic: "impact",
+        id: "impact",
         value: "low"
       },
       {
-        characteristic: "level-of-innovation",
+        id: "level-of-innovation",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "normal"
       },
       {
-        characteristic: "guidance",
+        id: "guidance",
         value: "heuristics",
         ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        characteristic: "formalism",
+        id: "formalism",
         value: "informal",
         ref: "formal/semi-formal/informal"
       }
@@ -138,29 +138,29 @@ const METHOD_CHUNKS = [
     url: "http://example.com/misusecases",
     characteristics: [
       {
-        characteristic: "impact",
+        id: "impact",
         value: "normal"
       },
       {
-        characteristic: "level-of-innovation",
+        id: "level-of-innovation",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "low"
       },
       {
-        characteristic: "guidance",
+        id: "guidance",
         value: "guidelines",
         ref: "predefined taxonomy/heuristics/guidelines"
       },
       {
-        characteristic: "approach",
+        id: "approach",
         value: "explanatory",
         ref: "systemic/exploratory/explanatory"
       },
       {
-        characteristic: "formalism",
+        id: "formalism",
         value: "informal",
         ref: "formal/semi-formal/informal"
       }
@@ -177,23 +177,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AcceptanceTestDrivenDevelopment",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "low"
       },
       {
-        characteristic: "importance",
+        id: "importance",
         value: "normal"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "user-involvement",
+        id: "user-involvement",
         value: "real"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -206,23 +206,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileDevelopment",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "user-involvement",
+        id: "user-involvement",
         value: "real"
       },
       {
-        characteristic: "goal-number",
+        id: "goal-number",
         value: "multi-goals"
       },
       {
-        characteristic: "development-strategy",
+        id: "development-strategy",
         value: "iterative"
       },
       {
-        characteristic: "delivery-strategy",
+        id: "delivery-strategy",
         value: "incremental"
       }
     ]
@@ -235,23 +235,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileRetrospective",
     characteristics: [
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       },
       {
-        characteristic: "resistance-and-conflict",
+        id: "resistance-and-conflict",
         value: "high"
       },
       {
-        characteristic: "formality",
+        id: "formality",
         value: "low"
       },
       {
-        characteristic: "Variability",
+        id: "Variability",
         value: "high"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       }
     ]
@@ -264,19 +264,19 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileTeaming",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "normal"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "resistance-and-conflict",
+        id: "resistance-and-conflict",
         value: "high"
       },
       {
-        characteristic: "formality",
+        id: "formality",
         value: "low"
       }
     ]
@@ -289,27 +289,27 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "AgileTimeboxing",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "time-pressure",
+        id: "time-pressure",
         value: "high"
       },
       {
-        characteristic: "development-strategy",
+        id: "development-strategy",
         value: "iterative"
       },
       {
-        characteristic: "delivery-strategy",
+        id: "delivery-strategy",
         value: "incremental"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       },
       {
-        characteristic: "goal-number",
+        id: "goal-number",
         value: "multi-goals"
       }
     ]
@@ -322,23 +322,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "BehaviorDrivenDevelopment",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "importance",
+        id: "importance",
         value: "high"
       },
       {
-        characteristic: "clarity-and-stability",
+        id: "clarity-and-stability",
         value: "high"
       },
       {
-        characteristic: "user-involvement",
+        id: "user-involvement",
         value: "real"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -351,23 +351,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "BigDesignUpFront",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "importance",
+        id: "importance",
         value: "high"
       },
       {
-        characteristic: "clarity-and-stability",
+        id: "clarity-and-stability",
         value: "high"
       },
       {
-        characteristic: "user-involvement",
+        id: "user-involvement",
         value: "real"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -380,23 +380,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ContinuousDelivery",
     characteristics: [
       {
-        characteristic: "time-pressure",
+        id: "time-pressure",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       },
       {
-        characteristic: "complexity",
+        id: "complexity",
         value: "high"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -409,23 +409,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ContinuousIntegration",
     characteristics: [
       {
-        characteristic: "time-pressure",
+        id: "time-pressure",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       },
       {
-        characteristic: "complexity",
+        id: "complexity",
         value: "high"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -438,31 +438,31 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "DailyStandUp",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "time-pressure",
+        id: "time-pressure",
         value: "high"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       },
       {
-        characteristic: "clarity-and-stability",
+        id: "clarity-and-stability",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "low"
       },
       {
-        characteristic: "formality",
+        id: "formality",
         value: "low"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       }
     ]
@@ -475,23 +475,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "PairProgramming",
     characteristics: [
       {
-        characteristic: "resistance-and-conflict",
+        id: "resistance-and-conflict",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "low"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       },
       {
-        characteristic: "complexity",
+        id: "complexity",
         value: "normal"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -504,23 +504,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ProductBacklog",
     characteristics: [
       {
-        characteristic: "importance",
+        id: "importance",
         value: "high"
       },
       {
-        characteristic: "user-involvement",
+        id: "user-involvement",
         value: "real"
       },
       {
-        characteristic: "clarity-and-stability",
+        id: "clarity-and-stability",
         value: "high"
       },
       {
-        characteristic: "dependency",
+        id: "dependency",
         value: "low"
       },
       {
-        characteristic: "realization-strategy",
+        id: "realization-strategy",
         value: "incremental"
       }
     ]
@@ -533,19 +533,19 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "ProductOwnership",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "importance",
+        id: "importance",
         value: "normal"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       }
     ]
@@ -558,23 +558,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "SpecificationByExample",
     characteristics: [
       {
-        characteristic: "management-commitment",
+        id: "management-commitment",
         value: "high"
       },
       {
-        characteristic: "importance",
+        id: "importance",
         value: "high"
       },
       {
-        characteristic: "clarity-and-stability",
+        id: "clarity-and-stability",
         value: "high"
       },
       {
-        characteristic: "user-involvement",
+        id: "user-involvement",
         value: "real"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]
@@ -587,23 +587,23 @@ const METHOD_CHUNKS_ADDITIONAL = [
     url: baseUrl + "TestDrivenDevelopment",
     characteristics: [
       {
-        characteristic: "dependency",
+        id: "dependency",
         value: "high"
       },
       {
-        characteristic: "expertise",
+        id: "expertise",
         value: "high"
       },
       {
-        characteristic: "tracing-project",
+        id: "tracing-project",
         value: "strong"
       },
       {
-        characteristic: "complexity",
+        id: "complexity",
         value: "high"
       },
       {
-        characteristic: "impact",
+        id: "impact",
         value: "high"
       }
     ]

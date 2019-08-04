@@ -15,13 +15,7 @@ exports.authenticate = (req, res) => {
       result.comparePassword(req.body.password, function(err, isMatch) {
         if (err) throw err;
         if (isMatch) {
-          const token = jwt.sign(
-            {
-              id: result.id,
-              exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
-            },
-            jwtConfig.secret
-          );
+          const token = jwt.sign({ id: result.id }, jwtConfig.secret);
           res.cookie("token", token);
           res.send({ token });
         } else {
@@ -59,13 +53,7 @@ exports.register = (req, res) => {
   provider
     .save()
     .then(result => {
-      const token = jwt.sign(
-        {
-          id: result.email,
-          exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //24h
-        },
-        jwtConfig.secret
-      );
+      const token = jwt.sign({ id: result.id }, jwtConfig.secret);
       res.cookie("token", token);
       res.send({ token });
     })

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ProjectCharacteristicSchema = mongoose.Schema({
-  characteristic: {
+  id: {
     type: String,
     required: true,
     lowercase: true

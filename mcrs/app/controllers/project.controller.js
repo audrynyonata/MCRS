@@ -3,13 +3,14 @@ const Project = require("../models/project.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
+  console.log(req);
   if (req.body.length) {
     var initAll = req.body.map(doc => {
       var init = doc.characteristics.map(e =>
         e.ref
           ? Promise.resolve(e)
           : new Promise((resolve, reject) => {
-              let c = Characteristic.findOne({ id: e.characteristic })
+              let c = Characteristic.findOne({ id: e.id })
                 .then(res => {
                   if (res) {
                     let characteristic = {
@@ -35,13 +36,15 @@ exports.create = (req, res) => {
         });
 
         let p = Promise.all(init).then(characteristics => {
+          let provider = doc.provider || req.user.id;
           let d = {
             ...doc,
             project: projectId,
-            provider: doc.provider || req.user.id,
-            id: doc.provider + "/" + projectId,
+            provider: provider,
+            id: provider + "/" + projectId,
             characteristics: characteristics
           };
+          console.log(d);
           return d;
         });
         resolve(p);
@@ -64,7 +67,7 @@ exports.create = (req, res) => {
       e.ref
         ? Promise.resolve(e)
         : new Promise((resolve, reject) => {
-            let c = Characteristic.findOne({ id: e.characteristic })
+            let c = Characteristic.findOne({ id: e.id })
               .then(res => {
                 if (res) {
                   let characteristic = {
@@ -205,7 +208,7 @@ exports.update = (req, res) => {
       e.ref
         ? Promise.resolve(e)
         : new Promise((resolve, reject) => {
-            let c = Characteristic.findOne({ id: e.characteristic })
+            let c = Characteristic.findOne({ id: e.id })
               .then(res => {
                 if (res) {
                   let characteristic = {

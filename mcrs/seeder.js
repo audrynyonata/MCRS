@@ -4,7 +4,7 @@ const {
   METHOD_CHUNKS,
   METHOD_CHUNKS_ADDITIONAL
 } = require("./seed/methodChunk.seed");
-const { testProject } = require("./seed/project.seed");
+const { testProject, testProject2 } = require("./seed/project.seed");
 
 const fetch = require("node-fetch");
 
@@ -41,6 +41,7 @@ const register = () => {
 };
 
 const seedProvider = () => {
+  console.log("Seeding provider...");
   return fetch(`${server}/providers`, {
     method: "POST",
     body: JSON.stringify([companyB, companyC]),
@@ -58,6 +59,7 @@ const seedProvider = () => {
 };
 
 const seedCharacteristic = () => {
+  console.log("Seeding characteristics...");
   return fetch(`${server}/characteristics`, {
     method: "POST",
     body: JSON.stringify(CHARACTERISTICS),
@@ -75,6 +77,7 @@ const seedCharacteristic = () => {
 };
 
 const seedMethodChunk = () => {
+  console.log("Seeding method chunks...");
   return fetch(`${server}/method-chunks`, {
     method: "POST",
     body: JSON.stringify(METHOD_CHUNKS.concat(METHOD_CHUNKS_ADDITIONAL)),
@@ -92,9 +95,10 @@ const seedMethodChunk = () => {
 };
 
 const seedProject = () => {
+  console.log("Seeding projects...");
   return fetch(`${server}/projects`, {
     method: "POST",
-    body: JSON.stringify(testProject),
+    body: JSON.stringify([testProject, testProject2]),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
@@ -112,26 +116,13 @@ const seedProject = () => {
 const server = "http://localhost:4000";
 var token = "";
 
-const seed = () => {
-  register()
-    .then(res => {
-      token = res.token;
-      seedProvider();
-      seedCharacteristic().then(() => {
-        seedMethodChunk();
-        seedProject();
-      });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
-
 const dbConfig = require("./config/database.config.js");
 const seeder = require("mongoose-seed");
 
 // Connect to MongoDB via Mongoose
 seeder.connect(dbConfig.url, function() {
+  const models = ["Characteristic", "Project", "MethodChunk", "Provider"];
+
   // Load Mongoose models
   seeder.loadModels([
     "./app/models/characteristic.model.js",
@@ -141,11 +132,40 @@ seeder.connect(dbConfig.url, function() {
   ]);
 
   // Clear specified collections
-  seeder.clearModels(
-    ["Characteristic", "MethodChunk", "Project", "Provider"],
-    function() {
-      seed();
-      seeder.disconnect();
+  seeder.clearModels(models, function() {
+    var init = null;
+    if (models.includes("Provider")) {
+      init = register();
+    } else {
+      init = authenticate();
     }
-  );
+    Promise.resolve(init)
+      .then(res => {
+        token = res.token;
+        if (models.includes("Provider")) {
+          seedProvider();
+        }
+        if (models.includes("Characteristic")) {
+          seedCharacteristic().then(() => {
+            if (models.includes("MethodChunk")) {
+              seedMethodChunk();
+            }
+            if (models.includes("Project")) {
+              seedProject();
+            }
+          });
+        } else {
+          if (models.includes("MethodChunk")) {
+            seedMethodChunk();
+          }
+          if (models.includes("Project")) {
+            seedProject();
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    seeder.disconnect();
+  });
 });

@@ -59,12 +59,12 @@ const methodChunks = require("../controllers/methodChunk.controller.js");
  *                 characteristics: [
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      characteristic: "goal-number",
+ *                      id: "goal-number",
  *                      value: "multi-goals"
  *                   },
  *                   {
  *                      _id: "5d1cfc36bdc07232bc0bc1fa",
- *                      characteristic: "user-involvement",
+ *                      id: "user-involvement",
  *                      value: "high"
  *                   }
  *                 ]
@@ -104,7 +104,7 @@ router.get("/", methodChunks.findAll);
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
  *                   characteristics: [
  *                     {
- *                       characteristic: "impact",
+ *                       id: "impact",
  *                       value: "high"
  *                     }
  *                   ]
@@ -112,7 +112,7 @@ router.get("/", methodChunks.findAll);
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
- *                       characteristic: "delivery-strategy",
+ *                       id: "delivery-strategy",
  *                       value: "incremental"
  *                     }
  *                   ]
@@ -186,11 +186,11 @@ router.get("/:id", methodChunks.findOne);
  *               value:
  *                  characteristics: [
  *                    {
- *                      characteristic: "user-involvement",
+ *                      id: "user-involvement",
  *                      value: "medium"
  *                    },
  *                    {
- *                      characteristic: "management-commitment",
+ *                      id: "management-commitment",
  *                      value: "low"
  *                    }
  *                  ]

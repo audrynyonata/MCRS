@@ -18,7 +18,7 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              characteristic:
+              id:
                 type: string
                 description: slug-type id of characteristic
               ref:
@@ -39,7 +39,7 @@ components:
       required:
         - name
         - provider
-        - characteristic
+        - characteristics
     ProjectUpdateInput:
       type: object
       properties:
@@ -55,7 +55,7 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              characteristic:
+              id:
                 type: string
                 description: slug-type id of characteristic
               ref:
@@ -103,7 +103,7 @@ components:
               _id:
                 type: string
                 description: auto-generated id by MongoDB (unique)
-              characteristic:
+              id:
                 type: string
                 description: slug-type id of characteristic
               ref:
@@ -136,7 +136,7 @@ components:
         description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable."
         characteristics: [
           {
-            characteristic: "management-commitment",
+            id: "management-commitment",
             rule: "maximum"
           }
         ]
@@ -151,13 +151,13 @@ components:
         characteristics: [
           {
             _id: "5d23baf907290510cc6ad57c",
-            characteristic: "impact",
+            id: "impact",
             rule: "maximum",
             weight: 0.15
           },
           {
             _id: "5d23baf907290510cc6ad57b",
-            characteristic: "user-goals",
+            id: "user-goals",
             rule: "preference_list",
             value: ["one goal", "multi-goals"],
             weight: 0.85

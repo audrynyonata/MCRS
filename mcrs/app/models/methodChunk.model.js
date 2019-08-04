@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const MethodChunkCharacteristicSchema = mongoose.Schema({
-  characteristic: {
+  id: {
     type: String,
     required: true,
     lowercase: true

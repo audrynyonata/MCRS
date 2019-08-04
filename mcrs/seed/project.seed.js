@@ -4,31 +4,31 @@ const testProject = {
   description: "IS security chunks evaluation.",
   characteristics: [
     {
-      characteristic: "impact",
+      id: "impact",
       rule: "maximum"
     },
     {
-      characteristic: "level-of-innovation",
+      id: "level-of-innovation",
       rule: "maximum"
     },
     {
-      characteristic: "expertise",
+      id: "expertise",
       rule: "minimum"
     },
     {
-      characteristic: "guidance",
+      id: "guidance",
       ref: "predefined taxonomy/heuristics/guidelines",
       rule: "preference_list",
       value: ["predefined taxonomy", "heuristics", "guidelines"]
     },
     {
-      characteristic: "approach",
+      id: "approach",
       ref: "systemic/exploratory/explanatory",
       rule: "preference_list",
       value: ["systemic", "exploratory", "explanatory"]
     },
     {
-      characteristic: "formalism",
+      id: "formalism",
       ref: "formal/semi-formal/informal",
       rule: "preference_list",
       value: ["formal", "semi-formal", "informal"]
@@ -42,13 +42,13 @@ const testProject2 = {
     "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable.",
   characteristics: [
     {
-      characteristic: "shortage-of-resources",
+      id: "shortage-of-resources",
       ref: "human/means",
       rule: "exact",
       value: "human"
     },
     {
-      characteristic: "impact",
+      id: "impact",
       ref: "default",
       rule: "preference_list",
       value: ["high", "low"]

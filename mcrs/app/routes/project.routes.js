@@ -63,13 +63,13 @@ const projects = require("../controllers/project.controller.js");
  *                 characteristics: [
  *                   {
  *                     _id: "5d23baf907290510cc6ad57c",
- *                     characteristic: "impact",
+ *                     id: "impact",
  *                     rule: "maximum",
  *                     weight: 0.15
  *                   },
  *                   {
  *                     _id: "5d23baf907290510cc6ad57b",
- *                     characteristic: "user-goals",
+ *                     id: "user-goals",
  *                     rule: "preference_list",
  *                     value: ["one goal", "multi-goals"],
  *                     weight: 0.85
@@ -102,7 +102,7 @@ router.get("/", projects.findAll);
  *                 - name: "First Project"
  *                   characteristics: [
  *                     {
- *                       characteristic: "stakeholder-number",
+ *                       id: "stakeholder-number",
  *                       rule: "maximum"
  *                     }
  *                   ]

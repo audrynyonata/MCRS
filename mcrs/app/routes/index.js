@@ -134,7 +134,7 @@ router.post("/register", (req, res) => {
  *                   url: "http://localhost:4000/method-chunks/kanban-board"
  *                   characteristics: [
  *                     {
- *                       characteristic: "impact",
+ *                       id: "impact",
  *                       value: "high"
  *                     }
  *                   ]
@@ -142,7 +142,7 @@ router.post("/register", (req, res) => {
  *                   url: "http://localhost:4000/method-chunks/sprint-retrospective"
  *                   characteristics: [
  *                     {
- *                       characteristic: "delivery-strategy",
+ *                       id: "delivery-strategy",
  *                       value: "incremental"
  *                     }
  *                   ]
@@ -193,32 +193,73 @@ router.post("/publish", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 project:
- *                   type: string
- *                   description: slug-type id of the project name
- *                   example: company-a-ltd/test-project
- *                 model:
- *                   type: string
- *                   description: multi-criteria algorithm model that is used. Currently available are `WeightedSum` and `TOPSIS`.
- *                   example: WeightedSum
- *                 result:
+ *                 projectCharacteristics:
  *                   type: array
- *                   description: array of recommended method chunks sorted by best rank
+ *                   description: details of characteristics used to calculate result
  *                   items:
  *                     type: object
  *                     properties:
- *                       methodChunk:
+ *                       id:
  *                         type: string
- *                         description: slug-type id of method chunk name
- *                         example: AgileDevelopment
- *                       rank:
- *                         type: integer
- *                         description: rank of method chunk (`1` = most recommended)
- *                         example: 1
- *                       score:
- *                         type: float
- *                         description: numerical score of method chunk by the algorithm. In `WeightedSum` it uses points/sum. In `TOPSIS` it uses closeness.
- *                         example: 8
+ *                         description: slug-type id of characteristic
+ *                         example: expertise
+ *                       encoder:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         description: encoder used to convert categories to its index position in array
+ *                         example: ["N/A", "high", "normal", "low"]
+ *                       ref:
+ *                         type: string
+ *                         description: ref of the group the value belongs to. If not specified, will use first group.
+ *                         example: default
+ *                       rule:
+ *                         type: string
+ *                         description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
+ *                         example: minimum
+ *                       value:
+ *                         type: array
+ *                         description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
+ *                         items:
+ *                           type: string
+ *                         example: []
+ *                       weight:
+ *                         type: number
+ *                         format: float
+ *                         description: weight / importance of characteristic. Max value is 1.0. (optional)
+ *                         example: 1.0
+ *                 results:
+ *                   type: array
+ *                   description: result of various multi-criteria decision making algorithm
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       model:
+ *                         type: string
+ *                         description: multi-criteria algorithm model that is used. Currently available are `WeightedSum` and `TOPSIS`.
+ *                         example: WeightedSum
+ *                       methodChunks:
+ *                         type: array
+ *                         description: array of recommended method chunks sorted by rank
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                               description: slug-type id of method chunk name
+ *                             score:
+ *                               type: number
+ *                               description: numerical score of method chunk by the algorithm. In `WeightedSum` it uses points/sum. In `TOPSIS` it uses closeness.
+ *                             rank:
+ *                               type: integer
+ *                               description: rank of method chunk (`1` = most recommended)
+ *                         example:
+ *                           - id: kaos
+ *                             score: 0.842387499
+ *                             rank: 1
+ *                           - id: nfr-framework
+ *                             score: 0.034234
+ *                             rank: 2
  */
 router.post("/find", (req, res) => {
   axios
@@ -229,7 +270,7 @@ router.post("/find", (req, res) => {
       res.send(response.data);
     })
     .catch(err => {
-      console.log("Find", err);
+      console.log("Find", err.message);
       return res.status(400).send({
         message: err.message || "Some error occurred while finding."
       });
@@ -246,13 +287,14 @@ router.get("/find/:provider/:project", (req, res) => {
       res.send(response.data);
     })
     .catch(err => {
-      console.log("Find", err);
+      console.log("Find", err.message);
       return res.status(400).send({
         message: err.message || "Some error occurred while finding."
       });
     });
   return;
 });
+
 // TO-DO
 // router.get("/find2", (req, res) => {
 //   MethodChunk.find()

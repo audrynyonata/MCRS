@@ -9,7 +9,7 @@ exports.create = (req, res) => {
         e.ref
           ? Promise.resolve(e)
           : new Promise((resolve, reject) => {
-              let c = Characteristic.findOne({ id: e.characteristic })
+              let c = Characteristic.findOne({ id: e.id })
                 .then(res => {
                   if (res) {
                     let characteristic = {
@@ -60,7 +60,7 @@ exports.create = (req, res) => {
       e.ref
         ? Promise.resolve(e)
         : new Promise((resolve, reject) => {
-            let c = Characteristic.findOne({ id: e.characteristic })
+            let c = Characteristic.findOne({ id: e.id })
               .then(res => {
                 if (res) {
                   let characteristic = {
@@ -199,7 +199,7 @@ exports.update = (req, res) => {
       e.ref
         ? Promise.resolve(e)
         : new Promise((resolve, reject) => {
-            let c = Characteristic.findOne({ id: e.characteristic })
+            let c = Characteristic.findOne({ id: e.id })
               .then(res => {
                 if (res) {
                   let characteristic = {
