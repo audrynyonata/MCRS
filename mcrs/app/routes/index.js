@@ -193,41 +193,73 @@ router.post("/publish", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 projectCharacteristics:
- *                   type: array
- *                   description: details of characteristics used to calculate result
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         description: slug-type id of characteristic
- *                         example: expertise
- *                       encoder:
- *                         type: array
- *                         items:
- *                           type: string
- *                         description: encoder used to convert categories to its index position in array
- *                         example: ["N/A", "high", "normal", "low"]
- *                       ref:
- *                         type: string
- *                         description: ref of the group the value belongs to. If not specified, will use first group.
- *                         example: default
- *                       rule:
- *                         type: string
- *                         description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
- *                         example: minimum
- *                       value:
- *                         type: array
- *                         description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
- *                         items:
- *                           type: string
- *                         example: []
- *                       weight:
- *                         type: number
- *                         format: float
- *                         description: weight / importance of characteristic. Max value is 1.0. (optional)
- *                         example: 1.0
+ *                 projects:
+ *                   type: object
+ *                   description: details of project
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: slug-type id (lowercase string with no special characters delimited by dash '-') derived from provider and project name (unique)
+ *                       example: company-a-ltd/test-project
+ *                     name:
+ *                       type: string
+ *                       description: project name (unique per provider)
+ *                       example: Test Project
+ *                     project:
+ *                       type: string
+ *                       description: slug-type-id of the project name
+ *                       example: test-project
+ *                     provider:
+ *                       type: string
+ *                       description: slug-type id of the provider company
+ *                       example: company-a-ltd
+ *                     description:
+ *                       type: string
+ *                       description: a brief description about the project
+ *                       example: This is a test Project
+ *                     characteristics:
+ *                       type: array
+ *                       description: details of characteristics used to calculate result
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                             description: slug-type id of characteristic
+ *                             example: expertise
+ *                           encoder:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                             description: encoder used to convert categories to its index position in array
+ *                             example: ["N/A", "high", "normal", "low"]
+ *                           ref:
+ *                             type: string
+ *                             description: ref of the group the value belongs to. If not specified, will use first group.
+ *                             example: default
+ *                           rule:
+ *                             type: string
+ *                             description: the preferences rule `maximum`, `minimum`, `exact`, or `preference_list`. `maximum` and `minimum` only supported for isQuantifiable = true.
+ *                             example: minimum
+ *                           value:
+ *                             type: array
+ *                             description: values of characteristic from most preferred to least preferred by ref. If `exact`, length = 1. If `maximum` or `minimum` no need to specify value.
+ *                             items:
+ *                               type: string
+ *                             example: []
+ *                           weight:
+ *                             type: number
+ *                             format: float
+ *                             description: weight / importance of characteristic. Max value is 1.0. (optional)
+ *                             example: 1.0
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                       description: auto-generated datetime when this project is created by MongoDB
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *                       description: auto-generated datetime when this project is modified by MongoDB
  *                 results:
  *                   type: array
  *                   description: result of various multi-criteria decision making algorithm
@@ -238,28 +270,25 @@ router.post("/publish", (req, res) => {
  *                         type: string
  *                         description: multi-criteria algorithm model that is used. Currently available are `WeightedSum` and `TOPSIS`.
  *                         example: WeightedSum
- *                       methodChunks:
+ *                       values:
  *                         type: array
  *                         description: array of recommended method chunks sorted by rank
  *                         items:
  *                           type: object
  *                           properties:
- *                             id:
- *                               type: string
- *                               description: slug-type id of method chunk name
+ *                             methodChunk:
+ *                               $ref: '#/components/schemas/MethodChunk'
+ *                               description: details of method chunk
+ *                               example:
+ *                                 $ref: '#/components/examples/MethodChunkExample'
  *                             score:
  *                               type: number
  *                               description: numerical score of method chunk by the algorithm. In `WeightedSum` it uses points/sum. In `TOPSIS` it uses closeness.
+ *                               example: 0.93566121443546426
  *                             rank:
  *                               type: integer
  *                               description: rank of method chunk (`1` = most recommended)
- *                         example:
- *                           - id: kaos
- *                             score: 0.842387499
- *                             rank: 1
- *                           - id: nfr-framework
- *                             score: 0.034234
- *                             rank: 2
+ *                               example: 1
  */
 router.post("/find", (req, res) => {
   axios

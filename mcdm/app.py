@@ -27,10 +27,10 @@ def calculate(id):
 
   # fetch & preprocess methodchunks
   cursor = mongo.db.methodchunks.find({"characteristics.id": {"$in": cnames}})
-  method_chunks = []
+  method_chunks = {}
   for document in cursor: 
     document["characteristics"] = {d["id"] : d for d in document["characteristics"]}
-    method_chunks.append(document)
+    method_chunks[document["id"]] = document
 
   # create encoder
   from sklearn.preprocessing import OrdinalEncoder 
@@ -57,13 +57,13 @@ def calculate(id):
   # build mtx
   import pandas as pd
   df = pd.DataFrame([], columns=cnames)
-  for m in method_chunks:
+  for mid, m in method_chunks.items():
     obj = {}
     for cid,pc in projectCharacteristics.items():
       if(cid in m["characteristics"]):
         if(pc["ref"] == m["characteristics"][cid]["ref"]):
           obj[cid] = m["characteristics"][cid]["value"]
-    df = df.append(pd.Series(obj, index=df.columns, name=m["id"]))
+    df = df.append(pd.Series(obj, index=df.columns, name=mid))
   df.fillna("N/A",inplace=True)
   print(df)
   separator()
@@ -115,24 +115,26 @@ def calculate(id):
 
   # build response
   res = {}
-  for cid,pc in projectCharacteristics.items():
-    pc.pop("_id",None)
-    pc["encoder"] = pc["encoder"].categories[0]
-  res["projectCharacteristics"] = [pc for cid,pc in projectCharacteristics.items()]
-
-  z = [{"id":de._data._anames[i], "score":de.e_.points[i],"rank":int(de._rank[i])} for i in range(0,len(de.mtx))]
-  z2 = [{"id":de2._data._anames[i], "score":de2.e_.closeness[i],"rank":int(de2._rank[i])} for i in range(0,len(de2.mtx))]
+  z = [{"methodChunk":method_chunks[de._data._anames[i]], "score":de.e_.points[i],"rank":int(de._rank[i])} for i in range(0,len(de.mtx))]
+  z2 = [{"methodChunk":method_chunks[de2._data._anames[i]], "score":de2.e_.closeness[i],"rank":int(de2._rank[i])} for i in range(0,len(de2.mtx))]
 
   res["results"] = [
     {
       "model": "WeightedSum",
-      "methodChunks": sorted(z, key = lambda x: x["rank"])
+      "values": sorted(z, key = lambda x: x["rank"])
     },
     {
       "model": "TOPSIS",
-      "methodChunks": sorted(z2, key = lambda x: x["rank"])
+      "values": sorted(z2, key = lambda x: x["rank"])
     }
   ]
+
+  for cid,pc in projectCharacteristics.items():
+    pc.pop("_id",None)
+    pc["encoder"] = pc["encoder"].categories[0]
+  project["characteristics"] = [pc for cid,pc in projectCharacteristics.items()]
+  project.pop("_id",None)
+  res["project"] = project
 
   # print(res)
   # tes = {}

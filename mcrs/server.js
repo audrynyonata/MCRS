@@ -99,6 +99,7 @@ app.use(function(req, res, next) {
       Object.entries(req.body).length === 0 &&
       req.body.constructor === Object
     ) {
+      console.log("Empty request", req.body);
       return res.status(400).send({ message: "Invalid request body" });
     }
   }
