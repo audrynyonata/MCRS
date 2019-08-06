@@ -1,11 +1,11 @@
 const baseUrl = "http://example.com/";
+const baseUrlB = "C:/Users/User/Desktop/mcrs/case/mbms-b/browse.html#";
 
 const METHOD_CHUNKS = [
   {
     name: "NFR Framework",
     description: "NFR Framework for IS Security",
-    provider: "company-b",
-    url: "http://example.com/NFR-framework",
+    url: baseUrlB + "NFR-framework",
     characteristics: [
       {
         id: "impact",
@@ -39,8 +39,7 @@ const METHOD_CHUNKS = [
   {
     name: "KAOS",
     description: "KAOS for IS Security",
-    provider: "company-a",
-    url: "http://example.com/KAOS",
+    url: baseUrlB + "KAOS",
     characteristics: [
       {
         id: "impact",
@@ -74,8 +73,7 @@ const METHOD_CHUNKS = [
   {
     name: "Secure Tropos",
     description: "Secure Tropos for IS Security",
-    provider: "company-a",
-    url: "http://example.com/secure-tropos",
+    url: baseUrlB + "secure-tropos",
     characteristics: [
       {
         id: "impact",
@@ -104,8 +102,7 @@ const METHOD_CHUNKS = [
   {
     name: "GBRAM",
     description: "GBRAM for IS Security",
-    provider: "company-b",
-    url: "http://example.com/gbram",
+    url: baseUrlB + "gbram",
     characteristics: [
       {
         id: "impact",
@@ -134,8 +131,7 @@ const METHOD_CHUNKS = [
   {
     name: "Misuse Cases",
     description: "Misuse Cases for IS Security",
-    provider: "company-a",
-    url: "http://example.com/misusecases",
+    url: baseUrlB + "misusecases",
     characteristics: [
       {
         id: "impact",
