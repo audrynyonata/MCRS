@@ -243,7 +243,9 @@
 
       var publish = function(k) {
         x = METHOD_CHUNKS[k];
-        var div = document.getElementById(x.id);
+        var n = x.url.lastIndexOf("#");
+        var id = x.url.substring(n + 1);
+        var div = document.getElementById(id);
         div.querySelector(".publish").classList.add("disabled");
         var xhr = new XMLHttpRequest();
         var url = "http://localhost:4000/method-chunks";
@@ -279,7 +281,8 @@
         ul.appendChild(li);
 
         var div = document.createElement("div");
-        div.id = mc.id;
+        var n = mc.url.lastIndexOf("#");
+        div.id = mc.url.substring(n + 1);
 
         var h2 = document.createElement("h2");
         h2.innerHTML = mc.name;
