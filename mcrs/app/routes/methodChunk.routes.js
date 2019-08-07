@@ -2,6 +2,19 @@ const express = require("express");
 const router = express.Router();
 const methodChunks = require("../controllers/methodChunk.controller.js");
 
+// - in: query
+// name: characteristics
+// style: deepObject
+// schema:
+//   type: object
+//   properties:
+//     id:
+//       type: string
+//       example: 0
+//     value:
+//       type: string
+//       example: haha
+
 /**
  * @swagger
  * /method-chunks:

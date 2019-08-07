@@ -1,4 +1,4 @@
-const baseUrl = "http://example.com/";
+const baseUrl = "http://localhost:3001/";
 const baseUrlB = "C:/Users/User/Desktop/mcrs/case/mbms-b/browse.html#";
 
 const METHOD_CHUNKS = [
