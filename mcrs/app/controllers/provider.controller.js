@@ -239,7 +239,6 @@ exports.delete = (req, res) => {
           message: `Provider ${req.params.id} not found.`
         });
       }
-      console.log("Remove", result);
       res.send({ message: "Deleted successfully." });
     })
     .catch(err => {

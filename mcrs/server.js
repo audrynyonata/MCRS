@@ -53,10 +53,7 @@ app.use(
   expressJwt({
     secret: jwtConfig.secret,
     getToken: function fromHeaderOrCookie(req) {
-      if (
-        req.headers.authorization &&
-        req.headers.authorization.split(" ")[0] === "Bearer"
-      ) {
+      if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
         return req.headers.authorization.split(" ")[1];
       } else if (req.cookies && req.cookies.token) {
         return req.cookies.token;
@@ -95,15 +92,13 @@ app.use(function(err, req, res, next) {
 
 app.use(function(req, res, next) {
   if (req.method == "POST" || req.method == "PUT") {
-    if (
-      Object.entries(req.body).length === 0 &&
-      req.body.constructor === Object
-    ) {
+    if (Object.entries(req.body).length === 0 && req.body.constructor === Object) {
       console.log("Empty request", req.body);
       return res.status(400).send({ message: "Invalid request body" });
     }
   }
   next();
+  console.log(req.method, req.originalUrl, res.statusCode);
 });
 
 // Configuring API documentation
@@ -115,8 +110,7 @@ const options = {
     info: {
       title: "MCRS API Documentation",
       version: "0.1.0",
-      description:
-        "Method Chunk Registry System. [GitHub](https://github.com/audrynyonata/mcrs)"
+      description: "Method Chunk Registry System. [GitHub](https://github.com/audrynyonata/mcrs)"
     },
     servers: [
       {

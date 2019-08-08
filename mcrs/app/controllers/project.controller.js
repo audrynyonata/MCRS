@@ -3,7 +3,6 @@ const Project = require("../models/project.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
-  console.log(req);
   if (req.body.length) {
     var initAll = req.body.map(doc => {
       var init = doc.characteristics.map(e =>
@@ -44,7 +43,7 @@ exports.create = (req, res) => {
             id: provider + "/" + projectId,
             characteristics: characteristics
           };
-          console.log(d);
+          // console.log(d);
           return d;
         });
         resolve(p);
@@ -143,8 +142,8 @@ exports.findAll = (req, res) => {
       $regex: new RegExp(req.query.characteristics_id, "g"),
       $options: "i"
     };
+    criteria.characteristics = { $elemMatch: criteriaCharacteristics };
   }
-  criteria.characteristics = { $elemMatch: criteriaCharacteristics };
 
   var sort = {};
   if (req.query.sort) {
@@ -179,12 +178,10 @@ exports.findOne = (req, res) => {
     project: req.params.project_id.toLowerCase()
   })
     .then(result => {
-      console.log("a", req.params.provider_id, req.params.project_id);
+      // console.log("a", req.params.provider_id, req.params.project_id);
       if (!result) {
         return res.status(404).send({
-          message: `Project ${req.params.provider_id}/${
-            req.params.project_id
-          } not found.`
+          message: `Project ${req.params.provider_id}/${req.params.project_id} not found.`
         });
       }
       res.send(result);
@@ -203,7 +200,7 @@ exports.update = (req, res) => {
     doc.description = req.body.description;
   }
   var init = [];
-  if (req.body.characteristics) {
+  if (req.body.characteristics != []) {
     init = req.body.characteristics.map(e =>
       e.ref
         ? Promise.resolve(e)
@@ -241,9 +238,7 @@ exports.update = (req, res) => {
       .then(result => {
         if (!result) {
           return res.status(404).send({
-            message: `Project ${req.params.provider_id}/${
-              req.params.project_id
-            } not found.`
+            message: `Project ${req.params.provider_id}/${req.params.project_id} not found.`
           });
         }
         res.send(result);
@@ -265,9 +260,7 @@ exports.delete = (req, res) => {
     .then(result => {
       if (!result) {
         return res.status(404).send({
-          message: `Project ${req.params.provider_id}/${
-            req.params.project_id
-          } not found.`
+          message: `Project ${req.params.provider_id}/${req.params.project_id} not found.`
         });
       }
       res.send({ message: "Deleted successfully." });
