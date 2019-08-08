@@ -7,47 +7,53 @@ import {
   Card,
   Form,
   FormControl,
-  Button,
-  Breadcrumb
+  Button
 } from "react-bootstrap";
-import Title from "../components/Title";
-import "./Provider.css";
+import Title from "./Title";
+import "./pages.css";
 import { readMethodChunks } from "../actions";
+import { NavLink } from "react-router-dom";
 
 const MethodChunk = props => {
   return (
     <Col xs={props.xs || 12} md={props.md}>
-      <Card
-        className="provider-card mb-3"
-        onClick={() =>
-          props.history.push(`/method-chunks/${props.methodChunk.id}`)
-        }
-      >
+      <Card className="mc-card mb-3">
         <Card.Body>
           <Row>
             <Col md={8}>
               <Card.Title>{props.methodChunk.name}</Card.Title>
             </Col>
             <Col md={4} className="text-right">
-              {props.methodChunk.provider &&
-                "Provider: " + props.methodChunk.provider}
+              Provider:{" "}
+              <NavLink to={`/providers/${props.methodChunk.provider}`}>
+                {props.methodChunk.provider}
+              </NavLink>
             </Col>
           </Row>
-          <Card.Text className="description">
+          <div className="description mb-1">
             {props.methodChunk.description}
-          </Card.Text>
-
+          </div>
           <h6>Characteristics</h6>
-          <ul>
-            {props.methodChunk.characteristics.map((el, idx) => (
-              <li key={idx}>
-                {el.name}: {el.value} ({el.type})
-              </li>
-            ))}
-          </ul>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>value</th>
+                <th>ref</th>
+              </tr>
+            </thead>
+            <tbody>
+              {props.methodChunk.characteristics.map((el, idx) => (
+                <tr key={idx}>
+                  <td>{el.id}</td>
+                  <td>{el.value}</td>
+                  <td>{el.ref || "N/A"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <h6>Location</h6>
-          {props.methodChunk.url}
-          {/* <Card.Link href={`/providers/${props.provider.id}`}>Learn more</Card.Link> */}
+          <a href={props.methodChunk.url}>{props.methodChunk.url}</a>
         </Card.Body>
       </Card>
     </Col>
@@ -56,7 +62,6 @@ const MethodChunk = props => {
 
 class MethodChunks extends Component {
   state = {
-    methodChunks: [],
     containerSize: { span: 8, offset: 2 },
     cardSize: { span: 8, offset: 2 },
     viewMode: "list"
@@ -70,34 +75,42 @@ class MethodChunks extends Component {
     if (this.state.loading || this.state.errors) {
       return "";
     } else {
-      // Variable to hold the original version of the list
       let currentList = [];
-      // Variable to hold the filtered list before putting into state
       let newList = [];
 
-      // If the search bar isn't empty
       if (e.target.value !== "") {
-        // Assign the original list to currentList
-        currentList = this.props.methodChunks;
+        currentList = this.props.methodChunks.all;
 
-        // Use .filter() to determine which items should be displayed
-        // based on the search terms
-        newList = currentList.filter(item => {
-          // change current item to lowercase
+        newList = currentList.filter(i => {
+          let item = this.props.methodChunks[i];
           const lc = item.name.toLowerCase();
           const lcd = item.description ? item.description.toLowerCase() : "";
-          // change search term to lowercase
+          const lcc = item.characteristics
+            .map(e => e.id)
+            .toString()
+            .toLowerCase();
+          const lcv = item.characteristics
+            .map(e => e.value)
+            .toString()
+            .toLowerCase();
+          const lcr = item.characteristics
+            .map(e => e.ref)
+            .toString()
+            .toLowerCase();
+          const lcu = item.url.toLowerCase();
           const filter = e.target.value.toLowerCase();
-          // check to see if the current list item includes the search term
-          // If it does, it will be added to newList. Using lowercase eliminates
-          // issues with capitalization in search terms and search content
-          return lc.includes(filter) || lcd.includes(filter);
+          return (
+            lc.includes(filter) ||
+            lcd.includes(filter) ||
+            lcc.includes(filter) ||
+            lcv.includes(filter) ||
+            lcr.includes(filter) ||
+            lcu.includes(filter)
+          );
         });
       } else {
-        // If the search bar is empty, set newList to original task list
-        newList = this.props.providers;
+        newList = this.props.methodChunks.all;
       }
-      // Set the filtered state based on what our rules added to newList
       this.setState({
         filtered: newList
       });
@@ -122,6 +135,8 @@ class MethodChunks extends Component {
     });
   };
   render() {
+    console.log("props", this.props);
+    console.log("s", this.state);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={this.state.containerSize}>
@@ -153,7 +168,7 @@ class MethodChunks extends Component {
             </Form>
           </Col>
         </Row>
-        <Row>
+        <Row className="mc">
           {this.state.loading
             ? "Loading..."
             : this.state.errors
@@ -163,28 +178,30 @@ class MethodChunks extends Component {
                 <MethodChunk
                   history={this.props.history}
                   md={this.state.cardSize}
-                  methodChunk={el}
+                  methodChunk={this.props.methodChunks[el]}
                   key={idx}
                   grid
                 />
               ))
             : this.props.methodChunks
-            ? this.props.methodChunks.map((el, idx) => (
-                <MethodChunk
-                  history={this.props.history}
-                  md={this.state.cardSize}
-                  methodChunk={el}
-                  key={idx}
-                  grid
-                />
-              ))
+            ? this.props.methodChunks.all
+                .sort()
+                .map((el, idx) => (
+                  <MethodChunk
+                    history={this.props.history}
+                    md={this.state.cardSize}
+                    methodChunk={this.props.methodChunks[el]}
+                    key={idx}
+                    grid
+                  />
+                ))
             : "Empty"}
         </Row>
       </Container>
     );
   }
 }
-const mapStateToProps = ({ methodChunkReducer }) => ({ ...methodChunkReducer });
+const mapStateToProps = ({ methodChunks }) => ({ methodChunks });
 
 const mapDispatchToProps = { readMethodChunks };
 

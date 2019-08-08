@@ -7,18 +7,19 @@ import {
 } from "../actions";
 
 const initialState = {
-  characteristics: []
+  all: []
 };
 
-const characteristicReducer = (state = initialState, action) => {
+const characteristics = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CHARACTERISTIC:
+      let entry = {};
+      let item = action.payload.characteristic;
+      entry[item.id] = item;
       return {
         ...state,
-        characteristics: [
-          ...state.characteristics,
-          action.payload.characteristic
-        ]
+        ...entry,
+        all: [...state.all, item.id]
       };
     case READ_CHARACTERISTIC:
       return state;
@@ -29,21 +30,26 @@ const characteristicReducer = (state = initialState, action) => {
         errors: null
       };
     case FETCH_CHARACTERISTIC_SUCCESS:
+      let entries = {};
+      let ids = [];
+      action.payload.characteristics.forEach(mc => {
+        entries[mc.id] = mc;
+        ids[ids.length] = mc.id;
+      });
       return {
-        ...state,
-        loading: false,
-        characteristics: action.payload.characteristics
+        ...entries,
+        all: ids,
+        loading: false
       };
     case FETCH_CHARACTERISTIC_FAILURE:
       return {
         ...state,
         loading: false,
-        errors: action.payload.errors,
-        characteristics: []
+        errors: action.payload.errors
       };
     default:
       return state;
   }
 };
 
-export default characteristicReducer;
+export default characteristics;

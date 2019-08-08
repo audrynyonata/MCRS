@@ -236,7 +236,7 @@ const CHARACTERISTICS = [
     dimension: APPLICATION_DOMAIN
   },
   {
-    name: "Application isQuantifiable",
+    name: "Application type",
     characteristicValues: [
       {
         ref: "default",

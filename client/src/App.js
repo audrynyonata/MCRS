@@ -1,19 +1,18 @@
-import React, { Component } from 'react'
-import { Provider } from 'react-redux'
-import { Router, Route, Switch } from 'react-router-dom'
-import Header from './components/Header'
-import Home from './pages/Home'
-import Publish from './pages/Publish'
-import Find from './pages/Find'
-import Providers from './pages/Providers'
-import MethodChunks from './pages/MethodChunks'
-import ProviderItem from './pages/ProviderItem'
-import Characteristics from './pages/Characteristics'
-import NotFound from './pages/NotFound'
-import history from './history';
+import React, { Component } from "react";
+import { Provider } from "react-redux";
+import { Router, Route, Switch } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import Publish from "./components/Publish";
+import Find from "./components/Find";
+import Providers from "./components/Providers";
+import MethodChunks from "./components/MethodChunks";
+import ProviderItem from "./components/ProviderItem";
+import Characteristics from "./components/Characteristics";
+import NotFound from "./components/NotFound";
+import history from "./history";
 
 class App extends Component {
-
   render() {
     return (
       <Provider store={this.props.store}>
@@ -31,8 +30,8 @@ class App extends Component {
           </Switch>
         </Router>
       </Provider>
-    )
+    );
   }
 }
 
-export default App
+export default App;

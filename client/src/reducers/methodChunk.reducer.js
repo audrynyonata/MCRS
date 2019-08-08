@@ -7,15 +7,19 @@ import {
 } from "../actions";
 
 const initialState = {
-  methodChunks: []
+  all: []
 };
 
-const methodChunkReducer = (state = initialState, action) => {
+const methodChunks = (state = initialState, action) => {
   switch (action.type) {
     case ADD_METHOD_CHUNK:
+      let entry = {};
+      let item = action.payload.methodChunk;
+      entry[item.id] = item;
       return {
         ...state,
-        methodChunks: [...state.methodChunks, action.payload.methodChunk]
+        ...entry,
+        all: [...state.all, item.id]
       };
     case READ_METHOD_CHUNK:
       return state;
@@ -26,21 +30,26 @@ const methodChunkReducer = (state = initialState, action) => {
         errors: null
       };
     case FETCH_METHOD_CHUNK_SUCCESS:
+      let entries = {};
+      let ids = [];
+      action.payload.methodChunks.forEach(mc => {
+        entries[mc.id] = mc;
+        ids[ids.length] = mc.id;
+      });
       return {
-        ...state,
-        loading: false,
-        methodChunks: action.payload.methodChunks
+        ...entries,
+        all: ids,
+        loading: false
       };
     case FETCH_METHOD_CHUNK_FAILURE:
       return {
         ...state,
         loading: false,
-        errors: action.payload.errors,
-        methodChunks: []
+        errors: action.payload.errors
       };
     default:
       return state;
   }
 };
 
-export default methodChunkReducer;
+export default methodChunks;

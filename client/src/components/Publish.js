@@ -1,23 +1,24 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { addMethodChunk } from '../actions/'
-import axios from 'axios'
+import React from "react";
+import { connect } from "react-redux";
+import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { addMethodChunk } from "../actions/";
+import axios from "axios";
 
-const AddMethodChunk = (props) => {
+const AddMethodChunk = props => {
   let methodChunk = {
-    name: "Agile Development Essentials",
-    description: "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable.",
-    provider: "Company A", //
+    name: "Agile Development",
+    description:
+      "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable.",
+    provider: "company-a", //
     url: "https://google.com", //
     characteristics: [
-      { name: "Management Commitment", value: "high", type: "ordinal" },
-      { name: "User involvement", value: "high", type: "ordinal" },
-      { name: "Goal number", value: "multi-goals", type: "nominal" },
-      { name: "Development strategy", value: "iterative", type: "nominal" },
-      { name: "Delivery strategy", value: "incremental", type: "nominal" },
+      { id: "management-commitment", value: "high" },
+      { id: "user-involvement", value: "high" },
+      { id: "goal-number", value: "multi-goals" },
+      { id: "development-strategy", value: "iterative" },
+      { id: "delivery-strategy", value: "incremental" }
     ]
-  }
+  };
 
   return (
     <Container fluid className="pt-3 pb-5">
@@ -32,7 +33,11 @@ const AddMethodChunk = (props) => {
 
             <Form.Group controlId="formDescription">
               <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" rows="5" placeholder="Enter project description..." />
+              <Form.Control
+                as="textarea"
+                rows="5"
+                placeholder="Enter project description..."
+              />
             </Form.Group>
 
             <Form.Row>
@@ -59,7 +64,6 @@ const AddMethodChunk = (props) => {
                   <option>minimum</option>
                 </Form.Control>
               </Form.Group>
-
             </Form.Row>
 
             <Form.Group id="formGridCheckbox">
@@ -68,27 +72,27 @@ const AddMethodChunk = (props) => {
 
             <Button variant="primary" type="submit">
               Submit
-  </Button>
+            </Button>
           </Form>
           <form
             onSubmit={e => {
-              e.preventDefault()
-              axios.post('/method-chunks', { ...methodChunk })
-                .then(({ data: { name } }) => {
-                  console.log(`Item - ${name} added successfully`)
+              e.preventDefault();
+              axios
+                .post("/method-chunks", { ...methodChunk })
+                .then(res => {
+                  console.log(res);
+                  console.log(`Item - ${res.data.name} added successfully`);
+                  props.dispatch(addMethodChunk(res.data));
                 })
-                .catch(e => console.log("Addition failed , Error ", e))
-              props.dispatch(addMethodChunk(methodChunk))
+                .catch(e => console.log("Addition failed , Error ", e));
             }}
           >
             <button type="submit">Add methodChunk</button>
           </form>
         </Col>
       </Row>
-
     </Container>
-  )
-}
+  );
+};
 
-
-export default connect()(AddMethodChunk)
+export default connect()(AddMethodChunk);
