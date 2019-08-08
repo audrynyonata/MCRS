@@ -1,4 +1,5 @@
-.provider-card:hover {
+.provider-card:hover,
+.home .card:hover {
   cursor: pointer;
   text-decoration: unset;
   background-color: #f7f7f7;

@@ -5,8 +5,10 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import Publish from "./components/Publish";
 import Find from "./components/Find";
+import FindResult from "./components/FindResult";
 import Providers from "./components/Providers";
 import MethodChunks from "./components/MethodChunks";
+import Projects from "./components/Projects";
 import ProviderItem from "./components/ProviderItem";
 import Characteristics from "./components/Characteristics";
 import NotFound from "./components/NotFound";
@@ -21,11 +23,17 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/publish" component={Publish} />
-            <Route path="/find" component={Find} />
+            <Route exact path="/find" component={Find} />
+            <Route
+              exact
+              path="/find/:provider/:project"
+              component={FindResult}
+            />
             <Route exact path="/providers" component={Providers} />
             <Route path="/providers/:id" component={ProviderItem} />
             <Route path="/method-chunks/" component={MethodChunks} />
             <Route path="/characteristics/" component={Characteristics} />
+            <Route path="/projects/" component={Projects} />
             <Route component={NotFound} />
           </Switch>
         </Router>

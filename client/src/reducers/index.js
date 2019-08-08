@@ -2,13 +2,13 @@ import { combineReducers } from "redux";
 import methodChunks from "./methodChunk.reducer";
 import providerReducer from "./provider.reducer";
 import characteristics from "./characteristic.reducer";
-import projectReducer from "./project.reducer";
+import projects from "./project.reducer";
 
 const rootReducer = combineReducers({
   methodChunks,
   providerReducer,
   characteristics,
-  projectReducer
+  projects
 });
 
 export default rootReducer;
