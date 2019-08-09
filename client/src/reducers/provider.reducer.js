@@ -7,15 +7,19 @@ import {
 } from "../actions";
 
 const initialState = {
-  providers: []
+  all: []
 };
 
-const providerReducer = (state = initialState, action) => {
+const providers = (state = initialState, action) => {
   switch (action.type) {
     case ADD_PROVIDER:
+      let entry = {};
+      let item = action.payload.provider;
+      entry[item.id] = item;
       return {
         ...state,
-        providers: [...state.providers, action.payload.provider]
+        ...entry,
+        all: [...state.all, item.id]
       };
     case READ_PROVIDER:
       return state;
@@ -26,21 +30,26 @@ const providerReducer = (state = initialState, action) => {
         errors: null
       };
     case FETCH_PROVIDER_SUCCESS:
+      let entries = {};
+      let ids = [];
+      action.payload.providers.forEach(p => {
+        entries[p.id] = p;
+        ids[ids.length] = p.id;
+      });
       return {
-        ...state,
-        loading: false,
-        providers: action.payload.providers
+        ...entries,
+        all: ids,
+        loading: false
       };
     case FETCH_PROVIDER_FAILURE:
       return {
         ...state,
         loading: false,
-        errors: action.payload.errors,
-        providers: []
+        errors: action.payload.errors
       };
     default:
       return state;
   }
 };
 
-export default providerReducer;
+export default providers;

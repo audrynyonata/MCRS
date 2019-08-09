@@ -87,11 +87,11 @@ router.get("/", providers.findAll);
  *             bulk:
  *                value:
  *                  - name: "Company B"
- *                    industry: "Tobacco"
+ *                    industry: "tobacco"
  *                    email: "company@b.com"
  *                    password: "password"
  *                  - name: "Company C"
- *                    industry: "consumer services"
+ *                    industry: "consumer-services"
  *                    email: "company_c@example.com"
  *                    password: "password"
  *     responses:
@@ -162,7 +162,7 @@ router.get("/:id", providers.findOne);
  *           examples:
  *             default:
  *               value:
- *                  industry: "Tobacco"
+ *                  industry: "tobacco"
  *                  urls: [
  *                    {
  *                      name: "Company Site (old)",

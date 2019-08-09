@@ -55,7 +55,7 @@ const characteristics = require("../controllers/characteristic.controller.js");
  *                 id: "impact"
  *                 name: "Impact"
  *                 description: "Impact that will be generated in project."
- *                 dimension: "Development strategy"
+ *                 dimension: "development-strategy"
  *                 characteristicValues: [
  *                   {
  *                      _id: "5d224d482aba2723501a0cca",
@@ -177,7 +177,7 @@ router.get("/:id", characteristics.findOne);
  *           examples:
  *             default:
  *               value:
- *                  dimension: "application domain"
+ *                  dimension: "application-domain"
  *     responses:
  *       200:
  *         description: Updated a characteristic

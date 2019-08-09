@@ -45,7 +45,7 @@ const CharacteristicSchema = mongoose.Schema(
     },
     dimension: {
       type: String,
-      enum: DIMENSIONS.map(e => e.name.toLowerCase()),
+      enum: DIMENSIONS.map(e => e.id.toLowerCase()),
       lowercase: true
     },
     description: String

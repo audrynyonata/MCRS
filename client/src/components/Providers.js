@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col, Card, Form, FormControl } from "react-bootstrap";
 import Title from "./Title";
-import { readProviders } from "../actions";
+import { readProviders, readIndustries } from "../actions";
 import "./pages.css";
 
 const ProviderCard = props => (
@@ -17,12 +17,10 @@ const ProviderCard = props => (
             <Card.Title>{props.provider.name}</Card.Title>
           </Col>
           <Col md={4} className="text-right">
-            {props.provider.industry && "Industry: " + props.provider.industry}
+            {props.provider.industry && "Industry: " + props.industry.name}
           </Col>
         </Row>
-        <Card.Text className="description">
-          {props.provider.description}
-        </Card.Text>
+        <Card.Text className="description">{props.provider.description}</Card.Text>
         <Card.Link href="#">Learn more</Card.Link>
       </Card.Body>
     </Card>
@@ -30,11 +28,9 @@ const ProviderCard = props => (
 );
 
 class Providers extends Component {
-  state = {
-    providers: []
-  };
-
+  state = {};
   componentDidMount() {
+    this.props.readIndustries();
     this.props.readProviders();
   }
 
@@ -42,37 +38,23 @@ class Providers extends Component {
     if (this.state.loading || this.state.errors) {
       return "";
     } else {
-      // Variable to hold the original version of the list
       let currentList = [];
-      // Variable to hold the filtered list before putting into state
       let newList = [];
 
-      // If the search bar isn't empty
       if (e.target.value !== "") {
-        // Assign the original list to currentList
-        currentList = this.props.providers;
+        currentList = this.props.providers.all;
 
-        // Use .filter() to determine which items should be displayed
-        // based on the search terms
-        newList = currentList.filter(item => {
-          // change current item to lowercase
+        newList = currentList.filter(i => {
+          let item = this.props.providers[i];
           const lc = item.name.toLowerCase();
           const lcd = item.description.toLowerCase();
-          const lci = item.industry.toLowerCase();
-          // change search term to lowercase
+          const lci = this.props.industries[item.industry].name.toLowerCase();
           const filter = e.target.value.toLowerCase();
-          // check to see if the current list item includes the search term
-          // If it does, it will be added to newList. Using lowercase eliminates
-          // issues with capitalization in search terms and search content
-          return (
-            lc.includes(filter) || lcd.includes(filter) || lci.includes(filter)
-          );
+          return lc.includes(filter) || lcd.includes(filter) || lci.includes(filter);
         });
       } else {
-        // If the search bar is empty, set newList to original task list
-        newList = this.props.providers;
+        newList = this.props.providers.all;
       }
-      // Set the filtered state based on what our rules added to newList
       this.setState({
         filtered: newList
       });
@@ -80,6 +62,8 @@ class Providers extends Component {
   };
 
   render() {
+    console.log("props", this.props);
+    console.log("state", this.state);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={{ span: 8, offset: 2 }}>
@@ -100,35 +84,42 @@ class Providers extends Component {
           </Col>
         </Row>
         <Row>
-          {this.state.loading
-            ? "Loading..."
-            : this.state.errors
-            ? "Error!"
-            : this.state.filtered
-            ? this.state.filtered.map((el, idx) => (
-                <ProviderCard
-                  history={this.props.history}
-                  provider={el}
-                  key={idx}
-                />
-              ))
-            : this.props.providers
-            ? this.props.providers.map((el, idx) => (
-                <ProviderCard
-                  history={this.props.history}
-                  provider={el}
-                  key={idx}
-                />
-              ))
-            : "Empty"}
+          {this.state.loading ? (
+            "Loading..."
+          ) : this.state.errors ? (
+            "Error!"
+          ) : this.state.filtered ? (
+            this.state.filtered.map((el, idx) => (
+              <ProviderCard
+                history={this.props.history}
+                provider={this.props.providers[el]}
+                industry="a"
+                // industry={this.props.industries[this.props.providers[el].industry]}
+                key={idx}
+              />
+            ))
+          ) : this.props.providers.all.length ? (
+            this.props.providers.all.map((el, idx) => (
+              <ProviderCard
+                history={this.props.history}
+                provider={this.props.providers[el]}
+                industry={this.props.industries[this.props.providers[el].industry]}
+                key={idx}
+              />
+            ))
+          ) : (
+            <Col xs={12} md={{ span: 8, offset: 2 }}>
+              Empty
+            </Col>
+          )}
         </Row>
       </Container>
     );
   }
 }
-const mapStateToProps = ({ providerReducer }) => ({ ...providerReducer });
+const mapStateToProps = ({ providers, industries }) => ({ providers, industries });
 
-const mapDispatchToProps = { readProviders };
+const mapDispatchToProps = { readProviders, readIndustries };
 
 export default connect(
   mapStateToProps,

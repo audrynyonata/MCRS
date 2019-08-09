@@ -1,22 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  FormControl,
-  OverlayTrigger,
-  Tooltip
-} from "react-bootstrap";
+import { Container, Row, Col, Form, FormControl, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Title from "./Title";
-import { readCharacteristics } from "../actions";
-import {
-  ORGANISATIONAL,
-  HUMAN,
-  APPLICATION_DOMAIN,
-  DEVELOPMENT_STRATEGY
-} from "./Find";
+import { readCharacteristics, readDimensions } from "../actions";
+import { ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY } from "./Find";
 
 const DimensionTable = props => {
   console.log("props", props);
@@ -25,6 +12,7 @@ const DimensionTable = props => {
       <thead>
         <tr>
           <th>id</th>
+          <th>name</th>
           <th>values</th>
           <th>ref</th>
           <th>isQuantifiable</th>
@@ -38,21 +26,20 @@ const DimensionTable = props => {
               placement="right"
               overlay={
                 <Tooltip id={`tooltip-search-${e.id}`}>
-                  {e.description ||
-                    "dimension: " + e.dimension ||
-                    "id: " + e.id}
+                  {e.description || "dimension: " + e.dimension || "id: " + e.id}
                 </Tooltip>
               }
             >
               <tr>
                 <td>{e.id}</td>
+                <td>{e.name}</td>
                 <td>{e.values.toString()}</td>
                 <td>{e.ref}</td>
                 <td>{e.isQuantifiable.toString()}</td>
               </tr>
             </OverlayTrigger>
           ))
-        ) : props.array ? (
+        ) : props.array.length ? (
           props.array.map(i =>
             props.characteristics[i].characteristicValues.map(e => (
               <OverlayTrigger
@@ -68,6 +55,7 @@ const DimensionTable = props => {
               >
                 <tr>
                   <td>{props.characteristics[i].id}</td>
+                  <td>{props.characteristics[i].name}</td>
                   <td>{e.values.toString()}</td>
                   <td>{e.ref}</td>
                   <td>{e.isQuantifiable.toString()}</td>
@@ -89,6 +77,7 @@ class Characteristics extends Component {
   state = {};
 
   componentDidMount() {
+    this.props.readDimensions();
     this.props.readCharacteristics();
   }
 
@@ -111,14 +100,18 @@ class Characteristics extends Component {
         });
         newList = cvList.filter(item => {
           const lc = item.name.toLowerCase();
+          const lcid = item.id.toLowerCase();
           const lcd = item.description ? item.description.toLowerCase() : "";
-          const lcdim = item.dimension ? item.dimension.toLowerCase() : "";
+          const lcdim = item.dimension
+            ? this.props.dimensions[item.dimension].name.toLowerCase()
+            : "";
           const lcq = item.isQuantifiable.toString().toLowerCase();
           const lcv = item.values.toString().toLowerCase();
           const lcr = item.ref.toLowerCase();
           const filter = e.target.value.toLowerCase();
           return (
             lc.includes(filter) ||
+            lcid.includes(filter) ||
             lcd.includes(filter) ||
             lcdim.includes(filter) ||
             lcq.includes(filter) ||
@@ -156,7 +149,11 @@ class Characteristics extends Component {
             </Form>
           </Col>
         </Row>
-        {this.state.filtered && (
+        {this.state.loading ? (
+          "Loading..."
+        ) : this.state.errors ? (
+          "Error!"
+        ) : this.state.filtered ? (
           <Row>
             <Col md={{ span: 8, offset: 2 }}>
               <h5>Search result</h5>
@@ -168,69 +165,70 @@ class Characteristics extends Component {
               />
             </Col>
           </Row>
+        ) : this.props.characteristics.all.length ? (
+          <Row>
+            <Col md={{ span: 8, offset: 2 }}>
+              <h5>ORGANISATIONAL DIMENSION</h5>
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <DimensionTable
+                array={this.props.organisational}
+                characteristics={this.props.characteristics}
+              />
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <h5>HUMAN DIMENSION</h5>
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <DimensionTable
+                array={this.props.human}
+                characteristics={this.props.characteristics}
+              />
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <h5>APPLICATION DOMAIN DIMENSION</h5>
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <DimensionTable
+                array={this.props.applicationDomain}
+                characteristics={this.props.characteristics}
+              />
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <h5>DEVELOPMENT STRATEGY DIMENSION</h5>
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <DimensionTable
+                array={this.props.developmentStrategy}
+                characteristics={this.props.characteristics}
+              />
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <h5>OTHERS</h5>
+            </Col>
+            <Col md={{ span: 8, offset: 2 }}>
+              <DimensionTable
+                array={this.props.others}
+                characteristics={this.props.characteristics}
+              />
+            </Col>
+          </Row>
+        ) : (
+          "Empty"
         )}
-        <Row>
-          <Col md={{ span: 8, offset: 2 }}>
-            <h5>ORGANISATIONAL DIMENSION</h5>
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <DimensionTable
-              array={this.props.organisational}
-              characteristics={this.props.characteristics}
-            />
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <h5>HUMAN DIMENSION</h5>
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <DimensionTable
-              array={this.props.human}
-              characteristics={this.props.characteristics}
-            />
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <h5>APPLICATION DOMAIN DIMENSION</h5>
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <DimensionTable
-              array={this.props.applicationDomain}
-              characteristics={this.props.characteristics}
-            />
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <h5>DEVELOPMENT STRATEGY DIMENSION</h5>
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <DimensionTable
-              array={this.props.developmentStrategy}
-              characteristics={this.props.characteristics}
-            />
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <h5>OTHERS</h5>
-          </Col>
-          <Col md={{ span: 8, offset: 2 }}>
-            <DimensionTable
-              array={this.props.others}
-              characteristics={this.props.characteristics}
-            />
-          </Col>
-        </Row>
       </Container>
     );
   }
 }
-const mapStateToProps = ({ characteristics }) => ({
+const mapStateToProps = ({ characteristics, dimensions }) => ({
   characteristics: characteristics,
+  dimensions: dimensions,
   organisational: characteristics.all.filter(
     i =>
-      characteristics[i].dimension &&
-      characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
+      characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
   ),
   human: characteristics.all.filter(
-    i =>
-      characteristics[i].dimension &&
-      characteristics[i].dimension.toLowerCase() === HUMAN
+    i => characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === HUMAN
   ),
   applicationDomain: characteristics.all.filter(
     i =>
@@ -245,7 +243,7 @@ const mapStateToProps = ({ characteristics }) => ({
   others: characteristics.all.filter(i => !characteristics[i].dimension)
 });
 
-const mapDispatchToProps = { readCharacteristics };
+const mapDispatchToProps = { readCharacteristics, readDimensions };
 
 export default connect(
   mapStateToProps,

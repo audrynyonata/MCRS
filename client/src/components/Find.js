@@ -10,8 +10,8 @@ import "./Find.css";
 
 export const ORGANISATIONAL = "organisational";
 export const HUMAN = "human";
-export const APPLICATION_DOMAIN = "application domain";
-export const DEVELOPMENT_STRATEGY = "development strategy";
+export const APPLICATION_DOMAIN = "application-domain";
+export const DEVELOPMENT_STRATEGY = "development-strategy";
 
 const CharacteristicRow = props => (
   <Form.Row>
@@ -110,12 +110,9 @@ class Find extends Component {
               {this.props.characteristics
                 .filter(
                   e =>
-                    ![
-                      ORGANISATIONAL,
-                      HUMAN,
-                      APPLICATION_DOMAIN,
-                      DEVELOPMENT_STRATEGY
-                    ].includes(e.dimension)
+                    ![ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY].includes(
+                      e.dimension
+                    )
                 )
                 .map((c, idx) => (
                   <CharacteristicCard key={idx} characteristic={c} />
@@ -133,11 +130,7 @@ class Find extends Component {
 
               <Form.Group controlId="formDescription">
                 <Form.Label>Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows="5"
-                  placeholder="Enter project description..."
-                />
+                <Form.Control as="textarea" rows="5" placeholder="Enter project description..." />
               </Form.Group>
 
               <CharacteristicRow props={this.props.characteristics[0]} />

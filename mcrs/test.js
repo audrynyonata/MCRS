@@ -147,7 +147,7 @@ const providerTest = {
   email: "provider@example.com",
   password: "password",
   description: "Provider Test",
-  industry: "Computer Software",
+  industry: "computer-software",
   contacts: [
     {
       name: "IT Support",

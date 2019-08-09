@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Form,
-  FormControl,
-  Button
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Form, FormControl, Button } from "react-bootstrap";
 import Title from "./Title";
 import "./pages.css";
-import { readProjects } from "../actions";
+import { readProjects, readProviders } from "../actions";
 import { NavLink } from "react-router-dom";
 
 const Project = props => {
@@ -25,9 +17,7 @@ const Project = props => {
             </Col>
             <Col md={4} className="text-right">
               Owner:{" "}
-              <NavLink to={`/providers/${props.project.provider}`}>
-                {props.project.provider}
-              </NavLink>
+              <NavLink to={`/providers/${props.project.provider}`}>{props.provider.name}</NavLink>
             </Col>
           </Row>
           <div className="description mb-1">{props.project.description}</div>
@@ -56,10 +46,7 @@ const Project = props => {
             </tbody>
           </table>
           <div className="d-flex justify-content-center">
-            <NavLink
-              to={`/find/${props.project.id}/`}
-              className="btn btn-primary my-2"
-            >
+            <NavLink to={`/find/${props.project.id}/`} className="btn btn-primary my-2">
               Get recommendation
             </NavLink>
           </div>
@@ -77,6 +64,7 @@ class Projects extends Component {
   };
 
   componentDidMount() {
+    this.props.readProviders();
     this.props.readProjects();
   }
 
@@ -93,7 +81,7 @@ class Projects extends Component {
         newList = currentList.filter(i => {
           let item = this.props.projects[i];
           const lc = item.name.toLowerCase();
-          const lp = item.provider.toLowerCase();
+          const lp = this.props.providers[item.provider].name.toLowerCase();
           const lcd = item.description ? item.description.toLowerCase() : "";
           const lcc = item.characteristics
             .map(e => e.id)
@@ -188,6 +176,7 @@ class Projects extends Component {
                 history={this.props.history}
                 md={this.state.cardSize}
                 project={this.props.projects[el]}
+                provider={this.props.providers[this.props.projects[el].provider]}
                 key={idx}
                 grid
               />
@@ -200,6 +189,7 @@ class Projects extends Component {
                   history={this.props.history}
                   md={this.state.cardSize}
                   project={this.props.projects[el]}
+                  provider={this.props.providers[this.props.projects[el].provider]}
                   key={idx}
                   grid
                 />
@@ -214,9 +204,9 @@ class Projects extends Component {
     );
   }
 }
-const mapStateToProps = ({ projects }) => ({ projects });
+const mapStateToProps = ({ projects, providers }) => ({ projects, providers });
 
-const mapDispatchToProps = { readProjects };
+const mapDispatchToProps = { readProjects, readProviders };
 
 export default connect(
   mapStateToProps,

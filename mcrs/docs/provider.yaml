@@ -18,7 +18,7 @@ components:
           description: a brief description about the company
         industry:
           type: string
-          description: name of the field of industry the company is running in. See `industries` for more info.
+          description: id of the field of industry the company is running in. See `industries` for more info.
         urls:
           type: array
           description: a set of useful external link related to this company
@@ -197,7 +197,7 @@ components:
         name: "Company A (Ltd.)"
         password: "password"
         description: "Company A (Ltd.) has been working in apparel and fashion since 1899."
-        industry: "Apparel and Fashion"
+        industry: "apparel-and-fashion"
         urls: [
           {
             name: "Company Official Site",
@@ -225,7 +225,7 @@ components:
         email: "company@a.com"
         name: "Company A (Ltd.)"
         description: "Company A (Ltd.) has been working in apparel and fashion since 1899."
-        industry: "Apparel and Fashion"
+        industry: "apparel-and-fashion"
         urls: [
           {
             _id: "5d224d482aba2723501a0cc9",

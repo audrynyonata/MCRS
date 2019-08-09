@@ -2,9 +2,8 @@ const companyA = {
   name: "Company A (Ltd.)",
   email: "company@a.com",
   password: "password",
-  description:
-    "Company A (Ltd.) has been working in apparel and fashion since 1899.",
-  industry: "Apparel and Fashion",
+  description: "Company A (Ltd.) has been working in apparel and fashion since 1899.",
+  industry: "apparel-and-fashion",
   urls: [
     {
       name: "Company Official Site",
@@ -30,7 +29,7 @@ const companyB = {
   password: "password",
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vehicula hendrerit mollis. Sed gravida augue ut interdum placerat. Maecenas posuere enim nibh. Sed lobortis velit sit amet sapien pharetra, a condimentum turpis laoreet. Donec consectetur lacinia nisi, et sagittis lorem laoreet a. Praesent iaculis gravida magna non imperdiet. Mauris pharetra, quam non semper pulvinar, dolor nulla vehicula nisl, ac dignissim lacus sapien vitae tortor. Etiam vitae pharetra libero, nec vulputate metus. Maecenas sed elementum eros. Mauris libero nisl, semper suscipit rhoncus sit amet, iaculis eget dui. Nulla scelerisque diam id mauris mattis, nec lacinia quam lacinia.",
-  industry: "Tobacco"
+  industry: "tobacco"
 };
 
 const companyC = {
@@ -39,7 +38,7 @@ const companyC = {
   password: "password",
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vehicula hendrerit mollis. Sed gravida augue ut interdum placerat. Maecenas posuere enim nibh. Sed lobortis velit sit amet sapien pharetra, a condimentum turpis laoreet. Donec consectetur lacinia nisi, et sagittis lorem laoreet a. Praesent iaculis gravida magna non imperdiet. Mauris pharetra, quam non semper pulvinar, dolor nulla vehicula nisl, ac dignissim lacus sapien vitae tortor. Etiam vitae pharetra libero, nec vulputate metus. Maecenas sed elementum eros. Mauris libero nisl, semper suscipit rhoncus sit amet, iaculis eget dui. Nulla scelerisque diam id mauris mattis, nec lacinia quam lacinia.",
-  industry: "E-learning"
+  industry: "e-learning"
 };
 
 module.exports = { companyA, companyB, companyC };

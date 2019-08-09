@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Form,
-  FormControl,
-  Button
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Form, FormControl, Button } from "react-bootstrap";
 import Title from "./Title";
 import "./pages.css";
-import { readMethodChunks } from "../actions";
+import { readMethodChunks, readProviders } from "../actions";
 import { NavLink } from "react-router-dom";
 
 const MethodChunk = props => {
@@ -26,13 +18,11 @@ const MethodChunk = props => {
             <Col md={4} className="text-right">
               Provider:{" "}
               <NavLink to={`/providers/${props.methodChunk.provider}`}>
-                {props.methodChunk.provider}
+                {props.provider.name}
               </NavLink>
             </Col>
           </Row>
-          <div className="description mb-1">
-            {props.methodChunk.description}
-          </div>
+          <div className="description mb-1">{props.methodChunk.description}</div>
           <h6>Characteristics</h6>
           <table className="table">
             <thead>
@@ -68,6 +58,7 @@ class MethodChunks extends Component {
   };
 
   componentDidMount() {
+    this.props.readProviders();
     this.props.readMethodChunks();
   }
 
@@ -85,6 +76,7 @@ class MethodChunks extends Component {
           let item = this.props.methodChunks[i];
           const lc = item.name.toLowerCase();
           const lcd = item.description ? item.description.toLowerCase() : "";
+          const lcp = this.props.providers[item.provider].name.toLowerCase();
           const lcc = item.characteristics
             .map(e => e.id)
             .toString()
@@ -101,6 +93,7 @@ class MethodChunks extends Component {
           const filter = e.target.value.toLowerCase();
           return (
             lc.includes(filter) ||
+            lcp.includes(filter) ||
             lcd.includes(filter) ||
             lcc.includes(filter) ||
             lcv.includes(filter) ||
@@ -169,41 +162,47 @@ class MethodChunks extends Component {
           </Col>
         </Row>
         <Row className="mc">
-          {this.state.loading
-            ? "Loading..."
-            : this.state.errors
-            ? "Error!"
-            : this.state.filtered
-            ? this.state.filtered.map((el, idx) => (
+          {this.state.loading ? (
+            "Loading..."
+          ) : this.state.errors ? (
+            "Error!"
+          ) : this.state.filtered ? (
+            this.state.filtered.map((el, idx) => (
+              <MethodChunk
+                history={this.props.history}
+                md={this.state.cardSize}
+                methodChunk={this.props.methodChunks[el]}
+                provider={this.props.providers[this.props.methodChunks[el].provider]}
+                key={idx}
+                grid
+              />
+            ))
+          ) : this.props.methodChunks.all.length ? (
+            this.props.methodChunks.all
+              .sort()
+              .map((el, idx) => (
                 <MethodChunk
                   history={this.props.history}
                   md={this.state.cardSize}
                   methodChunk={this.props.methodChunks[el]}
+                  provider={this.props.providers[this.props.methodChunks[el].provider]}
                   key={idx}
                   grid
                 />
               ))
-            : this.props.methodChunks
-            ? this.props.methodChunks.all
-                .sort()
-                .map((el, idx) => (
-                  <MethodChunk
-                    history={this.props.history}
-                    md={this.state.cardSize}
-                    methodChunk={this.props.methodChunks[el]}
-                    key={idx}
-                    grid
-                  />
-                ))
-            : "Empty"}
+          ) : (
+            <Col xs={12} md={{ span: 8, offset: 2 }}>
+              Empty
+            </Col>
+          )}
         </Row>
       </Container>
     );
   }
 }
-const mapStateToProps = ({ methodChunks }) => ({ methodChunks });
+const mapStateToProps = ({ methodChunks, providers }) => ({ methodChunks, providers });
 
-const mapDispatchToProps = { readMethodChunks };
+const mapDispatchToProps = { readMethodChunks, readProviders };
 
 export default connect(
   mapStateToProps,

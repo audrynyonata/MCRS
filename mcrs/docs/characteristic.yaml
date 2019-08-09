@@ -8,7 +8,7 @@ components:
           description: characteristic name (unique)
         dimension:
           type: string
-          description: name of dimension of this characteristic. See `dimensions` for more info.
+          description: id of dimension of this characteristic. See `dimensions` for more info.
         description:
           type: string
           description: a brief description about the characteristic
@@ -41,7 +41,7 @@ components:
       properties:
         dimension:
           type: string
-          description: name of dimension of this characteristic. See `dimensions` for more info.
+          description: id of dimension of this characteristic. See `dimensions` for more info.
         description:
           type: string
           description: a brief description about the characteristic
@@ -79,7 +79,7 @@ components:
           description: characteristic name (unique)
         dimension:
           type: string
-          description: name of dimension of this characteristic. See `dimensions` for more info.
+          description: id of dimension of this characteristic. See `dimensions` for more info.
         description:
           type: string
           description: a brief description about the characteristic
@@ -115,7 +115,7 @@ components:
     CharacteristicInputExample:
       value:
         name: "User Involvement"
-        dimension: "Human"
+        dimension: "human"
         description: "The rate of user involvement in project."
         characteristicValues: [
           {
@@ -129,7 +129,7 @@ components:
         id: "impact"
         name: "Impact"
         description: "Impact that will be generated in project."
-        dimension: "Development strategy"
+        dimension: "development-strategy"
         characteristicValues: [
           {
             _id: "5d224d482aba2723501a0cca",

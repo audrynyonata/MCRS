@@ -13,21 +13,13 @@ const ProviderUrlSchema = mongoose.Schema({
 const ProviderContactValidator = [
   {
     validator: v =>
-      !v.filter(
-        e =>
-          !e.name &&
-          !e.description &&
-          !e.role &&
-          !e.phone &&
-          !e.email &&
-          !e.address
-      ).length,
+      !v.filter(e => !e.name && !e.description && !e.role && !e.phone && !e.email && !e.address)
+        .length,
     message: "Contact object can not be all empty."
   },
   {
     validator: v => !v.filter(e => !e.phone && !e.email && !e.address).length,
-    message:
-      "For each contact object at least one of address/email/phone must be filled."
+    message: "For each contact object at least one of address/email/phone must be filled."
   }
 ];
 
@@ -58,9 +50,7 @@ const ProviderSchema = mongoose.Schema(
       lowercase: true,
       validate: {
         validator: email =>
-          /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-            email
-          ),
+          /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email),
         message: "Email must be valid."
       }
     },
@@ -75,7 +65,7 @@ const ProviderSchema = mongoose.Schema(
     description: String,
     industry: {
       type: String,
-      enum: INDUSTRIES.map(e => e.name.toLowerCase()),
+      enum: INDUSTRIES.map(e => e.id.toLowerCase()),
       lowercase: true
     },
     urls: [ProviderUrlSchema],

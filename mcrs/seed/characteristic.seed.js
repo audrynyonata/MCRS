@@ -1,7 +1,7 @@
 const ORGANISATIONAL = "organisational";
 const HUMAN = "human";
-const APPLICATION_DOMAIN = "application domain";
-const DEVELOPMENT_STRATEGY = "development strategy";
+const APPLICATION_DOMAIN = "application-domain";
+const DEVELOPMENT_STRATEGY = "development-strategy";
 
 const CHARACTERISTICS = [
   {
@@ -308,12 +308,7 @@ const CHARACTERISTICS = [
     characteristicValues: [
       {
         ref: "default",
-        values: [
-          "organisational",
-          "human",
-          "application domain",
-          "development strategy"
-        ],
+        values: ["organisational", "human", "application domain", "development strategy"],
         isQuantifiable: false
       }
     ],
@@ -351,13 +346,7 @@ const CHARACTERISTICS = [
     characteristicValues: [
       {
         ref: "default",
-        values: [
-          "outsourcing",
-          "iterative",
-          "prototyping",
-          "phase-wise",
-          "title-wise"
-        ],
+        values: ["outsourcing", "iterative", "prototyping", "phase-wise", "title-wise"],
         isQuantifiable: false
       }
     ],
