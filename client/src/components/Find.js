@@ -5,13 +5,9 @@ import { Container, Card, Row, Col, Form, Button } from "react-bootstrap";
 // import MethodChunkList from "../components/MethodChunkList";
 // import AddMethodChunk from "../components/AddMethodChunk";
 import { readCharacteristics } from "../actions";
+import { ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY } from "./Characteristics";
 
 import "./Find.css";
-
-export const ORGANISATIONAL = "organisational";
-export const HUMAN = "human";
-export const APPLICATION_DOMAIN = "application-domain";
-export const DEVELOPMENT_STRATEGY = "development-strategy";
 
 const CharacteristicRow = props => (
   <Form.Row>

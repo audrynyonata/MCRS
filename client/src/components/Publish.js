@@ -1,98 +1,239 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { addMethodChunk } from "../actions/";
+import { addMethodChunk, readCharacteristics } from "../actions/";
+import Title from "./Title";
 import axios from "axios";
+import { ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY } from "./Characteristics";
 
-const AddMethodChunk = props => {
-  let methodChunk = {
-    name: "Agile Development",
-    description:
-      "Add value to a product by incrementally extending it, ensuring it is usable, releasable and maintainable.",
-    provider: "company-a", //
-    url: "https://google.com", //
+class Publish extends React.Component {
+  state = {
+    name: null,
+    description: null,
+    url: null,
     characteristics: [
-      { id: "management-commitment", value: "high" },
-      { id: "user-involvement", value: "high" },
-      { id: "goal-number", value: "multi-goals" },
-      { id: "development-strategy", value: "iterative" },
-      { id: "delivery-strategy", value: "incremental" }
+      {
+        id: null,
+        ref: null,
+        value: null
+      }
     ]
   };
 
-  return (
-    <Container fluid className="pt-3 pb-5">
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <h5>Publish Method Chunk</h5>
-          <Form>
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control type="name" placeholder="Enter name" />
-            </Form.Group>
+  componentDidMount() {
+    this.props.readCharacteristics();
+  }
 
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows="5"
-                placeholder="Enter project description..."
-              />
-            </Form.Group>
+  handleChange = e => {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  };
+  handleCChange = e => {
+    let split = e.currentTarget.name.split(".");
+    let characteristics = this.state.characteristics;
+    let c = characteristics[split[1]];
+    c[split[2]] = e.currentTarget.value;
+    let select = e.currentTarget;
+    if (split[2] === "value")
+      c["ref"] = select.options[select.selectedIndex].getAttribute("data-ref");
+    console.log(characteristics);
+    this.setState({ [split[0]]: characteristics });
+  };
 
-            <Form.Row>
-              <Form.Group as={Col} controlId="formChar1">
-                <Form.Label>Characteristic Name</Form.Label>
-                <Form.Control placeholder="Characteristic #1" />
+  addCharacteristic = () => {
+    this.setState(prevState => ({
+      characteristics: [...prevState.characteristics, { id: null, ref: null, value: null }]
+    }));
+  };
+
+  removeCharacteristic = id => {
+    this.setState(prevState => {
+      let characteristics = [...prevState.characteristics];
+      characteristics.splice(id, 1);
+      return { characteristics };
+    });
+  };
+
+  render() {
+    console.log("props", this.props);
+    console.log("state", this.state);
+    return (
+      <Container fluid className="pt-3 pb-5">
+        <Title xs={12} md={{ span: 8, offset: 2 }}>
+          Publish Method Chunk
+        </Title>
+        <Row>
+          <Col md={{ span: 8, offset: 2 }}>
+            <Form>
+              <Form.Group controlId="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="name"
+                  name="name"
+                  placeholder="Enter name..."
+                  onChange={this.handleChange}
+                />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formOptimal1">
-                <Form.Label>Type</Form.Label>
-                <Form.Control as="select">
-                  <option>Choose...</option>
-                  <option>Ordinal</option>
-                  <option>Nominal</option>
-                  <option>Numerical</option>
-                </Form.Control>
+              <Form.Group controlId="description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows="5"
+                  name="description"
+                  placeholder="Enter description..."
+                  onChange={this.handleChange}
+                />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formOptimal1">
-                <Form.Label>Optimal Sense</Form.Label>
-                <Form.Control as="select">
-                  <option>Choose...</option>
-                  <option>maximum</option>
-                  <option>minimum</option>
-                </Form.Control>
+              <Form.Group controlId="url">
+                <Form.Label>URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="url"
+                  placeholder="Enter location url..."
+                  onChange={this.handleChange}
+                />
               </Form.Group>
-            </Form.Row>
 
-            <Form.Group id="formGridCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
+              <h5 className="pt-3">Characteristics</h5>
+              {this.state.characteristics.map((e, idx) => (
+                <Form.Row key={idx}>
+                  <Form.Group as={Col} controlId="cid">
+                    <Form.Control
+                      as="select"
+                      onChange={this.handleCChange}
+                      name={"characteristics." + idx + ".id"}
+                    >
+                      <option>Choose characteristic</option>
+                      <optgroup label="">
+                        {this.props.others.map(e => (
+                          <option value={e} key={e}>
+                            {this.props.characteristics[e].name}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label={ORGANISATIONAL}>
+                        {this.props.organisational.map(e => (
+                          <option value={e} key={e}>
+                            {this.props.characteristics[e].name}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label={HUMAN}>
+                        {this.props.human.map(e => (
+                          <option value={e} key={e}>
+                            {this.props.characteristics[e].name}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label={APPLICATION_DOMAIN}>
+                        {this.props.applicationDomain.map(e => (
+                          <option value={e} key={e}>
+                            {this.props.characteristics[e].name}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label={DEVELOPMENT_STRATEGY}>
+                        {this.props.developmentStrategy.map(e => (
+                          <option value={e} key={e}>
+                            {this.props.characteristics[e].name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group as={Col} md={6} controlId="value">
+                    <Form.Control
+                      as="select"
+                      name={"characteristics." + idx + ".value"}
+                      onChange={this.handleCChange}
+                    >
+                      <option>Choose value</option>
+                      {this.state.characteristics[idx].id &&
+                        this.props.characteristics[
+                          this.state.characteristics[idx].id
+                        ].characteristicValues.map(e => (
+                          <optgroup
+                            key={this.state.characteristics[idx].id + " " + e.ref}
+                            label={e.ref}
+                          >
+                            {e.values.map((v, id) => (
+                              <option
+                                key={this.state.characteristics[idx].id + +" " + e.ref + " " + v}
+                                data-ref={e.ref}
+                                value={v}
+                              >
+                                {v}
+                              </option>
+                            ))}
+                          </optgroup>
+                        ))}
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group className={idx === 0 && "invisible"}>
+                    <Button variant="danger" onClick={() => this.removeCharacteristic(idx)}>
+                      Remove{" "}
+                    </Button>
+                  </Form.Group>
+                </Form.Row>
+              ))}
+              <Form.Group className="d-flex justify-content-center">
+                <Button variant="primary" onClick={this.addCharacteristic}>
+                  Add characteristic
+                </Button>
+              </Form.Group>
+            </Form>
+            <br />
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                axios
+                  .post("/method-chunks", this.state)
+                  .then(res => {
+                    console.log("res", res);
+                    console.log(`Item - ${res.data.name} added successfully`);
+                    this.props.addMethodChunk(res.data);
+                    alert(res.status + res.statusText);
+                    this.props.history.push("/method-chunks#" + res.id);
+                  })
+                  .catch(e => console.log("Addition failed , Error ", e));
+              }}
+            >
+              <Button variant="success" type="submit" className="float-right">
+                Publish
+              </Button>
+            </form>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+}
+const mapStateToProps = ({ methodChunks, characteristics }) => ({
+  methodChunks: methodChunks,
+  characteristics: characteristics,
+  organisational: characteristics.all.filter(
+    i =>
+      characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
+  ),
+  human: characteristics.all.filter(
+    i => characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === HUMAN
+  ),
+  applicationDomain: characteristics.all.filter(
+    i =>
+      characteristics[i].dimension &&
+      characteristics[i].dimension.toLowerCase() === APPLICATION_DOMAIN
+  ),
+  developmentStrategy: characteristics.all.filter(
+    i =>
+      characteristics[i].dimension &&
+      characteristics[i].dimension.toLowerCase() === DEVELOPMENT_STRATEGY
+  ),
+  others: characteristics.all.filter(i => !characteristics[i].dimension)
+});
+const mapDispatchToProps = { readCharacteristics, addMethodChunk };
 
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              axios
-                .post("/method-chunks", { ...methodChunk })
-                .then(res => {
-                  console.log(res);
-                  console.log(`Item - ${res.data.name} added successfully`);
-                  props.dispatch(addMethodChunk(res.data));
-                })
-                .catch(e => console.log("Addition failed , Error ", e));
-            }}
-          >
-            <button type="submit">Add methodChunk</button>
-          </form>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
-
-export default connect()(AddMethodChunk);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Publish);

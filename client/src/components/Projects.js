@@ -64,8 +64,7 @@ class Projects extends Component {
   };
 
   componentDidMount() {
-    this.props.readProviders();
-    this.props.readProjects();
+    Promise.resolve(this.props.readProviders()).then(r => this.props.readProjects());
   }
 
   handleChange = e => {

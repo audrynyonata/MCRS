@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 
 const MethodChunk = props => {
   return (
-    <Col xs={props.xs || 12} md={props.md}>
+    <Col xs={props.xs || 12} md={props.md} id={props.methodChunk.id}>
       <Card className="mc-card mb-3">
         <Card.Body>
           <Row>
@@ -130,6 +130,8 @@ class MethodChunks extends Component {
   render() {
     console.log("props", this.props);
     console.log("s", this.state);
+    if (this.props.location.hash && document.querySelector(this.props.location.hash))
+      window.scrollTo(0, document.querySelector(this.props.location.hash).offsetTop);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={this.state.containerSize}>
@@ -177,7 +179,7 @@ class MethodChunks extends Component {
                 grid
               />
             ))
-          ) : this.props.methodChunks.all.length ? (
+          ) : this.props.methodChunks.all.length && this.props.providers.all.length ? (
             this.props.methodChunks.all
               .sort()
               .map((el, idx) => (

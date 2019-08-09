@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import { Container, Row, Col, Form, FormControl, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Title from "./Title";
 import { readCharacteristics, readDimensions } from "../actions";
-import { ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY } from "./Find";
+
+export const ORGANISATIONAL = "organisational";
+export const HUMAN = "human";
+export const APPLICATION_DOMAIN = "application-domain";
+export const DEVELOPMENT_STRATEGY = "development-strategy";
 
 const DimensionTable = props => {
   console.log("props", props);

@@ -93,12 +93,11 @@ class Providers extends Component {
               <ProviderCard
                 history={this.props.history}
                 provider={this.props.providers[el]}
-                industry="a"
-                // industry={this.props.industries[this.props.providers[el].industry]}
+                industry={this.props.industries[this.props.providers[el].industry]}
                 key={idx}
               />
             ))
-          ) : this.props.providers.all.length ? (
+          ) : this.props.providers.all.length && this.props.industries.all.length ? (
             this.props.providers.all.map((el, idx) => (
               <ProviderCard
                 history={this.props.history}

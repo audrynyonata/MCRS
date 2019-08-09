@@ -1,9 +1,6 @@
 const { companyA, companyB, companyC } = require("./seed/provider.seed");
 const { CHARACTERISTICS } = require("./seed/characteristic.seed");
-const {
-  METHOD_CHUNKS,
-  METHOD_CHUNKS_ADDITIONAL
-} = require("./seed/methodChunk.seed");
+const { METHOD_CHUNKS, METHOD_CHUNKS_ADDITIONAL } = require("./seed/methodChunk.seed");
 const { testProject, testProject2 } = require("./seed/project.seed");
 
 const fetch = require("node-fetch");
@@ -78,9 +75,10 @@ const seedCharacteristic = () => {
 
 const seedMethodChunk = () => {
   console.log("Seeding method chunks...");
+  var modified = METHOD_CHUNKS.map(e => ({ ...e, provider: "company-b" }));
   return fetch(`${server}/method-chunks`, {
     method: "POST",
-    body: JSON.stringify(METHOD_CHUNKS.concat(METHOD_CHUNKS_ADDITIONAL)),
+    body: JSON.stringify(modified.concat(METHOD_CHUNKS_ADDITIONAL)),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
