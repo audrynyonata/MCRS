@@ -1,4 +1,6 @@
 const Characteristic = require("../models/characteristic.model.js");
+const Project = require("../models/project.model.js");
+const MethodChunk = require("../models/methodChunk.model.js");
 const slugify = require("slugify");
 
 exports.create = (req, res) => {
@@ -162,6 +164,12 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+  MethodChunk.find({ "characteristics.id": req.params.id.toLowerCase() })
+    .updateMany({ $pull: { characteristics: { id: req.params.id.toLowerCase() } } })
+    .exec();
+  Project.find({ "characteristics.id": req.params.id.toLowerCase() })
+    .updateMany({ $pull: { characteristics: { id: req.params.id.toLowerCase() } } })
+    .exec();
   Characteristic.findOneAndRemove({ id: req.params.id.toLowerCase() })
     .then(result => {
       if (!result) {

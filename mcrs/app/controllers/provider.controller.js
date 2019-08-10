@@ -1,4 +1,6 @@
 const Provider = require("../models/provider.model.js");
+const Project = require("../models/project.model.js");
+const MethodChunk = require("../models/methodChunk.model.js");
 const slugify = require("slugify");
 const jwtConfig = require("../../config/jwt.config.js");
 const jwt = require("jsonwebtoken");
@@ -232,6 +234,8 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+  MethodChunk.deleteMany({ provider: req.params.id.toLowerCase() }).exec();
+  Project.deleteMany({ provider: req.params.id.toLowerCase() }).exec();
   Provider.findOneAndRemove({ id: req.params.id.toLowerCase() })
     .then(result => {
       if (!result) {
