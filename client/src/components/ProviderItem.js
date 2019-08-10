@@ -27,8 +27,16 @@ class ProviderItem extends Component {
     if (this.props.industries)
       return (
         <Container fluid className="pt-3">
-          {this.props.provider ? (
+          {this.props.provider && this.props.industries.all.length ? (
             <div>
+              <Row>
+                <Col md={{ span: 5, offset: 2 }}>
+                  <NavLink to="/providers">&laquo; Back</NavLink>
+                </Col>
+                <Col xs={3} className="text-right">
+                  <NavLink to={`/providers/${this.props.provider.id}/edit`}>Edit</NavLink>
+                </Col>
+              </Row>
               <Title xs={12} md={{ span: 8, offset: 2 }}>
                 {this.props.provider.name}
               </Title>

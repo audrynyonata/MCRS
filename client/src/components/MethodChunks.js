@@ -13,7 +13,12 @@ const MethodChunk = props => {
         <Card.Body>
           <Row>
             <Col md={8}>
-              <Card.Title>{props.methodChunk.name}</Card.Title>
+              <Card.Title>
+                {props.methodChunk.name}{" "}
+                <NavLink to={`/method-chunks/${props.methodChunk.id}/edit`}>
+                  <i className="far fa-edit" />
+                </NavLink>
+              </Card.Title>
             </Col>
             <Col md={4} className="text-right">
               Provider:{" "}

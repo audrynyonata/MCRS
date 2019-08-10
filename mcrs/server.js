@@ -98,7 +98,9 @@ app.use(function(req, res, next) {
     }
   }
   next();
-  console.log(req.method, req.originalUrl, res.statusCode);
+  let uid = "";
+  if (req.user) uid = req.user.id;
+  console.log(uid, req.method, req.originalUrl, res.statusCode);
 });
 
 // Configuring API documentation

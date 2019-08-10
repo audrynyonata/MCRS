@@ -66,53 +66,58 @@ class Find extends Component {
             <h5 className="pt-3">Characteristics</h5>
             <p>Organisational</p>
             <Row className="mb-4">
-              {this.props.characteristics
-                .filter(e => e.dimension === ORGANISATIONAL)
-                .map((c, idx) => (
+              {this.props.organisational.length ? (
+                this.props.organisational.map((c, idx) => (
                   <CharacteristicCard
                     checked
                     key={idx}
-                    characteristic={c}
+                    characteristic={this.props.characteristics[c]}
                     onClick={() => this.setState({ c })}
                   />
-                ))}
+                ))
+              ) : (
+                <Col className="px-2">N/A</Col>
+              )}
             </Row>
             <p>Human</p>
             <Row className="mb-4">
-              {this.props.characteristics
-                .filter(e => e.dimension === HUMAN)
-                .map((c, idx) => (
-                  <CharacteristicCard key={idx} characteristic={c} />
-                ))}
+              {this.props.human.length ? (
+                this.props.human.map((c, idx) => (
+                  <CharacteristicCard key={idx} characteristic={this.props.characteristics[c]} />
+                ))
+              ) : (
+                <Col className="px-2">N/A</Col>
+              )}
             </Row>
             <p>Application Domain</p>
             <Row className="mb-4">
-              {this.props.characteristics
-                .filter(e => e.dimension === APPLICATION_DOMAIN)
-                .map((c, idx) => (
-                  <CharacteristicCard key={idx} characteristic={c} />
-                ))}
+              {this.props.applicationDomain.length ? (
+                this.props.applicationDomain.map((c, idx) => (
+                  <CharacteristicCard key={idx} characteristic={this.props.characteristics[c]} />
+                ))
+              ) : (
+                <Col className="px-2">N/A</Col>
+              )}
             </Row>
             <p>Development Strategy</p>
             <Row className="mb-4">
-              {this.props.characteristics
-                .filter(e => e.dimension === DEVELOPMENT_STRATEGY)
-                .map((c, idx) => (
-                  <CharacteristicCard key={idx} characteristic={c} />
-                ))}
+              {this.props.developmentStrategy.length ? (
+                this.props.developmentStrategy.map((c, idx) => (
+                  <CharacteristicCard key={idx} characteristic={this.props.characteristics[c]} />
+                ))
+              ) : (
+                <Col className="px-2">N/A</Col>
+              )}
             </Row>
             <p>Others</p>
             <Row className="mb-4">
-              {this.props.characteristics
-                .filter(
-                  e =>
-                    ![ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY].includes(
-                      e.dimension
-                    )
-                )
-                .map((c, idx) => (
-                  <CharacteristicCard key={idx} characteristic={c} />
-                ))}
+              {this.props.others.length ? (
+                this.props.others.map((c, idx) => (
+                  <CharacteristicCard key={idx} characteristic={this.props.characteristics[c]} />
+                ))
+              ) : (
+                <Col className="px-2">N/A</Col>
+              )}
             </Row>
           </Col>
           <Col xs={12} sm={6} lg={7} className="column-right">
@@ -141,8 +146,26 @@ class Find extends Component {
     );
   }
 }
-const mapStateToProps = ({ characteristicReducer }) => ({
-  ...characteristicReducer
+const mapStateToProps = ({ characteristics }) => ({
+  characteristics: characteristics,
+  organisational: characteristics.all.filter(
+    i =>
+      characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
+  ),
+  human: characteristics.all.filter(
+    i => characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === HUMAN
+  ),
+  applicationDomain: characteristics.all.filter(
+    i =>
+      characteristics[i].dimension &&
+      characteristics[i].dimension.toLowerCase() === APPLICATION_DOMAIN
+  ),
+  developmentStrategy: characteristics.all.filter(
+    i =>
+      characteristics[i].dimension &&
+      characteristics[i].dimension.toLowerCase() === DEVELOPMENT_STRATEGY
+  ),
+  others: characteristics.all.filter(i => !characteristics[i].dimension)
 });
 
 const mapDispatchToProps = { readCharacteristics };
