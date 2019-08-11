@@ -1,16 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Container, Row, Col, Card, Form, FormControl } from "react-bootstrap";
 import Title from "./Title";
-import { readProviders, readIndustries } from "../actions";
 import "./pages.css";
+import { NavLink } from "react-router-dom";
 
 const ProviderCard = props => (
   <Col xs={12} md={{ span: 8, offset: 2 }}>
-    <Card
-      className="provider-card mb-3"
-      onClick={() => props.history.push(`/providers/${props.provider.id}`)}
-    >
+    <Card className="provider-card mb-3">
       <Card.Body>
         <Row>
           <Col md={8}>
@@ -21,7 +17,7 @@ const ProviderCard = props => (
           </Col>
         </Row>
         <Card.Text className="description">{props.provider.description}</Card.Text>
-        <Card.Link href="#">Learn more</Card.Link>
+        <NavLink to={`/providers/${props.provider.id}`}>Learn more</NavLink>
       </Card.Body>
     </Card>
   </Col>
@@ -29,11 +25,6 @@ const ProviderCard = props => (
 
 class Providers extends Component {
   state = {};
-  componentDidMount() {
-    this.props.readIndustries();
-    this.props.readProviders();
-  }
-
   handleChange = e => {
     if (this.state.loading || this.state.errors) {
       return "";
@@ -62,8 +53,8 @@ class Providers extends Component {
   };
 
   render() {
-    console.log("props", this.props);
-    console.log("state", this.state);
+    // console.log("props", this.props);
+    // console.log("state", this.state);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={{ span: 8, offset: 2 }}>
@@ -79,16 +70,11 @@ class Providers extends Component {
                 placeholder="Search"
                 className="mr-sm-2"
               />
-              {/* <Button variant="outline-success">Search</Button> */}
             </Form>
           </Col>
         </Row>
         <Row>
-          {this.state.loading ? (
-            "Loading..."
-          ) : this.state.errors ? (
-            "Error!"
-          ) : this.state.filtered ? (
+          {this.state.filtered ? (
             this.state.filtered.map((el, idx) => (
               <ProviderCard
                 history={this.props.history}
@@ -97,7 +83,7 @@ class Providers extends Component {
                 key={idx}
               />
             ))
-          ) : this.props.providers.all.length && this.props.industries.all.length ? (
+          ) : this.props.providers.all.length ? (
             this.props.providers.all.map((el, idx) => (
               <ProviderCard
                 history={this.props.history}
@@ -116,11 +102,4 @@ class Providers extends Component {
     );
   }
 }
-const mapStateToProps = ({ providers, industries }) => ({ providers, industries });
-
-const mapDispatchToProps = { readProviders, readIndustries };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Providers);
+export default Providers;

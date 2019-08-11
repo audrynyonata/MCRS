@@ -3,6 +3,8 @@ import axios from "axios";
 export const ADD_PROJECT = "ADD_PROJECT";
 export const READ_PROJECT = "READ_PROJECT";
 export const FIND = "FIND";
+export const DELETE_PROJECT = "DELETE_PROJECT";
+export const UPDATE_PROJECT = "UPDATE_PROJECT";
 
 export const FETCH_PROJECT_BEGIN = "FETCH_PROJECT_BEGIN";
 export const FETCH_PROJECT_SUCCESS = "FETCH_PROJECT_SUCCESS";
@@ -80,3 +82,13 @@ export const find = pid => {
       .catch(error => dispatch(findFailure(error)));
   };
 };
+
+export const deleteProject = id => ({
+  type: DELETE_PROJECT,
+  payload: { id }
+});
+
+export const updateProject = project => ({
+  type: UPDATE_PROJECT,
+  payload: { project }
+});

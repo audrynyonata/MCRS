@@ -52,7 +52,7 @@ const methodChunks = (state = initialState, action) => {
         errors: null
       };
     case FETCH_METHOD_CHUNK_SUCCESS:
-      entries = {};
+      entries = { ...state };
       ids = [];
       action.payload.methodChunks.forEach(mc => {
         entries[mc.id] = mc;

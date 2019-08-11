@@ -1,19 +1,22 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Container, Row, Col, Card, Form, FormControl, Button } from "react-bootstrap";
 import Title from "./Title";
 import "./pages.css";
-import { readProjects, readProviders } from "../actions";
 import { NavLink } from "react-router-dom";
 
 const Project = props => {
   return (
-    <Col xs={props.xs || 12} md={props.md}>
+    <Col xs={props.xs || 12} md={props.md} id={props.project.id}>
       <Card className="mc-card mb-3">
         <Card.Body>
           <Row>
             <Col md={8}>
-              <Card.Title>{props.project.name}</Card.Title>
+              <Card.Title>
+                {props.project.name}{" "}
+                <NavLink to={`/projects/${props.project.id}/edit`}>
+                  <i className="far fa-edit" />
+                </NavLink>
+              </Card.Title>
             </Col>
             <Col md={4} className="text-right">
               Owner:{" "}
@@ -60,57 +63,55 @@ class Projects extends Component {
   state = {
     containerSize: { span: 8, offset: 2 },
     cardSize: { span: 8, offset: 2 },
-    viewMode: "list"
+    viewMode: "list",
+    scroll: this.props.location.hash.replace("/", "\\/") || ""
   };
 
   componentDidMount() {
-    Promise.resolve(this.props.readProviders()).then(r => this.props.readProjects());
+    if (this.state.scroll && document.querySelector(this.state.scroll))
+      window.scrollTo(0, document.querySelector(this.state.scroll).offsetTop);
   }
 
   handleChange = e => {
-    if (this.state.loading || this.state.errors) {
-      return "";
-    } else {
-      let currentList = [];
-      let newList = [];
+    let currentList = [];
+    let newList = [];
 
-      if (e.target.value !== "") {
-        currentList = this.props.projects.all;
+    if (e.target.value !== "") {
+      currentList = this.props.projects.all;
 
-        newList = currentList.filter(i => {
-          let item = this.props.projects[i];
-          const lc = item.name.toLowerCase();
-          const lp = this.props.providers[item.provider].name.toLowerCase();
-          const lcd = item.description ? item.description.toLowerCase() : "";
-          const lcc = item.characteristics
-            .map(e => e.id)
-            .toString()
-            .toLowerCase();
-          const lcv = item.characteristics
-            .map(e => e.value)
-            .toString()
-            .toLowerCase();
-          const lcr = item.characteristics
-            .map(e => e.rule)
-            .toString()
-            .toLowerCase();
-          const filter = e.target.value.toLowerCase();
-          return (
-            lc.includes(filter) ||
-            lcd.includes(filter) ||
-            lcc.includes(filter) ||
-            lcv.includes(filter) ||
-            lcr.includes(filter) ||
-            lp.includes(filter)
-          );
-        });
-      } else {
-        newList = this.props.projects.all;
-      }
-      this.setState({
-        filtered: newList
+      newList = currentList.filter(i => {
+        let item = this.props.projects[i];
+        const lc = item.name.toLowerCase();
+        const lp = this.props.providers[item.provider].name.toLowerCase();
+        const lcd = item.description ? item.description.toLowerCase() : "";
+        const lcc = item.characteristics
+          .map(e => e.id)
+          .toString()
+          .toLowerCase();
+        const lcv = item.characteristics
+          .map(e => e.value)
+          .toString()
+          .toLowerCase();
+        const lcr = item.characteristics
+          .map(e => e.rule)
+          .toString()
+          .toLowerCase();
+        const filter = e.target.value.toLowerCase();
+        return (
+          lc.includes(filter) ||
+          lcd.includes(filter) ||
+          lcc.includes(filter) ||
+          lcv.includes(filter) ||
+          lcr.includes(filter) ||
+          lp.includes(filter)
+        );
       });
+    } else {
+      newList = this.props.projects.all;
     }
+    this.setState({
+      filtered: newList
+    });
   };
 
   toggleViewMode = () => {
@@ -165,11 +166,7 @@ class Projects extends Component {
           </Col>
         </Row>
         <Row className="mc">
-          {this.state.loading ? (
-            "Loading..."
-          ) : this.state.errors ? (
-            "Error!"
-          ) : this.state.filtered ? (
+          {this.state.filtered ? (
             this.state.filtered.map((el, idx) => (
               <Project
                 history={this.props.history}
@@ -203,11 +200,4 @@ class Projects extends Component {
     );
   }
 }
-const mapStateToProps = ({ projects, providers }) => ({ projects, providers });
-
-const mapDispatchToProps = { readProjects, readProviders };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Projects);
+export default Projects;

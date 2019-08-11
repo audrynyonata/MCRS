@@ -1,8 +1,16 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Container, Row, Col, Form, FormControl, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FormControl,
+  OverlayTrigger,
+  Tooltip,
+  FormGroup
+} from "react-bootstrap";
 import Title from "./Title";
-import { readCharacteristics, readDimensions } from "../actions";
+import { NavLink } from "react-router-dom";
 
 export const ORGANISATIONAL = "organisational";
 export const HUMAN = "human";
@@ -39,7 +47,12 @@ const DimensionTable = props => {
                 <td>{e.name}</td>
                 <td>{e.values.toString()}</td>
                 <td>{e.ref}</td>
-                <td>{e.isQuantifiable.toString()}</td>
+                <td>
+                  {e.isQuantifiable.toString()}{" "}
+                  <NavLink to={`/characteristics/${e.id}/edit`} className="float-right">
+                    <i className="far fa-edit" />
+                  </NavLink>
+                </td>
               </tr>
             </OverlayTrigger>
           ))
@@ -57,12 +70,20 @@ const DimensionTable = props => {
                   </Tooltip>
                 }
               >
-                <tr>
+                <tr id={props.characteristics[i].id}>
                   <td>{props.characteristics[i].id}</td>
                   <td>{props.characteristics[i].name}</td>
                   <td>{e.values.toString()}</td>
                   <td>{e.ref}</td>
-                  <td>{e.isQuantifiable.toString()}</td>
+                  <td>
+                    {e.isQuantifiable.toString()}{" "}
+                    <NavLink
+                      to={`/characteristics/${props.characteristics[i].id}/edit`}
+                      className="float-right"
+                    >
+                      <i className="far fa-edit" />
+                    </NavLink>
+                  </td>
                 </tr>
               </OverlayTrigger>
             ))
@@ -78,59 +99,57 @@ const DimensionTable = props => {
 };
 
 class Characteristics extends Component {
-  state = {};
+  state = {
+    scroll: this.props.location.hash || ""
+  };
 
   componentDidMount() {
-    this.props.readDimensions();
-    this.props.readCharacteristics();
+    if (this.state.scroll && document.querySelector(this.state.scroll))
+      window.scrollTo(0, document.querySelector(this.state.scroll).offsetTop);
   }
 
   handleChange = e => {
-    if (this.state.loading || this.state.errors) {
-      return "";
-    } else {
-      let cvList = [];
-      let newList = [];
+    let cvList = [];
+    let newList = [];
 
-      if (e.target.value !== "") {
-        this.props.characteristics.all.forEach(i => {
-          let item = this.props.characteristics[i];
-          item.characteristicValues.forEach(cv => {
-            cvList[cvList.length] = {
-              ...item,
-              ...cv
-            };
-          });
+    if (e.target.value !== "") {
+      this.props.characteristics.all.forEach(i => {
+        let item = this.props.characteristics[i];
+        item.characteristicValues.forEach(cv => {
+          cvList[cvList.length] = {
+            ...item,
+            ...cv
+          };
         });
-        newList = cvList.filter(item => {
-          const lc = item.name.toLowerCase();
-          const lcid = item.id.toLowerCase();
-          const lcd = item.description ? item.description.toLowerCase() : "";
-          const lcdim = item.dimension
-            ? this.props.dimensions[item.dimension].name.toLowerCase()
-            : "";
-          const lcq = item.isQuantifiable.toString().toLowerCase();
-          const lcv = item.values.toString().toLowerCase();
-          const lcr = item.ref.toLowerCase();
-          const filter = e.target.value.toLowerCase();
-          return (
-            lc.includes(filter) ||
-            lcid.includes(filter) ||
-            lcd.includes(filter) ||
-            lcdim.includes(filter) ||
-            lcq.includes(filter) ||
-            lcv.includes(filter) ||
-            lcr.includes(filter)
-          );
-        });
-      } else {
-        newList = [];
-      }
-      // console.log("cvList", newList);
-      this.setState({
-        filtered: newList
       });
+      newList = cvList.filter(item => {
+        const lc = item.name.toLowerCase();
+        const lcid = item.id.toLowerCase();
+        const lcd = item.description ? item.description.toLowerCase() : "";
+        const lcdim = item.dimension
+          ? this.props.dimensions[item.dimension].name.toLowerCase()
+          : "";
+        const lcq = item.isQuantifiable.toString().toLowerCase();
+        const lcv = item.values.toString().toLowerCase();
+        const lcr = item.ref.toLowerCase();
+        const filter = e.target.value.toLowerCase();
+        return (
+          lc.includes(filter) ||
+          lcid.includes(filter) ||
+          lcd.includes(filter) ||
+          lcdim.includes(filter) ||
+          lcq.includes(filter) ||
+          lcv.includes(filter) ||
+          lcr.includes(filter)
+        );
+      });
+    } else {
+      newList = [];
     }
+    // console.log("cvList", newList);
+    this.setState({
+      filtered: newList
+    });
   };
 
   render() {
@@ -142,22 +161,21 @@ class Characteristics extends Component {
         </Title>
         <Row className="mb-3">
           <Col xs={12} md={{ span: 8, offset: 2 }}>
-            <Form inline onSubmit={e => e.preventDefault()}>
-              Search:
-              <FormControl
-                onChange={this.handleChange}
-                type="text"
-                placeholder="Search"
-                className="ml-md-2"
-              />
+            <Form inline onSubmit={e => e.preventDefault()} className="justify-content-between">
+              <FormGroup>
+                Search:
+                <FormControl
+                  onChange={this.handleChange}
+                  type="text"
+                  placeholder="Search"
+                  className="ml-md-2"
+                />
+              </FormGroup>
+              <NavLink to="/characteristics/create">Add new characteristic...</NavLink>
             </Form>
           </Col>
         </Row>
-        {this.state.loading ? (
-          "Loading..."
-        ) : this.state.errors ? (
-          "Error!"
-        ) : this.state.filtered ? (
+        {this.state.filtered ? (
           <Row>
             <Col md={{ span: 8, offset: 2 }}>
               <h5>Search result</h5>
@@ -218,38 +236,13 @@ class Characteristics extends Component {
             </Col>
           </Row>
         ) : (
-          "Empty"
+          <Row>
+            <Col md={{ span: 8, offset: 2 }}>Empty</Col>
+          </Row>
         )}
       </Container>
     );
   }
 }
-const mapStateToProps = ({ characteristics, dimensions }) => ({
-  characteristics: characteristics,
-  dimensions: dimensions,
-  organisational: characteristics.all.filter(
-    i =>
-      characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
-  ),
-  human: characteristics.all.filter(
-    i => characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === HUMAN
-  ),
-  applicationDomain: characteristics.all.filter(
-    i =>
-      characteristics[i].dimension &&
-      characteristics[i].dimension.toLowerCase() === APPLICATION_DOMAIN
-  ),
-  developmentStrategy: characteristics.all.filter(
-    i =>
-      characteristics[i].dimension &&
-      characteristics[i].dimension.toLowerCase() === DEVELOPMENT_STRATEGY
-  ),
-  others: characteristics.all.filter(i => !characteristics[i].dimension)
-});
 
-const mapDispatchToProps = { readCharacteristics, readDimensions };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Characteristics);
+export default Characteristics;

@@ -3,7 +3,9 @@ import {
   READ_PROVIDER,
   FETCH_PROVIDER_BEGIN,
   FETCH_PROVIDER_FAILURE,
-  FETCH_PROVIDER_SUCCESS
+  FETCH_PROVIDER_SUCCESS,
+  DELETE_PROVIDER,
+  UPDATE_PROVIDER
 } from "../actions";
 
 const initialState = {
@@ -11,15 +13,35 @@ const initialState = {
 };
 
 const providers = (state = initialState, action) => {
+  let entry = {};
+  let entries = {};
+  let ids = [];
+  let item = {};
   switch (action.type) {
     case ADD_PROVIDER:
-      let entry = {};
-      let item = action.payload.provider;
+      entry = {};
+      item = action.payload.provider;
       entry[item.id] = item;
       return {
         ...state,
         ...entry,
         all: [...state.all, item.id]
+      };
+    case DELETE_PROVIDER:
+      entries = { ...state };
+      delete entries[action.payload.id];
+      ids = state.all.filter(v => v !== action.payload.id);
+      return {
+        ...entries,
+        all: ids
+      };
+    case UPDATE_PROVIDER:
+      entry = {};
+      item = action.payload.provider;
+      entry[item.id] = item;
+      return {
+        ...state,
+        ...entry
       };
     case READ_PROVIDER:
       return state;
@@ -30,8 +52,8 @@ const providers = (state = initialState, action) => {
         errors: null
       };
     case FETCH_PROVIDER_SUCCESS:
-      let entries = {};
-      let ids = [];
+      entries = { ...state };
+      ids = [];
       action.payload.providers.forEach(p => {
         entries[p.id] = p;
         ids[ids.length] = p.id;

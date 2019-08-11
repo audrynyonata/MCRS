@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Container, Row, Col, Card, Form, FormControl, Button } from "react-bootstrap";
 import Title from "./Title";
 import "./pages.css";
-import { readMethodChunks, readProviders } from "../actions";
 import { NavLink } from "react-router-dom";
 
 const MethodChunk = props => {
@@ -15,7 +13,12 @@ const MethodChunk = props => {
             <Col md={8}>
               <Card.Title>
                 {props.methodChunk.name}{" "}
-                <NavLink to={`/method-chunks/${props.methodChunk.id}/edit`}>
+                <NavLink
+                  to={{
+                    pathname: `/method-chunks/${props.methodChunk.id}/edit`,
+                    methodChunk: props.methodChunk
+                  }}
+                >
                   <i className="far fa-edit" />
                 </NavLink>
               </Card.Title>
@@ -59,60 +62,57 @@ class MethodChunks extends Component {
   state = {
     containerSize: { span: 8, offset: 2 },
     cardSize: { span: 8, offset: 2 },
-    viewMode: "list"
+    viewMode: "list",
+    scroll: this.props.location.hash || ""
   };
 
   componentDidMount() {
-    this.props.readProviders();
-    this.props.readMethodChunks();
+    if (this.state.scroll && document.querySelector(this.state.scroll))
+      window.scrollTo(0, document.querySelector(this.state.scroll).offsetTop);
   }
 
   handleChange = e => {
-    if (this.state.loading || this.state.errors) {
-      return "";
-    } else {
-      let currentList = [];
-      let newList = [];
+    let currentList = [];
+    let newList = [];
 
-      if (e.target.value !== "") {
-        currentList = this.props.methodChunks.all;
+    if (e.target.value !== "") {
+      currentList = this.props.methodChunks.all;
 
-        newList = currentList.filter(i => {
-          let item = this.props.methodChunks[i];
-          const lc = item.name.toLowerCase();
-          const lcd = item.description ? item.description.toLowerCase() : "";
-          const lcp = this.props.providers[item.provider].name.toLowerCase();
-          const lcc = item.characteristics
-            .map(e => e.id)
-            .toString()
-            .toLowerCase();
-          const lcv = item.characteristics
-            .map(e => e.value)
-            .toString()
-            .toLowerCase();
-          const lcr = item.characteristics
-            .map(e => e.ref)
-            .toString()
-            .toLowerCase();
-          const lcu = item.url.toLowerCase();
-          const filter = e.target.value.toLowerCase();
-          return (
-            lc.includes(filter) ||
-            lcp.includes(filter) ||
-            lcd.includes(filter) ||
-            lcc.includes(filter) ||
-            lcv.includes(filter) ||
-            lcr.includes(filter) ||
-            lcu.includes(filter)
-          );
-        });
-      } else {
-        newList = this.props.methodChunks.all;
-      }
-      this.setState({
-        filtered: newList
+      newList = currentList.filter(i => {
+        let item = this.props.methodChunks[i];
+        const lc = item.name.toLowerCase();
+        const lcd = item.description ? item.description.toLowerCase() : "";
+        const lcp = this.props.providers[item.provider].name.toLowerCase();
+        const lcc = item.characteristics
+          .map(e => e.id)
+          .toString()
+          .toLowerCase();
+        const lcv = item.characteristics
+          .map(e => e.value)
+          .toString()
+          .toLowerCase();
+        const lcr = item.characteristics
+          .map(e => e.ref)
+          .toString()
+          .toLowerCase();
+        const lcu = item.url.toLowerCase();
+        const filter = e.target.value.toLowerCase();
+        return (
+          lc.includes(filter) ||
+          lcp.includes(filter) ||
+          lcd.includes(filter) ||
+          lcc.includes(filter) ||
+          lcv.includes(filter) ||
+          lcr.includes(filter) ||
+          lcu.includes(filter)
+        );
       });
+    } else {
+      newList = this.props.methodChunks.all;
     }
+    this.setState({
+      filtered: newList
+    });
   };
 
   toggleViewMode = () => {
@@ -135,8 +135,6 @@ class MethodChunks extends Component {
   render() {
     console.log("props", this.props);
     console.log("s", this.state);
-    if (this.props.location.hash && document.querySelector(this.props.location.hash))
-      window.scrollTo(0, document.querySelector(this.props.location.hash).offsetTop);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={this.state.containerSize}>
@@ -153,6 +151,9 @@ class MethodChunks extends Component {
                 className="ml-md-2"
               />
               <div className="d-none d-md-block ml-auto">
+                <NavLink to="/publish" className="mr-3">
+                  Add new method chunk...
+                </NavLink>
                 <Button
                   variant="outline-secondary"
                   onClick={this.toggleViewMode}
@@ -169,11 +170,7 @@ class MethodChunks extends Component {
           </Col>
         </Row>
         <Row className="mc">
-          {this.state.loading ? (
-            "Loading..."
-          ) : this.state.errors ? (
-            "Error!"
-          ) : this.state.filtered ? (
+          {this.state.filtered ? (
             this.state.filtered.map((el, idx) => (
               <MethodChunk
                 history={this.props.history}
@@ -184,7 +181,7 @@ class MethodChunks extends Component {
                 grid
               />
             ))
-          ) : this.props.methodChunks.all.length && this.props.providers.all.length ? (
+          ) : this.props.methodChunks.all.length ? (
             this.props.methodChunks.all
               .sort()
               .map((el, idx) => (
@@ -207,11 +204,5 @@ class MethodChunks extends Component {
     );
   }
 }
-const mapStateToProps = ({ methodChunks, providers }) => ({ methodChunks, providers });
 
-const mapDispatchToProps = { readMethodChunks, readProviders };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MethodChunks);
+export default MethodChunks;

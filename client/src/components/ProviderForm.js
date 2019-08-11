@@ -1,12 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { addMethodChunk, updateMethodChunk, deleteMethodChunk } from "../actions/";
+import {
+  addMethodChunk,
+  readCharacteristics,
+  updateMethodChunk,
+  readMethodChunks,
+  deleteMethodChunk
+} from "../actions/";
 import Title from "./Title";
 import axios from "axios";
 import { ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY } from "./Characteristics";
 
-class MethodChunkForm extends React.Component {
+class ProviderForm extends React.Component {
   state = {
     name: "",
     description: "",
@@ -17,9 +23,21 @@ class MethodChunkForm extends React.Component {
         ref: "",
         value: ""
       }
-    ],
-    ...this.props.methodChunk
+    ]
   };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("nextProps", nextProps);
+    console.log("prevState", prevState);
+    if (nextProps.methodChunk && !prevState.name) {
+      return { ...prevState, ...nextProps.methodChunk };
+    }
+    return null;
+  }
+
+  componentDidMount() {
+    this.props.readCharacteristics();
+    this.props.readMethodChunks();
+  }
 
   handleChange = e => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
@@ -39,7 +57,7 @@ class MethodChunkForm extends React.Component {
 
   addCharacteristic = () => {
     this.setState(prevState => ({
-      characteristics: [...prevState.characteristics, { id: "", ref: "", value: "" }]
+      characteristics: [...prevState.characteristics, { id: null, ref: null, value: null }]
     }));
   };
 
@@ -57,7 +75,7 @@ class MethodChunkForm extends React.Component {
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={{ span: 8, offset: 2 }}>
-          {this.props.methodChunk ? (
+          {this.props.match.params.id ? (
             <React.Fragment>
               Edit Method Chunk
               <form
@@ -105,7 +123,7 @@ class MethodChunkForm extends React.Component {
               </Form.Group>
 
               <Form.Group controlId="description">
-                <Form.Label>Description (optional)</Form.Label>
+                <Form.Label>Description</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows="5"
@@ -205,20 +223,20 @@ class MethodChunkForm extends React.Component {
                     </Form.Control>
                   </Form.Group>
                   <Form.Group className={idx === 0 && "invisible"}>
-                    <Button variant="link" onClick={() => this.removeCharacteristic(idx)}>
-                      Remove
+                    <Button variant="danger" onClick={() => this.removeCharacteristic(idx)}>
+                      Remove{" "}
                     </Button>
                   </Form.Group>
                 </Form.Row>
               ))}
               <Form.Group className="d-flex justify-content-center">
-                <Button variant="link" onClick={this.addCharacteristic}>
-                  <i className="fas fa-plus-circle" /> Add characteristic
+                <Button variant="primary" onClick={this.addCharacteristic}>
+                  Add characteristic
                 </Button>
               </Form.Group>
             </Form>
             <br />
-            {this.props.methodChunk ? (
+            {this.props.match.params.id ? (
               <div>
                 <form
                   onSubmit={e => {
@@ -255,10 +273,7 @@ class MethodChunkForm extends React.Component {
                       alert(res.status + " " + res.statusText);
                       this.props.history.push("/method-chunks#" + res.data.id);
                     })
-                    .catch(e => {
-                      alert("Failed");
-                      console.log("Addition failed , Error ", e);
-                    });
+                    .catch(e => console.log("Addition failed , Error ", e));
                 }}
               >
                 <Button variant="success" type="submit" className="float-right">
@@ -272,16 +287,46 @@ class MethodChunkForm extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => ({ ...state });
+const mapStateToProps = ({ characteristics, methodChunks }, ownProps) => {
+  let methodChunk = {};
+  if (ownProps.match.params.id) {
+    methodChunk = methodChunks[ownProps.match.params.id.toLowerCase()];
+  }
+  console.log("ownProps", ownProps);
+  return {
+    methodChunk,
+    characteristics: characteristics,
+    organisational: characteristics.all.filter(
+      i =>
+        characteristics[i].dimension &&
+        characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
+    ),
+    human: characteristics.all.filter(
+      i => characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === HUMAN
+    ),
+    applicationDomain: characteristics.all.filter(
+      i =>
+        characteristics[i].dimension &&
+        characteristics[i].dimension.toLowerCase() === APPLICATION_DOMAIN
+    ),
+    developmentStrategy: characteristics.all.filter(
+      i =>
+        characteristics[i].dimension &&
+        characteristics[i].dimension.toLowerCase() === DEVELOPMENT_STRATEGY
+    ),
+    others: characteristics.all.filter(i => !characteristics[i].dimension)
+  };
+};
 
 const mapDispatchToProps = {
+  readCharacteristics,
   addMethodChunk,
   updateMethodChunk,
+  readMethodChunks,
   deleteMethodChunk
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MethodChunkForm);
+)(ProviderForm);
