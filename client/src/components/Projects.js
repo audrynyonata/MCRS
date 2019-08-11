@@ -42,7 +42,7 @@ const Project = props => {
                     {el.rule}{" "}
                     {el.rule === "maximum" || el.rule === "minimum"
                       ? ""
-                      : " (" + el.value.join(">") + ") "}
+                      : " (" + el.value.join(",") + ") "}
                   </td>
                 </tr>
               ))}
@@ -150,6 +150,9 @@ class Projects extends Component {
                 className="ml-md-2"
               />
               <div className="d-none d-md-block ml-auto">
+                {/* <NavLink to="/find" className="mr-3">
+                  Add new project...
+                </NavLink> */}
                 <Button
                   variant="outline-secondary"
                   onClick={this.toggleViewMode}

@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  FormControl,
-  OverlayTrigger,
-  Tooltip,
-  FormGroup
-} from "react-bootstrap";
+import { Container, Row, Col, Form, FormControl, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Title from "./Title";
 import { NavLink } from "react-router-dom";
 
@@ -161,17 +152,17 @@ class Characteristics extends Component {
         </Title>
         <Row className="mb-3">
           <Col xs={12} md={{ span: 8, offset: 2 }}>
-            <Form inline onSubmit={e => e.preventDefault()} className="justify-content-between">
-              <FormGroup>
-                Search:
-                <FormControl
-                  onChange={this.handleChange}
-                  type="text"
-                  placeholder="Search"
-                  className="ml-md-2"
-                />
-              </FormGroup>
-              <NavLink to="/characteristics/create">Add new characteristic...</NavLink>
+            <Form inline onSubmit={e => e.preventDefault()}>
+              Search:
+              <FormControl
+                onChange={this.handleChange}
+                type="text"
+                placeholder="Search"
+                className="ml-md-2"
+              />
+              <div className="ml-auto">
+                <NavLink to="/characteristics/create">Add new characteristic...</NavLink>
+              </div>
             </Form>
           </Col>
         </Row>

@@ -54,18 +54,6 @@ class ProviderItem extends Component {
             ) : (
               <p>N/A</p>
             )}
-            <h6>Related providers</h6>
-            {this.props.provider.relatedProviders.length ? (
-              <ul>
-                {this.props.provider.relatedProviders.map((e, idx) => (
-                  <li key={idx}>
-                    <NavLink to={`/providers/${e}`}>{e}</NavLink>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>N/A</p>
-            )}
             <h6>Method chunks</h6>
             {this.props.methodChunks.length ? (
               <ul>
@@ -78,12 +66,39 @@ class ProviderItem extends Component {
             ) : (
               <p>N/A</p>
             )}
+            <h6>Projects</h6>
+            {this.props.projects.length ? (
+              <ul>
+                {this.props.projects.map((e, idx) => (
+                  <li key={idx}>
+                    <NavLink to={`/projects#${e.id}`}>{e.name}</NavLink>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>N/A</p>
+            )}
           </Col>
           <Col xs={3}>
             <p>Industry: {this.props.industry.name}</p>
             <br />
             <h6>Last updated</h6>
             <p>{this.props.provider.updatedAt}</p>
+            {this.props.provider.relatedProviders.length ? (
+              <React.Fragment>
+                <br />
+                <h6>Related providers</h6>
+                <ul>
+                  {this.props.provider.relatedProviders.map((e, idx) => (
+                    <li key={idx}>
+                      <NavLink to={`/providers/${e}`}>{this.props.providers[e].name}</NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </React.Fragment>
+            ) : (
+              ""
+            )}
           </Col>
         </Row>
       </Container>

@@ -1,111 +1,143 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import {
-  addMethodChunk,
-  readCharacteristics,
-  updateMethodChunk,
-  readMethodChunks,
-  deleteMethodChunk
-} from "../actions/";
+import { addProvider, updateProvider, deleteProvider } from "../actions/";
 import Title from "./Title";
 import axios from "axios";
-import { ORGANISATIONAL, HUMAN, APPLICATION_DOMAIN, DEVELOPMENT_STRATEGY } from "./Characteristics";
+import NotFound from "./NotFound";
 
 class ProviderForm extends React.Component {
   state = {
     name: "",
+    email: "",
     description: "",
-    url: "",
-    characteristics: [
+    industry: "",
+    urls: [
       {
-        id: "",
-        ref: "",
-        value: ""
+        url: "",
+        name: ""
       }
-    ]
+    ],
+    contacts: [
+      {
+        name: "",
+        role: "",
+        description: "",
+        address: "",
+        email: "",
+        phone: ""
+      }
+    ],
+    relatedProviders: [],
+    ...this.props.provider
   };
-  static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("nextProps", nextProps);
-    console.log("prevState", prevState);
-    if (nextProps.methodChunk && !prevState.name) {
-      return { ...prevState, ...nextProps.methodChunk };
-    }
-    return null;
-  }
-
-  componentDidMount() {
-    this.props.readCharacteristics();
-    this.props.readMethodChunks();
-  }
 
   handleChange = e => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
-  };
-
-  handleCChange = e => {
     let split = e.currentTarget.name.split(".");
-    let characteristics = this.state.characteristics;
-    let c = characteristics[split[1]];
-    c[split[2]] = e.currentTarget.value;
-    let select = e.currentTarget;
-    if (split[2] === "value")
-      c["ref"] = select.options[select.selectedIndex].getAttribute("data-ref");
-    console.log(characteristics);
-    this.setState({ [split[0]]: characteristics });
+    let key = null;
+    let idx = null;
+    let item = null;
+    switch (split.length) {
+      case 2:
+        key = split[0];
+        idx = split[1];
+        item = this.state[key];
+        item[idx] = e.currentTarget.value;
+        this.setState({ [key]: item });
+        break;
+      case 3:
+        key = split[0];
+        idx = split[1];
+        let prop = split[2];
+        item = this.state[key][idx];
+        item[prop] = e.currentTarget.value;
+        this.setState({ [key[idx]]: item });
+        break;
+      default:
+        this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+        break;
+    }
   };
 
-  addCharacteristic = () => {
+  addUrl = () => {
     this.setState(prevState => ({
-      characteristics: [...prevState.characteristics, { id: null, ref: null, value: null }]
+      urls: [...prevState.urls, { url: "", name: "" }]
     }));
   };
 
-  removeCharacteristic = id => {
+  removeUrl = id => {
     this.setState(prevState => {
-      let characteristics = [...prevState.characteristics];
-      characteristics.splice(id, 1);
-      return { characteristics };
+      let urls = [...prevState.urls];
+      urls.splice(id, 1);
+      return { urls };
+    });
+  };
+
+  addContact = () => {
+    this.setState(prevState => ({
+      contacts: [
+        ...prevState.contacts,
+        { name: "", role: "", description: "", address: "", email: "", phone: "" }
+      ]
+    }));
+  };
+
+  removeContact = id => {
+    this.setState(prevState => {
+      let contacts = [...prevState.contacts];
+      contacts.splice(id, 1);
+      return { contacts };
+    });
+  };
+
+  addRelated = () => {
+    this.setState(prevState => ({
+      relatedProviders: [...prevState.relatedProviders, ""]
+    }));
+  };
+
+  removeRelated = id => {
+    this.setState(prevState => {
+      let relatedProviders = [...prevState.relatedProviders];
+      relatedProviders.splice(id, 1);
+      return { relatedProviders };
     });
   };
 
   render() {
     console.log("props", this.props);
     console.log("state", this.state);
+    if (!this.props.provider) return <NotFound />;
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={{ span: 8, offset: 2 }}>
-          {this.props.match.params.id ? (
-            <React.Fragment>
-              Edit Method Chunk
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                  axios
-                    .delete(`/method-chunks/${this.props.methodChunk.id}`)
-                    .then(res => {
-                      console.log("res", res);
-                      console.log(`Item - deleted successfully`);
-                      this.props.deleteMethodChunk(this.props.methodChunk.id);
-                      alert(res.status + " " + res.statusText);
-                      this.props.history.push("/method-chunks");
-                    })
-                    .catch(e => console.log("Delete failed , Error ", e));
-                }}
+          <React.Fragment>
+            Edit Provider
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                axios
+                  .delete(`/providers/${this.props.provider.id}`)
+                  .then(res => {
+                    console.log("res", res);
+                    console.log(`Item - deleted successfully`);
+                    this.props.deleteProvider(this.props.provider.id);
+                    alert(res.status + " " + res.statusText);
+                    this.props.history.push("/providers");
+                  })
+                  .catch(e => console.log("Delete failed , Error ", e));
+              }}
+            >
+              <Button
+                variant="link"
+                type="submit"
+                className="btn-lg position-absolute mt-1"
+                style={{ top: 0, right: 0 }}
               >
-                <Button
-                  variant="link"
-                  type="submit"
-                  className="btn-lg position-absolute mt-1"
-                  style={{ top: 0, right: 0 }}
-                >
-                  <i className="far fa-trash-alt" />
-                </Button>
-              </form>
-            </React.Fragment>
-          ) : (
-            "Publish"
-          )}
+                <i className="far fa-trash-alt" />
+              </Button>
+            </form>
+          </React.Fragment>
         </Title>
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
@@ -118,12 +150,24 @@ class ProviderForm extends React.Component {
                   placeholder="Enter name..."
                   value={this.state.name}
                   onChange={this.handleChange}
-                  readOnly={this.props.methodChunk}
+                  readOnly={this.props.provider}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  placeholder="Enter email..."
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  readOnly={this.props.provider}
                 />
               </Form.Group>
 
               <Form.Group controlId="description">
-                <Form.Label>Description</Form.Label>
+                <Form.Label>Description (optional)</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows="5"
@@ -134,196 +178,208 @@ class ProviderForm extends React.Component {
                 />
               </Form.Group>
 
-              <Form.Group controlId="url">
-                <Form.Label>URL</Form.Label>
+              <Form.Group controlId="industry">
+                <Form.Label>Industry</Form.Label>
                 <Form.Control
-                  type="text"
-                  name="url"
-                  placeholder="Enter location url..."
-                  value={this.state.url}
+                  as="select"
                   onChange={this.handleChange}
-                />
+                  value={this.state.industry || ""}
+                  name="industry"
+                >
+                  <option value="">Choose industry</option>
+                  {this.props.industries.all.map(e => (
+                    <option value={e} key={e}>
+                      {this.props.industries[e].name}
+                    </option>
+                  ))}
+                </Form.Control>
               </Form.Group>
 
-              <h5 className="pt-3">Characteristics</h5>
-              {this.state.characteristics.map((e, idx) => (
+              <h5 className="pt-3">URLs</h5>
+              {this.state.urls.map((e, idx) => (
                 <Form.Row key={idx}>
-                  <Form.Group as={Col} controlId="cid">
+                  <Form.Group as={Col} md={7} controlId="url">
+                    <Form.Label>URL link</Form.Label>
                     <Form.Control
-                      as="select"
-                      onChange={this.handleCChange}
-                      value={this.state.characteristics[idx].id || ""}
-                      name={"characteristics." + idx + ".id"}
-                    >
-                      <option value="">Choose characteristic</option>
-                      <optgroup label="">
-                        {this.props.others.map(e => (
-                          <option value={e} key={e}>
-                            {this.props.characteristics[e].name}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label={ORGANISATIONAL}>
-                        {this.props.organisational.map(e => (
-                          <option value={e} key={e}>
-                            {this.props.characteristics[e].name}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label={HUMAN}>
-                        {this.props.human.map(e => (
-                          <option value={e} key={e}>
-                            {this.props.characteristics[e].name}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label={APPLICATION_DOMAIN}>
-                        {this.props.applicationDomain.map(e => (
-                          <option value={e} key={e}>
-                            {this.props.characteristics[e].name}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label={DEVELOPMENT_STRATEGY}>
-                        {this.props.developmentStrategy.map(e => (
-                          <option value={e} key={e}>
-                            {this.props.characteristics[e].name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    </Form.Control>
+                      placeholder="Enter url..."
+                      onChange={this.handleChange}
+                      value={this.state.urls[idx].url || ""}
+                      name={"urls." + idx + ".url"}
+                    />
                   </Form.Group>
-                  <Form.Group as={Col} md={6} controlId="value">
+                  <Form.Group as={Col} controlId="name">
+                    <Form.Label>Name</Form.Label>
                     <Form.Control
-                      as="select"
-                      name={"characteristics." + idx + ".value"}
-                      value={this.state.characteristics[idx].value || ""}
-                      onChange={this.handleCChange}
-                    >
-                      <option value="">Choose value</option>
-                      {this.state.characteristics[idx].id &&
-                        this.props.characteristics[
-                          this.state.characteristics[idx].id
-                        ].characteristicValues.map(e => (
-                          <optgroup
-                            key={this.state.characteristics[idx].id + " " + e.ref}
-                            label={e.ref}
-                          >
-                            {e.values.map((v, id) => (
-                              <option
-                                key={this.state.characteristics[idx].id + +" " + e.ref + " " + v}
-                                data-ref={e.ref}
-                                value={v}
-                              >
-                                {v}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                    </Form.Control>
+                      placeholder="Enter name..."
+                      onChange={this.handleChange}
+                      value={this.state.urls[idx].name || ""}
+                      name={"urls." + idx + ".name"}
+                    />
                   </Form.Group>
-                  <Form.Group className={idx === 0 && "invisible"}>
-                    <Button variant="danger" onClick={() => this.removeCharacteristic(idx)}>
-                      Remove{" "}
+                  <Form.Group className={"d-flex"}>
+                    <Button variant="link" onClick={() => this.removeUrl(idx)} className="mt-auto">
+                      Remove
                     </Button>
                   </Form.Group>
                 </Form.Row>
               ))}
               <Form.Group className="d-flex justify-content-center">
-                <Button variant="primary" onClick={this.addCharacteristic}>
-                  Add characteristic
+                <Button variant="link" onClick={this.addUrl}>
+                  <i className="fas fa-plus-circle" /> Add url
+                </Button>
+              </Form.Group>
+              <h5 className="pt-3">Contacts</h5>
+              {this.state.contacts.map((e, idx) => (
+                <React.Fragment key={idx}>
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="cname">
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control
+                        placeholder="Enter name..."
+                        onChange={this.handleChange}
+                        value={this.state.contacts[idx].name || ""}
+                        name={"contacts." + idx + ".name"}
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="crole">
+                      <Form.Label>Role/Job (optional)</Form.Label>
+                      <Form.Control
+                        placeholder="Enter role..."
+                        onChange={this.handleChange}
+                        value={this.state.contacts[idx].role || ""}
+                        name={"contacts." + idx + ".role"}
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="cdescription">
+                      <Form.Label>Description (optional)</Form.Label>
+                      <Form.Control
+                        placeholder="Enter description..."
+                        onChange={this.handleChange}
+                        value={this.state.contacts[idx].description || ""}
+                        name={"contacts." + idx + ".description"}
+                      />
+                    </Form.Group>
+                    <Form.Group className={"d-flex"}>
+                      <Button
+                        variant="link"
+                        onClick={() => this.removeContact(idx)}
+                        className="mt-auto"
+                      >
+                        Remove
+                      </Button>
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="caddress">
+                      <Form.Label>Address</Form.Label>
+                      <Form.Control
+                        placeholder="Enter address..."
+                        onChange={this.handleChange}
+                        value={this.state.contacts[idx].address || ""}
+                        name={"contacts." + idx + ".address"}
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="cemail">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control
+                        placeholder="Enter email..."
+                        onChange={this.handleChange}
+                        value={this.state.contacts[idx].email || ""}
+                        name={"contacts." + idx + ".email"}
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="cphone">
+                      <Form.Label>Phone</Form.Label>
+                      <Form.Control
+                        placeholder="Enter phone..."
+                        onChange={this.handleChange}
+                        value={this.state.contacts[idx].phone || ""}
+                        name={"contacts." + idx + ".phone"}
+                      />
+                    </Form.Group>
+                    <Form.Group className="invisible">
+                      <Button variant="link">Remove</Button>
+                    </Form.Group>
+                  </Form.Row>
+                </React.Fragment>
+              ))}
+              <Form.Group className="d-flex justify-content-center">
+                <Button variant="link" onClick={this.addContact}>
+                  <i className="fas fa-plus-circle" /> Add contact
+                </Button>
+              </Form.Group>
+              <h5 className="pt-3">Related providers</h5>
+              {this.state.relatedProviders.map((e, idx) => (
+                <Form.Row key={idx}>
+                  <Form.Group as={Col} md={7} controlId="related">
+                    <Form.Control
+                      as="select"
+                      onChange={this.handleChange}
+                      value={this.state.relatedProviders[idx] || ""}
+                      name={"relatedProviders." + idx}
+                    >
+                      <option value="">Choose provider</option>
+                      {this.props.providers.all.map(e => (
+                        <option value={e} key={e}>
+                          {this.props.providers[e].name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group className={"d-flex"}>
+                    <Button
+                      variant="link"
+                      onClick={() => this.removeRelated(idx)}
+                      className="mt-auto"
+                    >
+                      Remove
+                    </Button>
+                  </Form.Group>
+                </Form.Row>
+              ))}
+              <Form.Group className="d-flex justify-content-center">
+                <Button variant="link" onClick={this.addRelated}>
+                  <i className="fas fa-plus-circle" /> Add provider
                 </Button>
               </Form.Group>
             </Form>
             <br />
-            {this.props.match.params.id ? (
-              <div>
-                <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                    axios
-                      .put(`/method-chunks/${this.props.methodChunk.id}`, this.state)
-                      .then(res => {
-                        console.log("res", res);
-                        console.log(`Item - ${res.data.name} updated successfully`);
-                        this.props.updateMethodChunk(res.data);
-                        alert(res.status + " " + res.statusText);
-                        this.props.history.push("/method-chunks#" + res.data.id);
-                      })
-                      .catch(e => console.log("Update failed , Error ", e));
-                  }}
-                >
-                  <Form.Group className="text-right">
-                    <Button variant="success" type="submit">
-                      &nbsp;&nbsp;Save&nbsp;&nbsp;
-                    </Button>
-                  </Form.Group>
-                </form>
-              </div>
-            ) : (
+            <div>
               <form
                 onSubmit={e => {
                   e.preventDefault();
                   axios
-                    .post("/method-chunks", this.state)
+                    .put(`/providers/${this.props.provider.id}`, this.state)
                     .then(res => {
                       console.log("res", res);
-                      console.log(`Item - ${res.data.name} added successfully`);
-                      this.props.addMethodChunk(res.data);
+                      console.log(`Item - ${res.data.name} updated successfully`);
+                      this.props.updateProvider(res.data);
                       alert(res.status + " " + res.statusText);
-                      this.props.history.push("/method-chunks#" + res.data.id);
+                      this.props.history.push("/providers/" + res.data.id);
                     })
-                    .catch(e => console.log("Addition failed , Error ", e));
+                    .catch(e => console.log("Update failed , Error ", e));
                 }}
               >
-                <Button variant="success" type="submit" className="float-right">
-                  Save
-                </Button>
+                <Form.Group className="text-right">
+                  <Button variant="success" type="submit">
+                    &nbsp;&nbsp;Save&nbsp;&nbsp;
+                  </Button>
+                </Form.Group>
               </form>
-            )}
+            </div>
           </Col>
         </Row>
       </Container>
     );
   }
 }
-const mapStateToProps = ({ characteristics, methodChunks }, ownProps) => {
-  let methodChunk = {};
-  if (ownProps.match.params.id) {
-    methodChunk = methodChunks[ownProps.match.params.id.toLowerCase()];
-  }
-  console.log("ownProps", ownProps);
-  return {
-    methodChunk,
-    characteristics: characteristics,
-    organisational: characteristics.all.filter(
-      i =>
-        characteristics[i].dimension &&
-        characteristics[i].dimension.toLowerCase() === ORGANISATIONAL
-    ),
-    human: characteristics.all.filter(
-      i => characteristics[i].dimension && characteristics[i].dimension.toLowerCase() === HUMAN
-    ),
-    applicationDomain: characteristics.all.filter(
-      i =>
-        characteristics[i].dimension &&
-        characteristics[i].dimension.toLowerCase() === APPLICATION_DOMAIN
-    ),
-    developmentStrategy: characteristics.all.filter(
-      i =>
-        characteristics[i].dimension &&
-        characteristics[i].dimension.toLowerCase() === DEVELOPMENT_STRATEGY
-    ),
-    others: characteristics.all.filter(i => !characteristics[i].dimension)
-  };
-};
+
+const mapStateToProps = state => ({ ...state });
 
 const mapDispatchToProps = {
-  readCharacteristics,
-  addMethodChunk,
-  updateMethodChunk,
-  readMethodChunks,
-  deleteMethodChunk
+  addProvider,
+  updateProvider,
+  deleteProvider
 };
 
 export default connect(

@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Find from "./components/Find";
 import FindResult from "./components/FindResult";
 import Providers from "./components/Providers";
+import ProviderForm from "./components/ProviderForm";
 import MethodChunks from "./components/MethodChunks";
 import MethodChunkForm from "./components/MethodChunkForm";
 import Projects from "./components/Projects";
@@ -90,14 +91,30 @@ class App extends Component {
               )}
             />
             <Route
+              exact
+              path="/providers/:id/edit"
+              component={props => (
+                <ProviderForm
+                  {...props}
+                  provider={this.props.providers[props.match.params.id]}
+                  providers={this.props.providers}
+                  industries={this.props.industries}
+                />
+              )}
+            />
+            <Route
               path="/providers/:id"
               component={props => (
                 <ProviderItem
                   {...props}
                   provider={this.props.providers[props.match.params.id]}
+                  providers={this.props.providers}
                   methodChunks={this.props.methodChunks.all
                     .filter(e => this.props.methodChunks[e].provider === props.match.params.id)
                     .map(e => this.props.methodChunks[e])}
+                  projects={this.props.projects.all
+                    .filter(e => this.props.projects[e].provider === props.match.params.id)
+                    .map(e => this.props.projects[e])}
                   industry={
                     this.props.industries[this.props.providers[props.match.params.id].industry]
                   }

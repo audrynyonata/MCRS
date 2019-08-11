@@ -10,7 +10,12 @@ const ProviderCard = props => (
       <Card.Body>
         <Row>
           <Col md={8}>
-            <Card.Title>{props.provider.name}</Card.Title>
+            <Card.Title>
+              {props.provider.name}{" "}
+              <NavLink to={`/providers/${props.provider.id}/edit`}>
+                <i className="far fa-edit" />
+              </NavLink>
+            </Card.Title>
           </Col>
           <Col md={4} className="text-right">
             {props.provider.industry && "Industry: " + props.industry.name}
@@ -70,6 +75,9 @@ class Providers extends Component {
                 placeholder="Search"
                 className="mr-sm-2"
               />
+              {/* <div className="ml-auto">
+                <NavLink to="/providers/create">Add new provider...</NavLink>
+              </div> */}
             </Form>
           </Col>
         </Row>
