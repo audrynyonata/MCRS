@@ -1,6 +1,8 @@
 import {
   ADD_PROVIDER,
   READ_PROVIDER,
+  AUTHENTICATE,
+  LOGOUT,
   FETCH_PROVIDER_BEGIN,
   FETCH_PROVIDER_FAILURE,
   FETCH_PROVIDER_SUCCESS,
@@ -27,6 +29,10 @@ const providers = (state = initialState, action) => {
         ...entry,
         all: [...state.all, item.id]
       };
+    case AUTHENTICATE:
+      return { ...state, token: action.payload.token, user: action.payload.user };
+    case LOGOUT:
+      return { ...state, token: undefined, user: undefined };
     case DELETE_PROVIDER:
       entries = { ...state };
       delete entries[action.payload.id];

@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 class ProviderItem extends Component {
   render() {
-    console.log("props", this.props);
+    // console.log("props", this.props);
     return (
       <Container fluid className="pt-3">
         <Row>

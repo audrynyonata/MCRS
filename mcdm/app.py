@@ -67,7 +67,9 @@ def calculate(id):
   df.fillna("N/A",inplace=True)
   print(df)
   separator()
-  
+
+  if len(df.index.values)==0:
+    return "No match"
   # apply encoding
   encoded = df.copy()
   for key, value in encoded.items(): 
@@ -115,6 +117,8 @@ def calculate(id):
 
   # build response
   res = {}
+  for cid,mc in method_chunks.items():
+    mc["characteristics"] = [c for cid,c in mc["characteristics"].items()]
   z = [{"methodChunk":method_chunks[de._data._anames[i]], "score":de.e_.points[i],"rank":int(de._rank[i])} for i in range(0,len(de.mtx))]
   z2 = [{"methodChunk":method_chunks[de2._data._anames[i]], "score":de2.e_.closeness[i],"rank":int(de2._rank[i])} for i in range(0,len(de2.mtx))]
 

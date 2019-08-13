@@ -1,15 +1,11 @@
 import React from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-
+import { logout } from "../actions";
 import "./Header.css";
 
-const user = {
-  username: "user",
-  fullname: "User"
-};
-
-const Header = () => (
+const Header = props => (
   <Navbar bg="dark" variant="dark" expand="sm" className="header">
     <Navbar.Brand>
       <NavLink to="/">MCRS</NavLink>
@@ -24,11 +20,7 @@ const Header = () => (
           <NavLink to="/method-chunks" className="dropdown-item" role="button">
             Method Chunks
           </NavLink>
-          <NavLink
-            to="/characteristics"
-            className="dropdown-item"
-            role="button"
-          >
+          <NavLink to="/characteristics" className="dropdown-item" role="button">
             Characteristics
           </NavLink>
           <NavDropdown.Divider />
@@ -46,20 +38,35 @@ const Header = () => (
             Find
           </NavLink>
         </Navbar.Text>
-        {user ? (
+        {props.user ? (
           <Navbar.Text>
-            <NavLink to="/profile">
-              Signed in as: <span className="user">{user.fullname}</span>
+            <NavLink
+              to="/login"
+              onClick={() => {
+                document.cookie = "token=; Max-Age=-99999999;";
+                props.logout();
+              }}
+            >
+              Signed in as: <span className="user">{props.user.name}</span>
             </NavLink>
           </Navbar.Text>
         ) : (
-          <Nav.Link>
-            <NavLink to="/sign-in">Sign In</NavLink>
-          </Nav.Link>
+          <Navbar.Text>
+            <NavLink to="/login">Sign In</NavLink>
+          </Navbar.Text>
         )}
       </Nav>
     </Navbar.Collapse>
   </Navbar>
 );
 
-export default Header;
+const mapStateToProps = state => ({ ...state });
+
+const mapDispatchToProps = {
+  logout
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

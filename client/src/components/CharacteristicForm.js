@@ -103,6 +103,7 @@ class CharacteristicForm extends React.Component {
                   placeholder="Enter name..."
                   value={this.state.name}
                   onChange={this.handleChange}
+                  plaintext={this.props.characteristic}
                   readOnly={this.props.characteristic}
                 />
               </Form.Group>
@@ -228,7 +229,7 @@ class CharacteristicForm extends React.Component {
                 }}
               >
                 <Button variant="success" type="submit" className="float-right">
-                  Save
+                  &nbsp;&nbsp;Save&nbsp;&nbsp;
                 </Button>
               </form>
             )}

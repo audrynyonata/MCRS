@@ -21,7 +21,7 @@ const MethodChunk = props => {
             <Col md={4} className="text-right">
               Provider:{" "}
               <NavLink to={`/providers/${props.methodChunk.provider}`}>
-                {props.provider.name}
+                {props.provider ? props.provider.name : props.methodChunk.provider}
               </NavLink>
             </Col>
           </Row>
@@ -128,8 +128,8 @@ class MethodChunks extends Component {
     });
   };
   render() {
-    console.log("props", this.props);
-    console.log("s", this.state);
+    // console.log("props", this.props);
+    // console.log("s", this.state);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={this.state.containerSize}>

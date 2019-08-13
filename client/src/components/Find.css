@@ -1,3 +1,9 @@
+.column-right {
+  height: 92vh;
+  overflow-y: scroll;
+  padding-bottom: 3rem;
+}
+
 .column-left {
   background-color: #f1f1f1;
   height: 92vh;
@@ -23,4 +29,12 @@
 
 .column-right {
   overflow-y: scroll;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.form-group {
+  margin-top: auto;
 }

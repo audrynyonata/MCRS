@@ -7,6 +7,8 @@ import Find from "./components/Find";
 import FindResult from "./components/FindResult";
 import Providers from "./components/Providers";
 import ProviderForm from "./components/ProviderForm";
+import Login from "./components/Login";
+import Register from "./components/Register";
 import MethodChunks from "./components/MethodChunks";
 import MethodChunkForm from "./components/MethodChunkForm";
 import Projects from "./components/Projects";
@@ -54,41 +56,25 @@ class App extends Component {
     return (
       <Provider store={this.props.store}>
         <Router history={history}>
-          <Header />
+          <Header user={this.props.providers.user} />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route
-              path="/publish"
-              component={props => (
-                <MethodChunkForm
-                  {...props}
-                  organisational={this.props.characteristics.all.filter(
-                    e => this.props.characteristics[e].dimension === ORGANISATIONAL
-                  )}
-                  human={this.props.characteristics.all.filter(
-                    e => this.props.characteristics[e].dimension === HUMAN
-                  )}
-                  applicationDomain={this.props.characteristics.all.filter(
-                    e => this.props.characteristics[e].dimension === APPLICATION_DOMAIN
-                  )}
-                  developmentStrategy={this.props.characteristics.all.filter(
-                    e => this.props.characteristics[e].dimension === DEVELOPMENT_STRATEGY
-                  )}
-                  others={this.props.characteristics.all.filter(
-                    e => !this.props.characteristics[e].dimension
-                  )}
-                  characteristics={this.props.characteristics}
-                />
-              )}
-            />
-            <Route exact path="/find" component={Find} />
-            <Route exact path="/find/:provider/:project" component={FindResult} />
             <Route
               exact
               path="/providers"
               component={() => (
                 <Providers providers={this.props.providers} industries={this.props.industries} />
               )}
+            />
+            <Route
+              exact
+              path="/register"
+              component={props => <Register {...props} industries={this.props.industries} />}
+            />
+            <Route
+              exact
+              path="/login"
+              component={props => <Login {...props} providers={this.props.providers} />}
             />
             <Route
               exact
@@ -158,6 +144,30 @@ class App extends Component {
               )}
             />
             <Route
+              path="/publish"
+              component={props => (
+                <MethodChunkForm
+                  {...props}
+                  organisational={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === ORGANISATIONAL
+                  )}
+                  human={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === HUMAN
+                  )}
+                  applicationDomain={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === APPLICATION_DOMAIN
+                  )}
+                  developmentStrategy={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === DEVELOPMENT_STRATEGY
+                  )}
+                  others={this.props.characteristics.all.filter(
+                    e => !this.props.characteristics[e].dimension
+                  )}
+                  characteristics={this.props.characteristics}
+                />
+              )}
+            />
+            <Route
               exact
               path="/characteristics/"
               component={props => (
@@ -201,7 +211,8 @@ class App extends Component {
               )}
             />
             <Route
-              path="/projects/"
+              exact
+              path="/projects"
               component={props => (
                 <Projects
                   {...props}
@@ -210,6 +221,61 @@ class App extends Component {
                 />
               )}
             />
+            <Route
+              path="/projects/:provider/:project/edit"
+              component={props => (
+                <Find
+                  {...props}
+                  organisational={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === ORGANISATIONAL
+                  )}
+                  human={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === HUMAN
+                  )}
+                  applicationDomain={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === APPLICATION_DOMAIN
+                  )}
+                  developmentStrategy={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === DEVELOPMENT_STRATEGY
+                  )}
+                  others={this.props.characteristics.all.filter(
+                    e => !this.props.characteristics[e].dimension
+                  )}
+                  characteristics={this.props.characteristics}
+                  project={
+                    this.props.projects[
+                      props.match.params.provider + "/" + props.match.params.project
+                    ]
+                  }
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/find"
+              component={props => (
+                <Find
+                  {...props}
+                  organisational={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === ORGANISATIONAL
+                  )}
+                  human={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === HUMAN
+                  )}
+                  applicationDomain={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === APPLICATION_DOMAIN
+                  )}
+                  developmentStrategy={this.props.characteristics.all.filter(
+                    e => this.props.characteristics[e].dimension === DEVELOPMENT_STRATEGY
+                  )}
+                  others={this.props.characteristics.all.filter(
+                    e => !this.props.characteristics[e].dimension
+                  )}
+                  characteristics={this.props.characteristics}
+                />
+              )}
+            />
+            <Route exact path="/find/:provider/:project" component={FindResult} />
             <Route component={NotFound} />
           </Switch>
         </Router>

@@ -150,6 +150,7 @@ class ProviderForm extends React.Component {
                   placeholder="Enter name..."
                   value={this.state.name}
                   onChange={this.handleChange}
+                  plaintext={this.props.provider}
                   readOnly={this.props.provider}
                 />
               </Form.Group>
@@ -162,6 +163,7 @@ class ProviderForm extends React.Component {
                   placeholder="Enter email..."
                   value={this.state.email}
                   onChange={this.handleChange}
+                  plaintext={this.props.provider}
                   readOnly={this.props.provider}
                 />
               </Form.Group>

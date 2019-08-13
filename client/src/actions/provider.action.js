@@ -9,6 +9,9 @@ export const FETCH_PROVIDER_BEGIN = "FETCH_PROVIDER_BEGIN";
 export const FETCH_PROVIDER_SUCCESS = "FETCH_PROVIDER_SUCCESS";
 export const FETCH_PROVIDER_FAILURE = "FETCH_PROVIDER_FAILURE";
 
+export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
+
 export const fetchProviderBegin = () => ({
   type: FETCH_PROVIDER_BEGIN
 });
@@ -26,6 +29,15 @@ export const fetchProviderFailure = errors => ({
 export const addProvider = provider => ({
   type: ADD_PROVIDER,
   payload: { provider }
+});
+
+export const authenticate = ({ token, user }) => ({
+  type: AUTHENTICATE,
+  payload: { token, user }
+});
+
+export const logout = () => ({
+  type: LOGOUT
 });
 
 export const readProviders = () => {

@@ -132,8 +132,8 @@ class Projects extends Component {
     });
   };
   render() {
-    console.log("props", this.props);
-    console.log("s", this.state);
+    // console.log("props", this.props);
+    // console.log("s", this.state);
     return (
       <Container fluid className="pt-3 pb-5">
         <Title xs={12} md={this.state.containerSize}>
@@ -150,9 +150,9 @@ class Projects extends Component {
                 className="ml-md-2"
               />
               <div className="d-none d-md-block ml-auto">
-                {/* <NavLink to="/find" className="mr-3">
+                <NavLink to="/find" className="mr-3">
                   Add new project...
-                </NavLink> */}
+                </NavLink>
                 <Button
                   variant="outline-secondary"
                   onClick={this.toggleViewMode}

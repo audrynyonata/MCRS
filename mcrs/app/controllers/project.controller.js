@@ -5,6 +5,9 @@ const slugify = require("slugify");
 exports.create = (req, res) => {
   if (req.body.length) {
     var initAll = req.body.map(doc => {
+      doc.characteristics.forEach((e, idx) => {
+        if (!e.weight) doc.characteristics[idx].weight = 1;
+      });
       var init = doc.characteristics.map(e =>
         e.ref
           ? Promise.resolve(e)
@@ -62,6 +65,9 @@ exports.create = (req, res) => {
     });
   } else {
     let doc = req.body;
+    doc.characteristics.forEach((e, idx) => {
+      if (!e.weight) doc.characteristics[idx].weight = 1;
+    });
     var init = doc.characteristics.map(e =>
       e.ref
         ? Promise.resolve(e)
@@ -201,6 +207,9 @@ exports.update = (req, res) => {
   }
   var init = [];
   if (req.body.characteristics != []) {
+    req.body.characteristics.forEach((e, idx) => {
+      if (!e.weight) req.body.characteristics[idx].weight = 1;
+    });
     init = req.body.characteristics.map(e =>
       e.ref
         ? Promise.resolve(e)

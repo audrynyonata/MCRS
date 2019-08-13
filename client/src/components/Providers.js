@@ -92,14 +92,16 @@ class Providers extends Component {
               />
             ))
           ) : this.props.providers.all.length ? (
-            this.props.providers.all.map((el, idx) => (
-              <ProviderCard
-                history={this.props.history}
-                provider={this.props.providers[el]}
-                industry={this.props.industries[this.props.providers[el].industry]}
-                key={idx}
-              />
-            ))
+            this.props.providers.all
+              .sort()
+              .map((el, idx) => (
+                <ProviderCard
+                  history={this.props.history}
+                  provider={this.props.providers[el]}
+                  industry={this.props.industries[this.props.providers[el].industry]}
+                  key={idx}
+                />
+              ))
           ) : (
             <Col xs={12} md={{ span: 8, offset: 2 }}>
               Empty

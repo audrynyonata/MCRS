@@ -48,7 +48,7 @@ const DimensionTable = props => {
             </OverlayTrigger>
           ))
         ) : props.array.length ? (
-          props.array.map(i =>
+          props.array.sort().map(i =>
             props.characteristics[i].characteristicValues.map(e => (
               <OverlayTrigger
                 key={i + " " + e.ref}
@@ -144,7 +144,7 @@ class Characteristics extends Component {
   };
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <Container fluid className="pt-3 pb-5 char">
         <Title xs={12} md={{ span: 8, offset: 2 }}>

@@ -1,123 +1,122 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Spinner, Tabs, Tab } from "react-bootstrap";
 import Title from "./Title";
-import { find } from "../actions";
 import "./pages.css";
 import { NavLink } from "react-router-dom";
-
+import axios from "axios";
 class FindResult extends Component {
   state = {
-    providers: [],
-    provider: null
+    data: {},
+    loading: true,
+    error: null
   };
 
   componentDidMount() {
     let provider = this.props.match.params.provider;
     let project = this.props.match.params.project;
-    console.log(provider, project);
-    this.props.find(provider + "/" + project);
+    let pid = provider + "/" + project;
+    const data = {
+      project: pid
+    };
+    if (this.state.data && !this.state.error) return;
+    return axios
+      .post("/find", data)
+      .then(({ data }) => {
+        this.setState({
+          data,
+          loading: false,
+          error: null
+        });
+        console.log("Find success", data);
+      })
+      .catch(error => {
+        console.log("Error", error);
+        this.setState({
+          data: {},
+          loading: false,
+          error: error
+        });
+      });
   }
 
   render() {
-    console.log(this.props);
-    if (this.state.loading) return "Loading...";
-    if (this.state.errors) return "Error!";
     return (
       <Container fluid className="pt-3">
+        <Title xs={12} md={{ span: 8, offset: 2 }}>
+          Result
+        </Title>
         <Row>
-          {this.props.results
-            ? this.props.results.map(e => (
-                <Col>
-                  {e.model}
-                  <div>
-                    {e.values.map(i => (
-                      <p>
-                        {i.rank + ": " + i.methodChunk.name + "."}
-                        {<br />}
-                        {"Score: " + i.score}
-                      </p>
+          <Col md={{ span: 8, offset: 2 }}>
+            {this.state.loading ? (
+              <Spinner animation="border" />
+            ) : this.state.error ? (
+              "Failed. Please try again."
+            ) : this.state.data && this.state.data.results ? (
+              <Tabs>
+                {this.state.data.results.map(e => (
+                  <Tab eventKey={e.model} title={e.model} key={e.model}>
+                    <h5 className="pt-3">{e.model}</h5>
+                    {e.values.map((i, idx) => (
+                      <Row key={idx}>
+                        <Col>
+                          <p>
+                            {i.rank}:{" "}
+                            <NavLink to={"/method-chunks#" + i.methodChunk.id}>
+                              {i.methodChunk.name}
+                            </NavLink>
+                            {<br />}
+                            {"Score: " + i.score}
+                          </p>
+                        </Col>
+                        <Col md={7}>
+                          Characteristics:
+                          <ul>
+                            {i.methodChunk.characteristics.map((e, idx) => (
+                              <li key={e.id + "" + e.ref}>
+                                {e.id}: {e.value} (ref: {e.ref})
+                              </li>
+                            ))}
+                          </ul>
+                        </Col>
+                      </Row>
                     ))}
-                  </div>
-                </Col>
-              ))
-            : ""}
+                  </Tab>
+                ))}
+                <Tab eventKey="project" title="Project">
+                  <h5 className="pt-3">Project</h5>
+                  <p>
+                    <b>Name</b>
+                    <br />
+                    {this.state.data.project.name}
+                  </p>
+                  <p>
+                    <b>Description</b>
+                    <br />
+                    {this.state.data.project.name}
+                  </p>
+                  <p>
+                    <b>Owner</b>
+                    <br />
+                    {this.state.data.project.provider}
+                  </p>
+                  <h6>Characteristics</h6>
+                  <ul>
+                    {this.state.data.project.characteristics.map((i, idx) => (
+                      <li key={i.id + " " + i.ref + " " + i.rule}>
+                        {i.id} (W.{i.weight}). {i.rule} {i.value.join(",")} (ref. {i.ref})
+                      </li>
+                    ))}
+                  </ul>
+                </Tab>
+              </Tabs>
+            ) : (
+              "No match found"
+            )}
+          </Col>
         </Row>
-        {this.props.provider ? (
-          <div>
-            <Title xs={12} md={{ span: 8, offset: 2 }}>
-              {this.props.provider.name}
-            </Title>
-            <Row>
-              <Col md={{ span: 5, offset: 2 }}>
-                <h6>Description</h6>
-                <p>{this.props.provider.description || "N/A"}</p>
-                <h6>Useful links</h6>
-                {this.props.provider.urls.length ? (
-                  <ol>
-                    {this.props.provider.urls.map((e, idx) => (
-                      <li key={idx}>
-                        {e.name} - <a href={`/${e.url}`}>{e.url}</a>
-                      </li>
-                    ))}
-                  </ol>
-                ) : (
-                  <p>N/A</p>
-                )}
-                <h6>Contacts</h6>
-                {this.props.provider.contacts.length ? (
-                  <ul>
-                    {this.props.provider.contacts.map((e, idx) => (
-                      <li key={idx}>
-                        {e.name}
-                        <br />
-                        {e.role}
-                        <br />
-                        {e.description}
-                        <br />
-                        {e.email} {e.phone} {e.address}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>N/A</p>
-                )}
-                <h6>Related providers</h6>
-                {this.props.provider.relatedProviders.length ? (
-                  <ul>
-                    {this.props.provider.relatedProviders.map((e, idx) => (
-                      <li key={idx}>
-                        <NavLink to={`/providers/${e}`}>{e}</NavLink>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>N/A</p>
-                )}
-              </Col>
-              <Col xs={3}>
-                <p>Industry: {this.props.provider.industry}</p>
-                <br />
-                <h6>Last updated</h6>
-                <p>{this.props.provider.updatedAt}</p>
-              </Col>
-            </Row>
-          </div>
-        ) : (
-          ""
-        )}
       </Container>
     );
   }
 }
 
-const mapStateToProps = ({ projects }) => ({
-  ...projects.results
-});
-
-const mapDispatchToProps = { find };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FindResult);
+export default FindResult;

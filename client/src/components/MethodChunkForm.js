@@ -100,6 +100,7 @@ class MethodChunkForm extends React.Component {
                   placeholder="Enter name..."
                   value={this.state.name}
                   onChange={this.handleChange}
+                  plaintext={this.props.methodChunk}
                   readOnly={this.props.methodChunk}
                 />
               </Form.Group>
@@ -262,7 +263,7 @@ class MethodChunkForm extends React.Component {
                 }}
               >
                 <Button variant="success" type="submit" className="float-right">
-                  Save
+                  &nbsp;&nbsp;Save&nbsp;&nbsp;
                 </Button>
               </form>
             )}
