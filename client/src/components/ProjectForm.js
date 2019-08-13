@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import { NavLink } from "react-router-dom";
 import { Container, Card, Row, Col, Form, Button, Jumbotron } from "react-bootstrap";
 import { addProject, updateProject, deleteProject } from "../actions";
 import axios from "axios";
 
-import "./Find.css";
+import "./ProjectForm.css";
 
 const CharacteristicCard = props => (
   <Col xs={6} sm={12} md={4} className="mb-3 px-2">
@@ -21,7 +20,7 @@ const CharacteristicCard = props => (
   </Col>
 );
 
-class Find extends Component {
+class ProjectForm extends Component {
   state = {
     name: "",
     description: "",
@@ -441,4 +440,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Find);
+)(ProjectForm);

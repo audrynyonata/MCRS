@@ -5,6 +5,8 @@ import "./pages.css";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 class FindResult extends Component {
+  _isMounted = false;
+
   state = {
     data: {},
     loading: true,
@@ -12,36 +14,59 @@ class FindResult extends Component {
   };
 
   componentDidMount() {
+    this._isMounted = true;
     let provider = this.props.match.params.provider;
     let project = this.props.match.params.project;
     let pid = provider + "/" + project;
     const data = {
       project: pid
     };
-    if (this.state.data && !this.state.error) return;
+    if (this.state.data.results && !this.state.error) {
+      console.log("State", this.state.data);
+      return;
+    }
     return axios
       .post("/find", data)
       .then(({ data }) => {
-        this.setState({
-          data,
-          loading: false,
-          error: null
-        });
+        if (this._isMounted) {
+          this.setState({
+            data,
+            loading: false,
+            error: null
+          });
+        }
         console.log("Find success", data);
       })
       .catch(error => {
         console.log("Error", error);
-        this.setState({
-          data: {},
-          loading: false,
-          error: error
-        });
+        if (this._isMounted) {
+          this.setState({
+            data: {},
+            loading: false,
+            error: error
+          });
+        }
       });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
     return (
       <Container fluid className="pt-3">
+        <Row>
+          <Col md={{ span: 5, offset: 2 }}>
+            <NavLink
+              to={`/projects/${this.props.match.params.provider}/${
+                this.props.match.params.project
+              }/edit`}
+            >
+              &laquo; Back
+            </NavLink>
+          </Col>
+        </Row>
         <Title xs={12} md={{ span: 8, offset: 2 }}>
           Result
         </Title>
@@ -84,20 +109,14 @@ class FindResult extends Component {
                 ))}
                 <Tab eventKey="project" title="Project">
                   <h5 className="pt-3">Project</h5>
+                  <h6>Name</h6>
+                  <p>{this.state.data.project.name}</p>
+                  <h6>Description</h6>
+                  <p>{this.state.data.project.description}</p>
+                  <h6>Owner</h6>
                   <p>
-                    <b>Name</b>
-                    <br />
-                    {this.state.data.project.name}
-                  </p>
-                  <p>
-                    <b>Description</b>
-                    <br />
-                    {this.state.data.project.name}
-                  </p>
-                  <p>
-                    <b>Owner</b>
-                    <br />
-                    {this.state.data.project.provider}
+                    {this.props.providers[this.state.data.project.provider].name ||
+                      this.state.data.project.provider}
                   </p>
                   <h6>Characteristics</h6>
                   <ul>

@@ -20,7 +20,9 @@ const Project = props => {
             </Col>
             <Col md={4} className="text-right">
               Owner:{" "}
-              <NavLink to={`/providers/${props.project.provider}`}>{props.provider.name}</NavLink>
+              <NavLink to={`/providers/${props.project.provider}`}>
+                {props.provider.name || props.project.provider}
+              </NavLink>
             </Col>
           </Row>
           <div className="description mb-1">{props.project.description}</div>

@@ -3,8 +3,6 @@ import { Provider, connect } from "react-redux";
 import { Router, Route, Switch } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
-import Find from "./components/Find";
-import FindResult from "./components/FindResult";
 import Providers from "./components/Providers";
 import ProviderForm from "./components/ProviderForm";
 import Login from "./components/Login";
@@ -13,6 +11,8 @@ import MethodChunks from "./components/MethodChunks";
 import MethodChunkForm from "./components/MethodChunkForm";
 import Projects from "./components/Projects";
 import ProviderItem from "./components/ProviderItem";
+import ProjectForm from "./components/ProjectForm";
+import FindResult from "./components/FindResult";
 import Characteristics from "./components/Characteristics";
 import CharacteristicForm from "./components/CharacteristicForm";
 import NotFound from "./components/NotFound";
@@ -224,7 +224,7 @@ class App extends Component {
             <Route
               path="/projects/:provider/:project/edit"
               component={props => (
-                <Find
+                <ProjectForm
                   {...props}
                   organisational={this.props.characteristics.all.filter(
                     e => this.props.characteristics[e].dimension === ORGANISATIONAL
@@ -254,7 +254,7 @@ class App extends Component {
               exact
               path="/find"
               component={props => (
-                <Find
+                <ProjectForm
                   {...props}
                   organisational={this.props.characteristics.all.filter(
                     e => this.props.characteristics[e].dimension === ORGANISATIONAL
@@ -275,7 +275,11 @@ class App extends Component {
                 />
               )}
             />
-            <Route exact path="/find/:provider/:project" component={FindResult} />
+            <Route
+              exact
+              path="/find/:provider/:project"
+              component={props => <FindResult {...props} providers={this.props.providers} />}
+            />
             <Route component={NotFound} />
           </Switch>
         </Router>
