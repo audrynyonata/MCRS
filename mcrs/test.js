@@ -157,7 +157,7 @@ const providerTest = {
   ]
 };
 
-var providerUpdate = {
+const providerUpdate = {
   description: "Updated description",
   urls: [
     {

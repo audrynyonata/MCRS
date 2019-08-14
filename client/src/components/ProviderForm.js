@@ -125,7 +125,10 @@ class ProviderForm extends React.Component {
                     alert(res.status + " " + res.statusText);
                     this.props.history.push("/providers");
                   })
-                  .catch(e => console.log("Delete failed , Error ", e));
+                  .catch(e => {
+                    alert("Failed");
+                    console.log("Delete failed , Error ", e);
+                  });
               }}
             >
               <Button
@@ -359,7 +362,10 @@ class ProviderForm extends React.Component {
                       alert(res.status + " " + res.statusText);
                       this.props.history.push("/providers/" + res.data.id);
                     })
-                    .catch(e => console.log("Update failed , Error ", e));
+                    .catch(e => {
+                      alert("Failed");
+                      console.log("Update failed , Error ", e);
+                    });
                 }}
               >
                 <Form.Group className="text-right">

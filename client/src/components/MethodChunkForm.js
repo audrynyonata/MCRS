@@ -72,7 +72,10 @@ class MethodChunkForm extends React.Component {
                       alert(res.status + " " + res.statusText);
                       this.props.history.push("/method-chunks");
                     })
-                    .catch(e => console.log("Delete failed , Error ", e));
+                    .catch(e => {
+                      alert("Failed");
+                      console.log("Delete failed , Error ", e);
+                    });
                 }}
               >
                 <Button
@@ -233,7 +236,10 @@ class MethodChunkForm extends React.Component {
                         alert(res.status + " " + res.statusText);
                         this.props.history.push("/method-chunks#" + res.data.id);
                       })
-                      .catch(e => console.log("Update failed , Error ", e));
+                      .catch(e => {
+                        alert("Failed");
+                        console.log("Update failed , Error ", e);
+                      });
                   }}
                 >
                   <Form.Group className="text-right">

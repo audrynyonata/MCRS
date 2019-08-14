@@ -234,7 +234,10 @@ class ProjectForm extends Component {
                         alert(res.status + " " + res.statusText);
                         this.props.history.push("/projects");
                       })
-                      .catch(e => console.log("Delete failed , Error ", e));
+                      .catch(e => {
+                        alert("Failed");
+                        console.log("Delete failed , Error ", e);
+                      });
                   }}
                 >
                   <Button
