@@ -71,13 +71,13 @@ app.use(
       /\/find/i,
       { url: "/dimensions", methods: ["GET"] },
       { url: "/industries", methods: ["GET"] },
-      { url: "/providers", methods: ["GET", "POST"] },
-      { url: /^\/providers\/.*/, methods: ["GET"] },
-      { url: "/method-chunks", methods: ["GET"] },
+      { url: /^\/providers.*/, methods: ["GET", "POST"] },
+      { url: /^\/providers\/.*/, methods: ["GET", "POST"] },
+      { url: /^\/method-chunks.*/, methods: ["GET"] },
       { url: /^\/method-chunks\/.*/, methods: ["GET"] },
-      { url: "/characteristics", methods: ["GET"] },
+      { url: /^\/characteristics.*/, methods: ["GET"] },
       { url: /^\/characteristics\/.*/, methods: ["GET"] },
-      { url: "/projects", methods: ["GET"] },
+      { url: /^\/projects.*/, methods: ["GET"] },
       { url: /^\/projects\/.*/, methods: ["GET"] }
     ]
   })

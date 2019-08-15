@@ -258,237 +258,329 @@ const projectUpdate = {
   ]
 };
 
-const register = c => {
-  return fetch(`${server}/register`, {
-    method: "POST",
-    body: JSON.stringify(c),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then(res => {
-      // console.log(res);
-      return res;
-    })
-    .catch(err => console.log(err));
-};
-
-const post = (path, data, message) => {
+const register = (path, data, message) => {
+  if (message) console.log(message);
   return fetch(`${server}${path}`, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
     }
   })
     .then(res => res.json())
     .then(res => {
-      if (message) process.stdout.write("POST " + path + " " + message + " ");
       return res;
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("Error!", err));
 };
 
-const put = (path, data, message) => {
+const post = (path, data, message, t) => {
+  if (message) console.log(message);
+  return fetch(`${server}${path}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Authorization: `Bearer ${t ? t : token}`,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(res => {
+      return res;
+    })
+    .catch(err => console.log("Error!", err));
+};
+
+const put = (path, data, message, t) => {
+  if (message) console.log(message);
   return fetch(`${server}${path}`, {
     method: "PUT",
     body: JSON.stringify(data),
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${t ? t : token}`,
       "Content-Type": "application/json"
     }
   })
     .then(res => res.json())
     .then(res => {
-      if (message) process.stdout.write("PUT " + path + " " + message + " ");
       return res;
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("Error!", err));
 };
 
-const del = (path, message) => {
+const del = (path, message, t) => {
+  console.log(message);
   return fetch(`${server}${path}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${t ? t : token}`,
       "Content-Type": "application/json"
     }
   })
     .then(res => res.json())
     .then(res => {
-      process.stdout.write("DELETE " + path + " " + message + " ");
       return res;
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("Error!", err));
 };
 
 const get = (path, message) => {
+  console.log(message);
   return fetch(`${server}${path}`)
     .then(res => res.json())
     .then(res => {
-      process.stdout.write("GET " + path + " " + message + " ");
       return res;
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("Error!", err));
 };
 
 /****************** MAIN *******************/
 var token = "";
 
 const seed = () => {
-  return register(companyA)
+  return register("/register", companyA)
     .then(res => {
-      token = res.token;
-      post("/providers", [companyB, companyC]);
-      post("/characteristics", CHARACTERISTICS).then(() => {
-        post("/method-chunks", METHOD_CHUNKS);
+      post("/providers", [companyB, companyC], "", res.token);
+      post("/characteristics", CHARACTERISTICS, "", res.token).then(() => {
+        post("/method-chunks", METHOD_CHUNKS, "", res.token);
       });
     })
     .catch(err => {
-      console.log(err);
+      console.log("Error!", err);
     });
 };
 
+const testResult = {
+  0: "POST /register should create provider and return valid token",
+  1: "POST /register should not create provider due to duplicate id",
+  2: "POST /authenticate should not return token due to wrong email and password",
+  3: "POST /authenticate should check email password pair and return token",
+  4: "POST /publish should create method chunk",
+  5: "POST /publish should not create method chunks due to duplicate id",
+  6: "GET /method-chunks should return all method chunks",
+  7: "GET /method-chunks/method-chunk-test should return single method chunks",
+  8: "GET /method-chunks?provider=company-test should return all method chunks by specified provider",
+  9: "POST /find should return recommendation",
+  10: "PUT /method-chunks/method-chunk-test should not update method chunk due to invalid token",
+  11: "PUT /method-chunks/method-chunk-test should update method chunk",
+  12: "DELETE /method-chunks/method-chunk-test should not delete method chunk due to invalid token",
+  13: "DELETE /method-chunks/method-chunk-test should delete method chunk",
+  14: "GET /providers should return all providers",
+  15: "GET /providers/provider-test should return single provider",
+  16: "PUT /providers/provider-test should update provider",
+  17: "DELETE /providers/provider-test should delete provider",
+  18: "GET /characteristics should return all characteristics",
+  19: "GET /characteristics/characteristic-test should return single characteristic",
+  20: "POST /characteristic should create characteristic",
+  21: "PUT /characteristics/characteristic-test should update characteristic",
+  22: "DELETE /characteristics/characteristic-test should delete characteristic",
+  23: "GET /projects should return all projects",
+  24: "GET /projects/project-test should return single project",
+  25: "POST /projects should create project",
+  26: "PUT /projects/provider-test/project-test should update project",
+  27: "DELETE /projects/provider-test/project-test should delete project"
+};
+
 const test = () => {
-  //0
-  return get("/", "should return welcome message")
+  let i = 0;
+  return get("/", "GET / should return welcome message")
     .then(res => {
       res.message ? console.log("OK") : console.log("FAIL");
-      //1
-      get("/dimensions", "should return all dimensions").then(res => {
-        res.length ? console.log("OK") : console.log("FAIL");
-      });
 
-      //2
-      get("/industries", "should return all industries").then(res => {
-        res.length ? console.log("OK") : console.log("FAIL");
-      });
+      // get("/dimensions", "should return all dimensions").then(res => {
+      //   res.length ? console.log("OK") : console.log ("FAIL")
+      // });
 
-      //2+1
-      const authenticate = {
-        email: "company@a.com",
-        password: "password"
-      };
-      post("/authenticate", authenticate, "should check email password pair and return token").then(
-        res => {
-          res.token ? console.log("OK") : console.log("FAIL");
-        }
-      );
+      // get("/industries", "should return all industries").then(res => {
+      //   res.length ? console.log("OK") : console.log ("FAIL")
+      // });
 
-      //3
-      register(providerTest).then(res => {
+      i = 0;
+      register("/register", providerTest, testResult[0]).then(res => {
         token = res.token;
-        var ok = "FAIL";
-        if (token) ok = "OK";
-        console.log("POST /register", "should create provider and return valid token", ok);
+        if (token) testResult[0] += " OK";
+        else testResult[0] += " FAIL";
 
-        //4
-        get("/providers", "should return all providers").then(res => {
-          res.length == 4 ? console.log("OK") : console.log("FAIL");
+        i = 1;
+        register("/register", providerTest, testResult[1])
+          .then(res => {
+            res.token ? (testResult[1] += " FAIL") : (testResult[1] += " OK");
+          })
+          .catch(e => (testResult[1] += " OK"));
+
+        const authenticate = {
+          email: "provider@example.com",
+          password: "password"
+        };
+
+        i = 2;
+        post("/authenticate", { ...authenticate, password: "passwordd" }, testResult[i])
+          .then(res => {
+            res.token ? (testResult[2] += " FAIL") : (testResult[2] += " OK");
+          })
+          .catch(e => (testResult[2] += " OK"));
+
+        i = 3;
+        post("/authenticate", authenticate, testResult[3]).then(res => {
+          res.token ? (testResult[3] += " OK") : (testResult[3] += " FAIL");
         });
-        //5
-        get("/providers/provider-test", "should return single provider").then(res => {
-          res.id == "provider-test" ? console.log("OK") : console.log("FAIL");
+
+        i = 14;
+        get("/providers", testResult[14]).then(res => {
+          res.length == 4 ? (testResult[14] += " OK") : (testResult[14] += " FAIL");
         });
-        //6
-        put("/providers/provider-test", providerUpdate, "should update provider").then(res => {
+
+        i = 15;
+        get("/providers/provider-test", testResult[15]).then(res => {
+          res.id == "provider-test" ? (testResult[15] += " OK") : (testResult[15] += " FAIL");
+        });
+
+        i = 16;
+        put("/providers/provider-test", providerUpdate, testResult[16]).then(res => {
           res.description == "Updated description" && res.urls.length
-            ? console.log("OK")
-            : console.log("FAIL");
+            ? (testResult[16] += " OK")
+            : (testResult[16] += " FAIL");
         });
 
-        //7
-        post("/characteristics", characteristicTest, "should create characteristic").then(res => {
-          res.id == "characteristic-test" ? console.log("OK") : console.log("FAIL");
-          //8
-          get("/characteristics", "should return all characteristics").then(res => {
-            res.length == 4 ? console.log("OK") : console.log("FAIL");
+        i = 20;
+        post("/characteristics", characteristicTest, testResult[20]).then(res => {
+          res.id == "characteristic-test" ? (testResult[20] += " OK") : (testResult[20] += " FAIL");
+
+          i = 18;
+          get("/characteristics", testResult[18]).then(res => {
+            res.length == 4 ? (testResult[18] += " OK") : (testResult[18] += " FAIL");
           });
-          //9
-          get("/characteristics/characteristic-test", "should return single characteristic").then(
+
+          i = 19;
+          get("/characteristics/characteristic-test", testResult[19]).then(res => {
+            res.id == "characteristic-test"
+              ? (testResult[19] += " OK")
+              : (testResult[19] += " FAIL");
+          });
+
+          i = 21;
+          put("/characteristics/characteristic-test", characteristicUpdate, testResult[21]).then(
             res => {
-              res.id == "characteristic-test" ? console.log("OK") : console.log("FAIL");
+              res.characteristicValues.length == 2
+                ? (testResult[21] += " OK")
+                : (testResult[21] += " FAIL");
             }
           );
-          //10
-          put(
-            "/characteristics/characteristic-test",
-            characteristicUpdate,
-            "should update characteristic"
-          ).then(res => {
-            res.characteristicValues.length == 2 ? console.log("OK") : console.log("FAIL");
+
+          i = 4;
+          post("/publish", methodChunkTest, testResult[4]).then(r => {
+            r.id == "method-chunk-test" ? (testResult[4] += " OK") : (testResult[4] += " FAIL");
+
+            i = 5;
+            post("/publish", methodChunkTest, testResult[5])
+              .then(res => {
+                res.id ? (testResult[5] += " FAIL") : (testResult[5] += " OK");
+              })
+              .catch(e => (testResult[5] += " OK"));
+
+            i = 6;
+            get("/method-chunks", testResult[6]).then(res => {
+              "testResult6", res;
+              res.length == 6 ? (testResult[6] += " OK") : (testResult[6] += " FAIL");
+            });
+
+            i = 7;
+            get("/method-chunks/method-chunk-test", testResult[7]).then(res => {
+              res.id == "method-chunk-test" ? (testResult[7] += " OK") : (testResult[7] += " FAIL");
+            });
+
+            i = 8;
+            get("/method-chunks?provider=provider-test", testResult[8]).then(res => {
+              res.length == 1 ? (testResult[8] += " OK") : (testResult[8] += " FAIL");
+            });
+
+            i = 10;
+            put("/method-chunks/method-chunk-test", methodChunkUpdate, testResult[10]).then(res => {
+              res.description == "Updated description"
+                ? (testResult[10] += " OK")
+                : (testResult[10] += " FAIL");
+            });
+
+            i = 11;
+            put("/method-chunks/method-chunk-test", methodChunkUpdate, testResult[11], "invalid")
+              .then(res => {
+                res.description == "Updated description"
+                  ? (testResult[11] += " FAIL")
+                  : (testResult[11] += " OK");
+              })
+              .catch(e => (testResult[11] += " OK"));
           });
 
-          //11
-          post("/publish", methodChunkTest, "should create method chunk").then(r => {
-            r.id == "method-chunk-test" ? console.log("OK") : console.log("FAIL");
-            //12
-            get("/method-chunks", "should return all method chunks").then(res => {
-              res.length == 6 ? console.log("OK") : console.log("FAIL");
-            });
-            //13
-            get("/method-chunks/method-chunk-test", "should return single method chunk").then(
-              res => {
-                res.id == "method-chunk-test" ? console.log("OK") : console.log("FAIL");
-              }
-            );
-            //13 + 1
-            put(
-              "/method-chunks/method-chunk-test",
-              methodChunkUpdate,
-              "should update method chunk"
-            ).then(res => {
-              res.description == "Updated description" ? console.log("OK") : console.log("FAIL");
-            });
-          });
+          i = 25;
+          post("/projects", projectTest, testResult[25]).then(r => {
+            r.id == "provider-test/project-test"
+              ? (testResult[25] += " OK")
+              : (testResult[25] += " FAIL");
 
-          //14
-          post("/projects", projectTest, "should create project").then(r => {
-            r.id == "provider-test/project-test" ? console.log("OK") : console.log("FAIL");
-            //15
-            get("/projects", "should return all projects").then(res => {
-              res.length == 1 ? console.log("OK") : console.log("FAIL");
+            i = 23;
+            get("/projects", testResult[23]).then(res => {
+              res.length == 1 ? (testResult[23] += " OK") : (testResult[23] += " FAIL");
             });
-            //16
-            get("/projects/provider-test/project-test", "should return single project").then(
-              res => {
-                res.id == "provider-test/project-test" ? console.log("OK") : console.log("FAIL");
-              }
-            );
-            //16 + 1
-            put(
-              "/projects/provider-test/project-test",
-              projectUpdate,
-              "should update project"
-            ).then(res => {
-              res.description == "Updated description" ? console.log("OK") : console.log("FAIL");
+
+            i = 24;
+            get("/projects/provider-test/project-test", testResult[24]).then(res => {
+              res.id == "provider-test/project-test"
+                ? (testResult[24] += " OK")
+                : (testResult[24] += " FAIL");
             });
+
+            i = 26;
+            put("/projects/provider-test/project-test", projectUpdate, testResult[26]).then(res => {
+              res.description == "Updated description"
+                ? (testResult[26] += " OK")
+                : (testResult[26] += " FAIL");
+            });
+
+            i = 9;
             const find = { project: "provider-test/project-test" };
-            //16 + 2
-            post("/find", find, "should return recommendations").then(res => {
-              res.results ? console.log("OK") : console.log("FAIL");
-              // 17
-              del("/projects/provider-test/project-test", "should delete project").then(res => {
-                res.message = "Deleted successfully." ? console.log("OK") : console.log("FAIL");
-                //18
-                del("/method-chunks/method-chunk-test", "should delete method chunk").then(res => {
-                  res.message = "Deleted successfully." ? console.log("OK") : console.log("FAIL");
-                });
-                //19
-                del("/characteristics/characteristic-test", "should delete characteristic").then(
-                  res => {
-                    res.message = "Deleted successfully." ? console.log("OK") : console.log("FAIL");
-                    //20
-                    del("/providers/provider-test", "should delete provider").then(res => {
-                      res.message = "Deleted successfully."
-                        ? console.log("OK")
-                        : console.log("FAIL");
-                      console.log("Finished.");
+            post("/find", find, testResult[9]).then(res => {
+              res.results ? (testResult[9] += " OK") : (testResult[9] += " FAIL");
+
+              i = 12;
+              del("/method-chunks/method-chunk-test", testResult[12], "invalid")
+                .then(res => {
+                  res.message == "Deleted successfully."
+                    ? (testResult[12] += " FAIL")
+                    : (testResult[12] += " OK");
+                })
+                .catch(e => (testResult[i] += " OK"));
+
+              i = 17;
+              del("/projects/provider-test/project-test", testResult[17]).then(res => {
+                res.message == "Deleted successfully."
+                  ? (testResult[17] += " OK")
+                  : (testResult[17] += " FAIL");
+
+                i = 22;
+                del("/characteristics/characteristic-test", testResult[22]).then(res => {
+                  res.message == "Deleted successfully."
+                    ? (testResult[22] += " OK")
+                    : (testResult[22] += " FAIL");
+
+                  i = 13;
+                  del("/method-chunks/method-chunk-test", testResult[13]).then(res => {
+                    res.message = "Deleted successfully."
+                      ? (testResult[13] += " OK")
+                      : (testResult[13] += " FAIL");
+                  });
+
+                  i = 27;
+                  del("/providers/provider-test", testResult[27]).then(res => {
+                    res.message == "Deleted successfully."
+                      ? (testResult[27] += " OK")
+                      : (testResult[27] += " FAIL");
+                    console.log("--------------------- RESULT ----------------------");
+                    Object.keys(testResult).forEach(function(key, index) {
+                      console.log(key, testResult[key]);
                     });
-                  }
-                );
+                    console.log("Finished.");
+                  });
+                });
               });
             });
           });
@@ -496,7 +588,7 @@ const test = () => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.log("Error!", err);
     });
 };
 
