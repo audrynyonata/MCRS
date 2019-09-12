@@ -16,9 +16,9 @@ How to run:
 5. Enjoy
  
  Run tests:
- 1. `cd mcrs`
- 2. `nodemon server.js`
- 3. `node test.js`
+ 1. `nodemon server.js`
+ 2. `start.bat`
+ 3. `cd mcrs && node test.js`
 
 **MCRS (Method Chunk Registry System)** is a part of SOSME (Service-oriented Situational Method Engineering). In SOSME architecture, MBMS (Method Base Management System), MCRS, and CAME (Computer-aided Method Engineering) tool interact in a service-oriented manner. MBMS acts as provider (publish method chunk to registry) whereas CAME tool acts as a client (find/retrieve method chunk from registry).
 
