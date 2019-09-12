@@ -1,8 +1,8 @@
+const { performance } = require("perf_hooks");
 const seeder = require("mongoose-seed");
 const fetch = require("node-fetch");
 const dbConfig = require("./config/database.config.js");
 const { companyA, companyB, companyC } = require("./seed/provider.seed");
-
 const server = "http://localhost:4000";
 const baseUrlB = "C:/Users/User/Desktop/mcrs/case/mbms-b/browse.html#";
 const ORGANISATIONAL = "organisational";
@@ -578,6 +578,8 @@ const test = () => {
                     Object.keys(testResult).forEach(function(key, index) {
                       console.log(key, testResult[key]);
                     });
+                    var t1 = performance.now();
+                    console.log("Test took " + (t1 - t0) + " milliseconds.");
                     console.log("Finished.");
                   });
                 });
@@ -592,8 +594,12 @@ const test = () => {
     });
 };
 
+var t0;
+
 // Connect to MongoDB via Mongoose
 seeder.connect(dbConfig.url, function() {
+  t0= performance.now();
+
   const models = ["Characteristic", "Project", "MethodChunk", "Provider"];
 
   // Load Mongoose models
