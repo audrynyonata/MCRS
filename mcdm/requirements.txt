@@ -7,7 +7,7 @@ Flask==1.1.1
 Flask-PyMongo==2.3.0
 importlib-metadata==0.19
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 joblib==0.13.2
 json-tricks==3.13.1
 kiwisolver==1.1.0
